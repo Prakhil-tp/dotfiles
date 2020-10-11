@@ -8,8 +8,6 @@ endif
 
 call plug#begin('~/.config/nvim/autoload/plugged')
 
-    " File Explorer
-    Plug 'scrooloose/NERDTree'
     " Auto pairs for '(' '[' '{'
     Plug 'jiangmiao/auto-pairs'
     " Navigate with tmux
@@ -18,8 +16,6 @@ call plug#begin('~/.config/nvim/autoload/plugged')
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
     " Commenting codes
     Plug 'preservim/nerdcommenter'
-    " Key memorizer
-    Plug 'liuchengxu/vim-which-key'
     " Indent lines
     Plug 'Yggdroot/indentLine'
     " Auto closing tag
@@ -59,10 +55,11 @@ call plug#begin('~/.config/nvim/autoload/plugged')
     "============================
     Plug 'morhetz/gruvbox'
     "============================
-    " Staus bar
+    " Statusbar and bufferline
     "============================
-    Plug 'vim-airline/vim-airline'
-    Plug 'vim-airline/vim-airline-themes'
+    Plug 'itchyny/lightline.vim'
+    Plug 'mengelbrecht/lightline-bufferline'
+    Plug 'itchyny/vim-gitbranch'
     "============================
     " MarkDown
     "============================
