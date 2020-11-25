@@ -22,5 +22,6 @@
   "eslint.enable": false,
   "eslint.autoFix": false,
   "eslint.autoFixOnSave": false,
-  "prettier.trailingComma": "none"
+  "prettier.trailingComma": "none",
+  "javascript.suggestionActions.enabled": false
 }
