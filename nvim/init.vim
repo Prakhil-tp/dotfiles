@@ -11,6 +11,8 @@ source $HOME/.config/nvim/plug-config/nerdcommenter.vim
 source $HOME/.config/nvim/plug-config/signify.vim
 source $HOME/.config/nvim/plug-config/vim-closetag.vim
 source $HOME/.config/nvim/plug-config/lightline.vim
+source $HOME/.config/nvim/plug-config/indentline.vim
+source $HOME/.config/nvim/plug-config/vimspector.vim
 
 
 

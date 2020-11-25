@@ -70,6 +70,10 @@ call plug#begin('~/.config/nvim/autoload/plugged')
     " HTML live server
     "============================
     Plug 'turbio/bracey.vim'
+    "============================
+    " Debugger
+    "============================
+    Plug 'puremourning/vimspector'
 
     call plug#end()
 
