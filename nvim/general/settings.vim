@@ -44,6 +44,13 @@ au! BufWritePost $MYVIMRC source %      " auto source when writing to init.vm al
 " set window transparent
 hi Normal guibg=NONE ctermbg=NONE      
 
+" fix indeting visual block
+vmap < <gv
+vmap > >gv
+
+" Vertically center document when entering insert mode
+" autocmd InsertEnter * norm zz
+
 " You can't stop me 
 cmap w!! w !sudo tee %
 
