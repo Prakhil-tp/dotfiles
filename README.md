@@ -8,16 +8,16 @@ Configuration files that are used to personalize your Linux or unix-like systems
 
 ## Popular configs of mine
 
-- [https://github.com/Prakhil-tp/dotfiles/tree/master/Alacritty/.config/](Alacritty)
-- [https://github.com/Prakhil-tp/dotfiles/tree/master/bash/](Bash)
-- [https://github.com/Prakhil-tp/dotfiles/tree/master/zsh/](Zsh)
-- [https://github.com/Prakhil-tp/dotfiles/tree/master/bat/.config/bat/](Bat)
-- [https://github.com/Prakhil-tp/dotfiles/tree/master/devilspie2/.config/devilspie2/](Devilspie 2)
-- [https://github.com/Prakhil-tp/dotfiles/tree/master/emacs/](Doom Emacs)
-- [https://github.com/Prakhil-tp/dotfiles/tree/master/fzf/](Fzf)
-- [https://github.com/Prakhil-tp/dotfiles/tree/master/nvim/.config/nvim/](Neovim)
-- [https://github.com/Prakhil-tp/dotfiles/tree/master/tmux/](Tmux)
-- [https://github.com/Prakhil-tp/dotfiles/tree/master/vifm/.config/vifm/](Vifm)
+- [Alacritty](https://github.com/Prakhil-tp/dotfiles/tree/master/Alacritty/.config/)
+- [Bash](https://github.com/Prakhil-tp/dotfiles/tree/master/bash/)
+- [Zsh](https://github.com/Prakhil-tp/dotfiles/tree/master/zsh/)
+- [Bat](https://github.com/Prakhil-tp/dotfiles/tree/master/bat/.config/bat/)
+- [Devilspie 2](https://github.com/Prakhil-tp/dotfiles/tree/master/devilspie2/.config/devilspie2/)
+- [Doom Emacs](https://github.com/Prakhil-tp/dotfiles/tree/master/emacs/)
+- [Fzf](https://github.com/Prakhil-tp/dotfiles/tree/master/fzf/)
+- [Neovim](https://github.com/Prakhil-tp/dotfiles/tree/master/nvim/.config/nvim/)
+- [Tmux](https://github.com/Prakhil-tp/dotfiles/tree/master/tmux/)
+- [Vifm](https://github.com/Prakhil-tp/dotfiles/tree/master/vifm/.config/vifm/)
 
 ## How to use
 
@@ -30,7 +30,7 @@ cd ./dotfiles
 stow */
 ```
 
-## configure nvim
+## setup nvim
 
 1. open `vim ~/.config/nvim/vim-plug/plugins.vim`
 2. run the vim commands one after another.
@@ -40,7 +40,7 @@ stow */
 :CocInstall coc-prettier coc-snippets
 ```
 
-## configure fzf 
+## setup fzf 
 
 1. clone and install `fzf`
 2. stow .fzf.bash / .fzf.zsh files
