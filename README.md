@@ -44,7 +44,7 @@ stow */
 
 1. clone and install `fzf`
 2. stow .fzf.bash / .fzf.zsh files
-```
+``` sh
   git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
   ~/.fzf/install
 ```
@@ -52,7 +52,7 @@ stow */
 1. install emacs
 2. clone doom repository to `.emacs.d` directory
 
-``` vim-snippet
+``` sh
 sudo dnf install emacs #fedora
 
 git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d
