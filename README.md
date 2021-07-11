@@ -48,3 +48,13 @@ stow */
   git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
   ~/.fzf/install
 ```
+## setup doom emacs
+1. install emacs
+2. clone doom repository to `.emacs.d` directory
+
+``` vim-snippet
+sudo dnf install emacs #fedora
+
+git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d
+~/.emacs.d/bin/doom sync
+```
