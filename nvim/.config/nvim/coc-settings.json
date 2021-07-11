@@ -1,0 +1,41 @@
+{
+  "coc.preferences.formatOnSaveFiletypes": [
+    "css",
+    "markdown",
+    "graphql",
+    "html",
+    "yaml",
+    "json",
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "go"
+  ],
+  "snippets.userSnippetsDirectory": "~/.config/nvim/snips",
+  "explorer.width": 30,
+  "explorer.icon.enableNerdfont": true,
+  "explorer.previewAction.onHover": false,
+  "explorer.keyMappings": {
+    "<cr>": ["expandable?", "expand", "open"],
+    "v": "open:vsplit"
+  },
+  "eslint.enable": false,
+  "eslint.autoFix": false,
+  "eslint.autoFixOnSave": false,
+  "prettier.trailingComma": "none",
+  "javascript.suggestionActions.enabled": false,
+  "languageserver": {
+    "golang": {
+      "command": "gopls",
+      "rootPatterns": ["go.mod", ".vim/", ".git/", ".hg/"],
+      "filetypes": ["go"],
+      "disableDynamicRegister": true,
+      "initializationOptions": {
+        "gocodeCompletionEnabled": true,
+        "diagnosticsEnabled": true,
+        "lintTool": "golint"
+      }
+    }
+  }
+}
