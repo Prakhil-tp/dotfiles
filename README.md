@@ -8,16 +8,16 @@ Configuration files that are used to personalize your Linux or unix-like systems
 
 ## Popular configs of mine
 
-- [[https://github.com/Prakhil-tp/dotfiles/tree/master/Alacritty/.config/][Alacritty]]
-- [[https://github.com/Prakhil-tp/dotfiles/tree/master/bash/][Bash]]
-- [[https://github.com/Prakhil-tp/dotfiles/tree/master/zsh/][Zsh]]
-- [[https://github.com/Prakhil-tp/dotfiles/tree/master/bat/.config/bat/][Bat]]
-- [[https://github.com/Prakhil-tp/dotfiles/tree/master/devilspie2/.config/devilspie2/][Devilspie 2]]
-- [[https://github.com/Prakhil-tp/dotfiles/tree/master/emacs/][Doom Emacs]]
-- [[https://github.com/Prakhil-tp/dotfiles/tree/master/fzf/][Fzf]]
-- [[https://github.com/Prakhil-tp/dotfiles/tree/master/nvim/.config/nvim/][Neovim]]
-- [[https://github.com/Prakhil-tp/dotfiles/tree/master/tmux/][Tmux]]
-- [[https://github.com/Prakhil-tp/dotfiles/tree/master/vifm/.config/vifm/][Vifm]]
+- [https://github.com/Prakhil-tp/dotfiles/tree/master/Alacritty/.config/](Alacritty)
+- [https://github.com/Prakhil-tp/dotfiles/tree/master/bash/](Bash)
+- [https://github.com/Prakhil-tp/dotfiles/tree/master/zsh/](Zsh)
+- [https://github.com/Prakhil-tp/dotfiles/tree/master/bat/.config/bat/](Bat)
+- [https://github.com/Prakhil-tp/dotfiles/tree/master/devilspie2/.config/devilspie2/](Devilspie 2)
+- [https://github.com/Prakhil-tp/dotfiles/tree/master/emacs/](Doom Emacs)
+- [https://github.com/Prakhil-tp/dotfiles/tree/master/fzf/](Fzf)
+- [https://github.com/Prakhil-tp/dotfiles/tree/master/nvim/.config/nvim/](Neovim)
+- [https://github.com/Prakhil-tp/dotfiles/tree/master/tmux/](Tmux)
+- [https://github.com/Prakhil-tp/dotfiles/tree/master/vifm/.config/vifm/](Vifm)
 
 ## How to use
 
