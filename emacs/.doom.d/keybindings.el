@@ -5,7 +5,9 @@
  "C-l" #'evil-window-right
  "C-h" #'evil-window-left
  "C-k" #'evil-window-up
- "C-j" #'evil-window-down)
+ "C-j" #'evil-window-down
+ "C-[" #'window-swap-states
+ )
 
 ;; toggle display number
 (map! :leader 
