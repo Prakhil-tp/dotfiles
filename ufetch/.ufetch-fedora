@@ -1,0 +1,114 @@
+#!/bin/sh
+#
+# ufetch-fedora - tiny system info for fedora
+
+
+#find os version
+while IFS='=' read -r key val; do
+		case $key in
+				(PRETTY_NAME)
+						distro=$val
+				;;
+		esac
+done < /etc/os-release
+distro=${distro##[\"\']}
+distro=${distro%%[\"\']}
+
+## INFO
+privateIP=$(ifconfig wlp47s0f3u3 | grep -w "inet" | awk '{print $2}' )
+#os="$(cat /etc/fedora-release)"
+os=${distro}
+kernel="$(uname -sr)"
+uptime="$(uptime -p | sed 's/up //')"
+packages="$(rpm -qa | wc -l)"
+shell="$(basename "${SHELL}")"
+
+## UI DETECTION
+
+parse_rcs() {
+	for f in "${@}"; do
+		wm="$(tail -n 1 "${f}" 2> /dev/null | cut -d ' ' -f 2)"
+		[ -n "${wm}" ] && echo "${wm}" && return
+	done
+}
+
+rcwm="$(parse_rcs "${HOME}/.xinitrc" "${HOME}/.xsession")"
+
+ui='unknown'
+uitype='UI'
+if [ -n "${DE}" ]; then
+	ui="${DE}"
+	uitype='de'
+elif [ -n "${WM}" ]; then
+	ui="${WM}"
+	uitype='wm'
+elif [ -n "${XDG_CURRENT_DESKTOP}" ]; then
+	ui="${XDG_CURRENT_DESKTOP}"
+	uitype='de'
+elif [ -n "${DESKTOP_SESSION}" ]; then
+	ui="${DESKTOP_SESSION}"
+	uitype='de'
+elif [ -n "${rcwm}" ]; then
+	ui="${rcwm}"
+	uitype='wm'
+elif [ -n "${XDG_SESSION_TYPE}" ]; then
+	ui="${XDG_SESSION_TYPE}"
+fi
+
+ui="$(basename "${ui}")"
+
+## DEFINE COLORS
+
+# probably don't change these
+if [ -x "$(command -v tput)" ]; then
+	bold="$(tput bold)"
+	black="$(tput setaf 0)"
+	red="$(tput setaf 1)"
+	green="$(tput setaf 2)"
+	yellow="$(tput setaf 3)"
+	blue="$(tput setaf 4)"
+	magenta="$(tput setaf 5)"
+	cyan="$(tput setaf 6)"
+	white="$(tput setaf 7)"
+	reset="$(tput sgr0)"
+fi
+
+# you can change these
+lc="${reset}${bold}${blue}"         # labels
+nc="${reset}${bold}${blue}"         # user and hostname
+ic="${reset}"                       # info
+c0="${reset}${white}"               # first color
+c1="${reset}${blue}"                # second color
+c3="${reset}${cyan}"
+c4="${reset}${magenta}"
+
+
+## OUTPUT
+
+cat <<EOF
+${c0}        _____
+${c0}       /   __)${c1}\\   ${c4}${USER}@fedora${reset}
+${c0}       |  /  ${c1}\\ \\  ${lc}os        ${c0}${os}${reset}
+${c1}    __${c0}_|  |_${c1}_/ /  ${lc}kernel    ${c0}${kernel}${reset}
+${c1}   / ${c0}(_    _)${c1}_/   ${lc}uptime    ${c0}${uptime}${reset}
+${c1}  / /  ${c0}|  |       ${lc}packages  ${c0}${packages}${reset}
+${c1}  \\ \\${c0}__/  |       ${lc}${uitype}        ${c0}${ui}${reset}
+${c1}   \\${c0}(_____/       ${lc}ip        ${c0}${privateIP}${reset}
+
+EOF
+
+#cat <<EOF
+
+#${c1}     ▄███████████▄       ${nc}${USER}${ic}@${nc}${host}${reset}
+#${c1}   ▄███▀▀░░░░░▀▀███▄     ${lc}OS:        ${ic}${os}${reset}
+#${c1}  ██▀░░░▄▄███▄▄░░░▀██    ${lc}KERNEL:    ${ic}${kernel}${reset}
+#${c1} ██░░░▄████─████▄░░░██   ${lc}UPTIME:    ${ic}${uptime}${reset}
+#${c1} ██░░██▀▀▀───▀▀▀██░░██   ${lc}PACKAGES:  ${ic}${packages}${reset}
+#${c1} ██░▐████▄───▄████▌░██   ${lc}SHELL:     ${ic}${shell}${reset}
+#${c1} ██░░███▀─▄█▄─▀███░░██   ${lc}${uitype}:        ${ic}${ui}${reset}
+#${c1} ██░░░█▄▄█████▄▄█░░░██   
+#${c1}  ██▄░░▀▀█████▀▀░░▄██    
+#${c1}   ███▄▄▄░░░░░▄▄▄███     
+#${c1}     ▀███████████▀       
+
+#EOF
