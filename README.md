@@ -18,6 +18,7 @@ Configuration files that are used to personalize your Linux or unix-like systems
 - [Neovim](https://github.com/Prakhil-tp/dotfiles/tree/master/nvim/.config/nvim/)
 - [Tmux](https://github.com/Prakhil-tp/dotfiles/tree/master/tmux/)
 - [Vifm](https://github.com/Prakhil-tp/dotfiles/tree/master/vifm/.config/vifm/)
+- [Ufetch](https://github.com/Prakhil-tp/dotfiles/tree/master/ufetch)
 
 ## How to use
 
