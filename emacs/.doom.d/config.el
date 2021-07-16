@@ -67,9 +67,6 @@
 (set-frame-parameter (selected-frame) 'alpha '(99 99))
 (add-to-list 'default-frame-alist '(alpha 99 99))
 
-;; keybindings
-(load! "keybindings")
-
 ;; set fullscreen when emacs starts
 (defun fullscreen ()
        (interactive)
@@ -77,4 +74,6 @@
                  '(2 "_NET_WM_STATE_FULLSCREEN" 0)))
 (fullscreen)
 
-
+;; keybindings
+(load! "keybindings")
+(load! "indentation")
