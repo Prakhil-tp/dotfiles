@@ -5,11 +5,11 @@
 
 #find os version
 while IFS='=' read -r key val; do
-		case $key in
-				(PRETTY_NAME)
-						distro=$val
-				;;
-		esac
+	case $key in
+			(PRETTY_NAME)
+					distro=$val
+			;;
+	esac
 done < /etc/os-release
 distro=${distro##[\"\']}
 distro=${distro%%[\"\']}
