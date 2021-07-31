@@ -22,6 +22,10 @@ kernel="$(uname -sr)"
 uptime="$(uptime -p | sed 's/up //')"
 packages="$(rpm -qa | wc -l)"
 shell="$(basename "${SHELL}")"
+dns=$(resolvectl status | grep -w "DNS Server" | awk '{print $NF}')
+
+vm1=152.67.188.50
+vm2=152.67.190.117
 
 ## UI DETECTION
 
@@ -88,12 +92,12 @@ c4="${reset}${magenta}"
 cat <<EOF
 ${c0}        _____
 ${c0}       /   __)${c1}\\   ${c4}${USER}@fedora${reset}
-${c0}       |  /  ${c1}\\ \\  ${lc}os        ${c0}${os}${reset}
-${c1}    __${c0}_|  |_${c1}_/ /  ${lc}kernel    ${c0}${kernel}${reset}
+${c0}       |  /  ${c1}\\ \\  ${lc}os        ${c0}${os}${reset}    ${lc}ip         ${c0}${privateIP}${reset}
+${c1}    __${c0}_|  |_${c1}_/ /  ${lc}kernel    ${c0}${kernel}${reset}       ${lc}vm         ${c0}${vm1}${reset}
 ${c1}   / ${c0}(_    _)${c1}_/   ${lc}uptime    ${c0}${uptime}${reset}
 ${c1}  / /  ${c0}|  |       ${lc}packages  ${c0}${packages}${reset}
 ${c1}  \\ \\${c0}__/  |       ${lc}${uitype}        ${c0}${ui}${reset}
-${c1}   \\${c0}(_____/       ${lc}ip        ${c0}${privateIP}${reset}
+${c1}   \\${c0}(_____/       ${lc}dns       ${c0}${dns}${reset}
 
 EOF
 
