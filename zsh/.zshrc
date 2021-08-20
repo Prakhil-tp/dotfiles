@@ -41,10 +41,10 @@ POWERLEVEL9K_LEFT_SEGMENT_SEPARATOR=""
 # HYPHEN_INSENSITIVE="true"
 
 # Uncomment the following line to disable bi-weekly auto-update checks.
-# DISABLE_AUTO_UPDATE="true"
+DISABLE_AUTO_UPDATE="true"
 
 # Uncomment the following line to automatically update without prompting.
-# DISABLE_UPDATE_PROMPT="true"
+DISABLE_UPDATE_PROMPT="true"
 
 # Uncomment the following line to change how often to auto-update (in days).
 # export UPDATE_ZSH_DAYS=13
@@ -148,18 +148,15 @@ export EDITOR="nvim"
 # Add go binary directory to PATH
 export GOPATH="$HOME/golib"
 export PATH="$PATH:$GOPATH/bin"
-
 export GOBIN="$HOME/golib/bin"
-
 export GOPATH=$GOPATH:$HOME/code/go-projects
+export PATH="$HOME/scripts:$HOME/anaconda3/bin:$PATH"
 
-# prepend anaconda3 to the path
-export PATH="$HOME/anaconda3/bin:$PATH"
 
 # setting 'bat' tool theme
 export BAT_THEME="gruvbox"
 
-export PUBLIC_IP="$(dig +short myip.opendns.com @resolver1.opendns.com)" 
+#export PUBLIC_IP="$(dig +short myip.opendns.com @resolver1.opendns.com)" 
 
 
 # cursor switching to default shape after neovim 
@@ -205,17 +202,17 @@ bindkey -v
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/prakhil/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/home/prakhil/anaconda3/etc/profile.d/conda.sh" ]; then
-        . "/home/prakhil/anaconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="/home/prakhil/anaconda3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
+#__conda_setup="$('/home/prakhil/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+#if [ $? -eq 0 ]; then
+    #eval "$__conda_setup"
+#else
+    #if [ -f "/home/prakhil/anaconda3/etc/profile.d/conda.sh" ]; then
+        #. "/home/prakhil/anaconda3/etc/profile.d/conda.sh"
+    #else
+        #export PATH="/home/prakhil/anaconda3/bin:$PATH"
+    #fi
+#fi
+#unset __conda_setup
 # <<< conda initialize <<<
 
 # ===========================================================================

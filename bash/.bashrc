@@ -33,6 +33,6 @@ export PATH="$PATH:/home/prakhil/.cargo/bin"
 alias vifm="~/.config/vifm/scripts/vifmrun"
 
 export GOPATH="$HOME/go"
-export PATH="$PATH:$GOPATH/bin"
+export PATH="$PATH:$GOPATH/bin:$HOME/scripts"
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
