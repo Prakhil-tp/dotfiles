@@ -15,7 +15,7 @@ import XMonad.Actions.GridSelect
 import XMonad.Actions.Promote
 import XMonad.Actions.MouseResize
 import XMonad.Actions.RotSlaves (rotSlavesDown, rotAllDown)
-import XMonad.Actions.CycleWS (Direction1D(..), moveTo, shiftTo, WSType(..), nextScreen, prevScreen)
+import XMonad.Actions.CycleWS (Direction1D(..), moveTo, shiftTo, WSType(..), nextScreen, prevScreen, nextWS, prevWS)
 
    -- Utilities
 import XMonad.Util.Run
@@ -40,6 +40,7 @@ import XMonad.Layout.Spacing
 import XMonad.Layout.SubLayouts
 import XMonad.Layout.LimitWindows (increaseLimit, decreaseLimit)
 import XMonad.Layout.NoBorders
+import XMonad.Layout.ShowWName
 import XMonad.Layout.Renamed
 import XMonad.Layout.ResizableTile
 import XMonad.Layout.Tabbed
@@ -91,7 +92,8 @@ windowCount = gets $ Just . show . length . W.integrate' . W.stack . W.workspace
 -- > workspaces = ["web", "irc", "code" ] ++ map show [4..9]
 --
 myWorkspaces :: [String]
-myWorkspaces = [" dev ", " 2 ", " 3 ", " 4 ", " www ", " 6 ", " 7 ", " 8 ", " \xe271  "]
+--myWorkspaces = [" dev ", " 2 ", " 3 ", " 4 ", " www ", " 6 ", " 7 ", " 8 ", " \xe271  "]
+myWorkspaces = [" dev ", " 2 ", " 3 ", " 4 ", " www ", " 6 ", " 7 ", " 8 ", " mus "]
 --myWorkspaces = [" dev ", " www ", " sys ", " doc ", " vbox ", " chat ", " mus ", " vid ", " gfx "]
 
 myWorkspaceIndices :: M.Map String Integer
@@ -99,7 +101,9 @@ myWorkspaceIndices = M.fromList $ zipWith (,) myWorkspaces [1..]  -- (,) == \x y
 
 --clickable :: String -> String
 --clickable ws = "<action=xdotool key super+"++show i++">"++ws++"</action>"
---    where i = fromJust $ M.lookup ws myWorkspaceIndices
+    --where i = fromJust $ M.lookup ws myWorkspaceIndices
+
+showNotification title text = spawn ("notify-send \"" ++ title ++ "\" \"" ++ text ++ "\"")
 
 -- Border colors for unfocused and focused windows, respectively.
 --
@@ -150,15 +154,14 @@ myTabTheme = def {
     , inactiveTextColor   = "#d0d0d0"
 }
 
-------------------------------------------------------------------------
-  -- notification
-data LibNotifyUrgencyHook = LibNotifyUrgencyHook deriving (Read, Show)
-
-instance UrgencyHook LibNotifyUrgencyHook where
-    urgencyHook LibNotifyUrgencyHook w = do
-        name     <- getName w
-        Just idx <- fmap (W.findTag w) $ gets windowset
-        safeSpawn "notify-send" [show name, "workspace " ++ idx]
+-- Theme for showWName which prints current workspace when you change workspaces.
+myShowWNameTheme :: SWNConfig
+myShowWNameTheme = def
+    { swn_font              = "xft:Ubuntu:bold:size=60"
+    , swn_fade              = 1.0
+    , swn_bgcolor           = "#1c1f24"
+    , swn_color             = "#ffffff"
+    }
 ------------------------------------------------------------------------
 -- Layouts:
 
@@ -205,23 +208,16 @@ myKeys =
     -- Run rofi prompt
         , ("M-<Space>", spawn "rofi -show drun -config ~/.config/rofi/themes/dt-dmenu.rasi") 
 
-    -- Other Dmenu Prompts
-    -- In Xmonad and many tiling window managers, M-p is the default keybinding to
-    -- launch dmenu_run, so I've decided to use M-p plus KEY for these dmenu scripts.
-        , ("M-p a", spawn "dm-sounds")    -- choose an ambient background
-        , ("M-p b", spawn "dm-setbg")     -- set a background
-        , ("M-p c", spawn "dm-colpick")   -- pick color from our scheme
-        , ("M-p e", spawn "dm-confedit")  -- edit config files
-        , ("M-p i", spawn "dm-maim")      -- screenshots (images)
-        , ("M-p k", spawn "dm-kill")      -- kill processes
-        , ("M-p m", spawn "dm-man")       -- manpages
-        , ("M-p o", spawn "dm-bookman")   -- qutebrowser bookmarks/history
-        , ("M-p p", spawn "passmenu")     -- passmenu
-        , ("M-p q", spawn "dm-logout")    -- logout menu
-        , ("M-p r", spawn "dm-reddit")    -- reddio (a reddit viewer)
-       -- , ("M-p s", spawn "dm-websearch") -- search various search engines
+    -- notifications
+        , ("M-i t", showNotification "`date +\"%I:%M %p\"`" "`date +\"%A, %b %d\"`")
+
+    -- Dmenu Prompts
+        , ("M-p o", spawn "~/scripts/dm-sound")  -- choose sound output device
+        , ("M-p b", spawn "~/scripts/dm-bluetooth")  -- bluetooth
         , ("M-p s", spawn "~/scripts/spotify") -- Run spotify
-       -- , ("M1-C-<Delete>", spawn "~/scripts/dm-prompt 'Are you sure to shutdown?' 'shutdown -h now'") -- shutdown
+        , ("M-p w", spawn "~/scripts/change-wallpaper.sh") -- change wallpaper
+
+    -- Shutdown
         , ("M1-C-<Delete>", spawn "~/scripts/dm-shutdown") -- shutdown/reboot/suspend/hibernate
 
     -- Useful programs to have a keybinding for launch
@@ -238,8 +234,10 @@ myKeys =
         , ("M-S-a", killAll)   -- Kill all windows on current workspace
 
     -- Workspaces
-        , ("M-.", nextScreen)  -- Switch focus to next monitor --
-        , ("M-,", prevScreen)  -- Switch focus to prev monitor --
+      --  , ("M-.", nextScreen)  -- Switch focus to next monitor --
+      --  , ("M-,", prevScreen)  -- Switch focus to prev monitor --
+        , ("M-.", nextWS)  -- Switch focus to next monitor --
+        , ("M-,", prevWS)  -- Switch focus to prev monitor --
         , ("M-S-<KP_Add>", shiftTo Next nonNSP >> moveTo Next nonNSP)       -- Shifts focused window to next ws
         , ("M-S-<KP_Subtract>", shiftTo Prev nonNSP >> moveTo Prev nonNSP)  -- Shifts focused window to prev ws
 
@@ -359,12 +357,16 @@ myManageHook = composeAll
     , className =? "pinentry-gtk-2"  --> doFloat
     , className =? "splash"          --> doFloat
     , className =? "toolbar"         --> doFloat
-    , title =? "Mozilla Firefox"     --> doShift ( myWorkspaces !! 1 )
+    , title =? "Planner"             --> doShift (myWorkspaces !! 7)
+    , (className =? "Spotify" <||> title =? "Spotify Free") --> doShiftAndGo (myWorkspaces !! 8)
+    , title =? "Mozilla Firefox"     --> doShift (myWorkspaces !! 1)
     , className =? "brave-browser"   --> doShift (myWorkspaces !! 4)
-    , className =? "mpv"             --> doShift ( myWorkspaces !! 7 )
+    , className =? "mpv"             --> doShift (myWorkspaces !! 7)
     , (className =? "firefox" <&&> resource =? "Dialog") --> doFloat  -- Float Firefox Dialog
     , isFullscreen -->  doFullFloat
     ] <+> namedScratchpadManageHook myScratchPads
+      where
+        doShiftAndGo ws = doF (W.greedyView ws) <+> doShift ws
 
 
 myScratchPads :: [NamedScratchpad]
@@ -432,7 +434,7 @@ myStartupHook :: X()
 myStartupHook = do
   spawnOnce "nitrogen --restore &"
   spawnOnce "picom --experimental-backends &"
-
+  setWMName "LG3D"
 
 ------------------------------------------------------------------------
   -- MAIN
@@ -440,10 +442,10 @@ myStartupHook = do
 
 main :: IO()
 main = do
-    xmproc <- spawnPipe "xmobar /home/prakhil/.config/xmobar/xmobarrc"
+    --xmproc <- spawnPipe "xmobar /home/prakhil/.config/xmobar/xmobarrc"
 
     -- xmonad settings
-    xmonad $ withUrgencyHook LibNotifyUrgencyHook $ ewmh def {
+    xmonad $ ewmh def {
       -- simple stuff
         terminal           = myTerminal,
         focusFollowsMouse  = myFocusFollowsMouse,
@@ -458,16 +460,16 @@ main = do
         mouseBindings      = myMouseBindings,
 
       -- hooks, layouts
-        layoutHook         = myLayout,
+        layoutHook         = showWName' myShowWNameTheme $ myLayout,
         manageHook         = myManageHook <+> manageDocks,
         handleEventHook    = docksEventHook <+> fullscreenEventHook,
-        startupHook        = myStartupHook,
-        logHook            = dynamicLogWithPP $ namedScratchpadFilterOutWorkspacePP $ xmobarPP {
-            ppOutput = hPutStrLn xmproc
-          , ppCurrent = xmobarColor "yellow" "" . wrap "[" "]" 
-          , ppHiddenNoWindows = xmobarColor "grey" ""          
-          , ppTitle   = xmobarColor "green"  "" . shorten 40   
-          , ppVisible = wrap "(" ")"                           
-          , ppUrgent  = xmobarColor "red" "yellow"             
-        }
+        startupHook        = myStartupHook
+        --logHook            = dynamicLogWithPP $ namedScratchpadFilterOutWorkspacePP $ xmobarPP {
+            --ppOutput = hPutStrLn xmproc
+          --, ppCurrent = xmobarColor "yellow" "" . wrap "[" "]" 
+          --, ppHiddenNoWindows = xmobarColor "grey" ""          
+          --, ppTitle   = xmobarColor "green"  "" . shorten 40   
+          --, ppVisible = wrap "(" ")"                           
+          --, ppUrgent  = xmobarColor "red" "yellow"             
+        --}
     } `additionalKeysP` myKeys
