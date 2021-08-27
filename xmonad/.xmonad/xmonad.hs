@@ -44,6 +44,7 @@ import XMonad.Layout.ShowWName
 import XMonad.Layout.Renamed
 import XMonad.Layout.ResizableTile
 import XMonad.Layout.Tabbed
+import XMonad.Layout.PerWorkspace (onWorkspace)
 
 
 
@@ -174,13 +175,16 @@ myShowWNameTheme = def
 -- which denotes layout choice.
 --
 myLayout =
-        avoidStruts $
+--      avoidStruts $
+        onWorkspace " www " browser $
         smartBorders $
            tiled
-           ||| Mirror tiled
            ||| Full
+           ||| Mirror tiled
            ||| tabbed shrinkText myTabTheme
+          
   where
+     browser = (smartBorders $ Full)
      -- default tiling algorithm partitions the screen into two panes
      tiled   = Tall nmaster delta ratio
 
@@ -432,8 +436,10 @@ myScratchPads = [ NS "terminal" spawnTerm findTerm manageTerm
 --
 myStartupHook :: X()
 myStartupHook = do
+  spawnOnce "xsetroot -cursor_name left_ptr &" -- set default mouse cursor
   spawnOnce "nitrogen --restore &"
-  spawnOnce "picom --experimental-backends &"
+  spawnOnce "picom --experimental-backends &" -- tranparancy
+  spawnOnce "conky -c $HOME/.config/conky/xmonad.conkyrc &"
   setWMName "LG3D"
 
 ------------------------------------------------------------------------
