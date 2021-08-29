@@ -1,0 +1,32 @@
+#!/bin/bash
+# wifi - control
+power=$(echo -e "ON\nOFF" | rofi -dmenu -i -p "Wifi" -config ~/.config/rofi/themes/dt-dmenu.rasi)
+[ -z "$power" ] && exit
+
+function connectDevice {
+  wifiNetworks=$(nmcli device wifi list | sed -n '1!p' | cut -c 9- )
+  device=$(echo "$wifiNetworks" | cut -d ' ' -f2- | rofi -dmenu -i -p "Wifi")
+  [ -z "$device"  ] && exit
+  bssid=$(echo "$wifiNetworks" | grep "$device" | cut -d " " -f1) 
+  password=$(rofi -password -dmenu -i -p "wifi Password")
+  output=$(nmcli device wifi connect $bssid password $password)  
+  if [[ $output == *"successfully activated"* ]]; then
+    notify-send "Connection Success" 
+  else 
+    notify-send "Connection Failed"
+  fi
+}
+
+
+case "$power" in
+  ON)
+    nmcli radio wifi on 
+    notify-send "wifi turned on"
+    sleep 5
+    connectDevice
+    ;;
+  OFF) 
+    nmcli radio wifi off
+    notify-send "wifi turned off"
+    ;; 
+esac

@@ -1,0 +1,21 @@
+#!/bin/bash
+# a script to turn on bluetooth and choose devices
+
+power=$(echo -e "ON\nOFF" | rofi -dmenu -i -p "Bluetooth" -config ~/.config/rofi/themes/dt-dmenu.rasi)
+[ -z "$power" ] && exit 
+
+case "$power" in
+  ON)
+  bluetoothctl power on
+  devices=$(bluetoothctl -- devices)
+  choise=$(echo $devices | awk '{print $NF}' | rofi -dmenu -i -p "Devices")
+  [ -z "$choise" ] && exit
+  deviceAddress=$(echo $devices | grep -w "$choise" | awk '{print $2}')
+  bluetoothctl -- connect $deviceAddress
+  addressWithUnderScore=$(echo $deviceAddress | sed 's/:/_/g')
+  sink=$(pactl list sinks short | awk -v d=$addressWithUnderScore '{if($2 ~ d) print $1;}')
+  pactl set-default-sink $sink
+  ;;
+  OFF) bluetoothctl power off;;
+esac
+

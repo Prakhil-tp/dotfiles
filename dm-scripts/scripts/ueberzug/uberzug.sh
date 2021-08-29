@@ -1,0 +1,14 @@
+#!/bin/bash
+[-z "$5"] && echo "Usage: $0 <image> <x> <y> <max height> <max width>" && exit 
+source "`ueberzug library`"
+
+ImageLayer 0< <(
+  ImageLayer::add [identifier]="example" [x]="$2" [y]="$3" [max_width]="$4" [path]="$1"
+  read
+)
+
+#Arguments
+# ueberzug file-path.jpg x y width height
+
+# exmaple
+# /uberzug.sh ~/Pictures/backgrounds/wallhaven-01e2k9.jpg 0 0 30 30

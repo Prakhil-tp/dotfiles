@@ -88,8 +88,8 @@ conky.config = {
 };
 
 conky.text = [[
-${alignc}${color0}${font Ubuntu:size=30}${time %H:%M}${font}
-${voffset 6}${alignc}${color0}${font Ubuntu:size=14}${time %b %d, %Y}${font}${color}
+${alignc}${color0}${font Ubuntu:size=30}${time %I:%M}${font Ubuntu:size=15} ${time %p}${font}${font}
+${voffset 6}${alignc}${color0}${font Ubuntu:size=14}${time %A, %b %d, %Y}${font}${color}
 ${voffset 18}${goto 12}${color3}CPU${goto 50}$cpu%
 ${color2}${goto 12}${cpubar 8,254}
 ${voffset 5}${goto 12}$font${color1}${top name 1}$alignr$color0${top cpu 1}%
@@ -117,7 +117,10 @@ ${color1}[S]+,${alignr}${color2}prev workspace${color}
 ${color1}${hr}${color}
 ${color1}[S]+p, o${alignr}${color2}sound device${color}
 ${color1}[S]+p, b${alignr}${color2}bluetooth${color}
-${color1}[S]+p, w${alignr}${color2}change wallpaper${color}
+${color1}[S]+p, w${alignr}${color2}wifi${color}
+${color1}[S]+p, h${alignr}${color2}htop${color}
+${color1}[S]+p, n${alignr}${color2}simplenote${color}
+${color1}[S]+p, .${alignr}${color2}change wallpaper${color}
 ${color1}${hr}${color}
 ${color1}[S]+i, t${alignr}${color2}time info${color}
 ${color1}${hr}${color}

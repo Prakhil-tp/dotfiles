@@ -215,20 +215,22 @@ myKeys =
     -- notifications
         , ("M-i t", showNotification "`date +\"%I:%M %p\"`" "`date +\"%A, %b %d\"`")
 
-    -- Dmenu Prompts
+    -- Dmenu Prompts & application launch
         , ("M-p o", spawn "~/scripts/dm-sound")  -- choose sound output device
         , ("M-p b", spawn "~/scripts/dm-bluetooth")  -- bluetooth
+        , ("M-p w", spawn "~/scripts/dm-wifi") -- wifi
         , ("M-p s", spawn "~/scripts/spotify") -- Run spotify
-        , ("M-p w", spawn "~/scripts/change-wallpaper.sh") -- change wallpaper
-
-    -- Shutdown
-        , ("M1-C-<Delete>", spawn "~/scripts/dm-shutdown") -- shutdown/reboot/suspend/hibernate
+        , ("M-p .", spawn "~/scripts/change-wallpaper.sh") -- change wallpaper
+        , ("M-p n", safeSpawnProg "simplenote") -- launch simplenote
+        , ("M-p h", spawn (myTerminal ++ " -e htop")) -- htop
 
     -- Useful programs to have a keybinding for launch
         , ("M-<Return>", safeSpawnProg myTerminal)
         , ("M-b", safeSpawnProg myBrowser)
-        , ("M-M1-h", spawn (myTerminal ++ " -e htop"))
         , ("M1-<Tab>", spawn "rofi -show window")
+
+    -- Shutdown
+        , ("M1-C-<Delete>", spawn "~/scripts/dm-shutdown") -- shutdown/reboot/suspend/hibernate
 
     -- Float windows
         , ("M-S-t", withFocused $ windows . W.sink)  -- Push floating window back to tile
@@ -238,8 +240,6 @@ myKeys =
         , ("M-S-a", killAll)   -- Kill all windows on current workspace
 
     -- Workspaces
-      --  , ("M-.", nextScreen)  -- Switch focus to next monitor --
-      --  , ("M-,", prevScreen)  -- Switch focus to prev monitor --
         , ("M-.", nextWS)  -- Switch focus to next monitor --
         , ("M-,", prevWS)  -- Switch focus to prev monitor --
         , ("M-S-<KP_Add>", shiftTo Next nonNSP >> moveTo Next nonNSP)       -- Shifts focused window to next ws
