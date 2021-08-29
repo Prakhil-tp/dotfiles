@@ -1,21 +1,49 @@
 #!/bin/bash
 # a script to turn on bluetooth and choose devices
-
+deviceName=""
 power=$(echo -e "ON\nOFF" | rofi -dmenu -i -p "Bluetooth" -config ~/.config/rofi/themes/dt-dmenu.rasi)
 [ -z "$power" ] && exit 
 
+
+function connectDevice {
+  local devices=$(bluetoothctl -- devices)
+  local choise=$(echo $devices | awk '{print $NF}' | rofi -dmenu -i -p "Devices")
+  [ -z "$choise" ] && exit
+
+  deviceName=$choise
+  local deviceAddress=$(echo $devices | grep -w "$deviceName" | awk '{print $2}')
+  local msg=$(bluetoothctl -- connect $deviceAddress)
+  if [[ $msg == *"Connection successful"* ]]; then
+    notify-send "$deviceName connected successfully"
+  else
+    notify-send "Failed to connect $deviceName"
+    exit
+  fi
+  return $deviceAddress
+}
+
+function switchOutputDevice {
+  local sink=$(pactl list sinks short | awk -v d=$1 '{if($2 ~ d) print $1;}')
+  local msg=$(pactl set-default-sink $sink)
+  if [[ $msg == *"Failure"* ]]; then
+    notify-send "Failed to switch output device"
+  else
+    notify-send "Sound output switched to $deviceName"
+  fi
+}
+
 case "$power" in
   ON)
-  bluetoothctl power on
-  devices=$(bluetoothctl -- devices)
-  choise=$(echo $devices | awk '{print $NF}' | rofi -dmenu -i -p "Devices")
-  [ -z "$choise" ] && exit
-  deviceAddress=$(echo $devices | grep -w "$choise" | awk '{print $2}')
-  bluetoothctl -- connect $deviceAddress
-  addressWithUnderScore=$(echo $deviceAddress | sed 's/:/_/g')
-  sink=$(pactl list sinks short | awk -v d=$addressWithUnderScore '{if($2 ~ d) print $1;}')
-  pactl set-default-sink $sink
+    bluetoothctl power on
+    notify-send "Bluetooth turned on"
+    connectDevice
+    deviceAddress=$?
+    device=$(echo $deviceAddress | sed 's/:/_/g')
+    switchOutputDevice $device 
   ;;
-  OFF) bluetoothctl power off;;
+  OFF) 
+    bluetoothctl power off
+    notify-send "Bluetooth turned off"
+  ;;
 esac
 
