@@ -210,7 +210,7 @@ myKeys =
     --    , ("M-<Space>", spawn "dmenu_run -i -p \"Run: \"") -- Dmenu
 
     -- Run rofi prompt
-        , ("M-<Space>", spawn "rofi -show drun -config ~/.config/rofi/themes/dt-dmenu.rasi") 
+        , ("M-<Space>", spawn "rofi -show drun -show-icons -config ~/.config/rofi/themes/dt-dmenu.rasi") 
 
     -- notifications
         , ("M-i t", showNotification "`date +\"%I:%M %p\"`" "`date +\"%A, %b %d\"`")
@@ -221,6 +221,7 @@ myKeys =
         , ("M-p w", spawn "~/scripts/dm-wifi") -- wifi
         , ("M-p s", spawn "~/scripts/spotify") -- Run spotify
         , ("M-p .", spawn "~/scripts/change-wallpaper.sh") -- change wallpaper
+        , ("M-p d", spawn "~/scripts/dm-dns") -- change DNS
         , ("M-p n", safeSpawnProg "simplenote") -- launch simplenote
         , ("M-p h", spawn (myTerminal ++ " -e htop")) -- htop
 
@@ -363,7 +364,7 @@ myManageHook = composeAll
     , className =? "toolbar"         --> doFloat
     , title =? "Planner"             --> doShift (myWorkspaces !! 7)
     , (className =? "Spotify" <||> title =? "Spotify Free") --> doShiftAndGo (myWorkspaces !! 8)
-    , title =? "Mozilla Firefox"     --> doShift (myWorkspaces !! 1)
+    , title =? "Mozilla Firefox"     --> doShift (myWorkspaces !! 4)
     , className =? "brave-browser"   --> doShift (myWorkspaces !! 4)
     , className =? "mpv"             --> doShift (myWorkspaces !! 7)
     , (className =? "firefox" <&&> resource =? "Dialog") --> doFloat  -- Float Firefox Dialog

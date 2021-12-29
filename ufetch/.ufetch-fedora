@@ -22,7 +22,7 @@ kernel="$(uname -sr)"
 uptime="$(uptime -p | sed 's/up //')"
 packages="$(rpm -qa | wc -l)"
 shell="$(basename "${SHELL}")"
-dns=$(resolvectl status | grep -w "DNS Server" | awk '{print $NF}')
+dns=$(resolvectl dns | grep "wlp47s0f3u3" | awk '{print $NF}')
 
 vm1=152.67.188.50
 vm2=152.67.190.117

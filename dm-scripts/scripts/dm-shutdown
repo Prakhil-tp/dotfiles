@@ -13,7 +13,7 @@ if [[ $answer == "Yes" ]]; then
   case "$choice" in
     shutdown) sudo shutdown -h now & ;;
     reboot) sudo shutdown -r now & ;;
-    suspend) sudo pm-suspend & ;;
+    suspend) sudo systemctl suspend & ;;
     hibernate) sudo pm-hibernate & ;;
   esac
 fi

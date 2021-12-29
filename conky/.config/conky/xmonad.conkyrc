@@ -115,11 +115,12 @@ ${color1}[S]+h/l${alignr}${color2}shrink/expand${color}
 ${color1}[S]+.${alignr}${color2}next workspace${color}
 ${color1}[S]+,${alignr}${color2}prev workspace${color}
 ${color1}${hr}${color}
-${color1}[S]+p, o${alignr}${color2}sound device${color}
+${color1}[S]+p, o${alignr}${color2}switch sound-device${color}
 ${color1}[S]+p, b${alignr}${color2}bluetooth${color}
 ${color1}[S]+p, w${alignr}${color2}wifi${color}
 ${color1}[S]+p, h${alignr}${color2}htop${color}
 ${color1}[S]+p, n${alignr}${color2}simplenote${color}
+${color1}[S]+p, s${alignr}${color2}spotify${color}
 ${color1}[S]+p, .${alignr}${color2}change wallpaper${color}
 ${color1}${hr}${color}
 ${color1}[S]+i, t${alignr}${color2}time info${color}

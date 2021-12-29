@@ -1,0 +1,7 @@
+#!/bin/bash
+# select DNS
+
+dns=$(echo -e "152.67.163.47\n8.8.8.8\n1.1.1.1" | rofi -dmenu -i -p "DNS")
+[ -z "$dns" ] && exit
+
+sudo resolvectl dns wlp47s0f3u3 $dns

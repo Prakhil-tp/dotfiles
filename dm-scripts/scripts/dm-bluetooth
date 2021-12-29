@@ -17,6 +17,11 @@ function connectDevice {
     notify-send "$deviceName connected successfully"
   else
     notify-send "Failed to connect $deviceName"
+    pulseaudio --kill
+    sleep 5
+    pulseaudio --start
+    sleep 8 
+    connectDevice
     exit
   fi
   return $deviceAddress
