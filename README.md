@@ -6,7 +6,7 @@
 
 Configuration files that are used to personalize your Linux or unix-like systems. 
 
-## Popular configs of mine
+## Configs
 
 - [Alacritty](https://github.com/Prakhil-tp/dotfiles/tree/master/Alacritty/.config/)
 - [Bash](https://github.com/Prakhil-tp/dotfiles/tree/master/bash/)
