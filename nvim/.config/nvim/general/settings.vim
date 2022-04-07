@@ -61,3 +61,4 @@ cmap w!! w !sudo tee %
 command! BufOnly silent! execute "%bd|e#|bd#" 
 
 autocmd! bufreadpost *.csv set syntax=off
+
