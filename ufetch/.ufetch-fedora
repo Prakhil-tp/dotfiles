@@ -24,8 +24,8 @@ packages="$(rpm -qa | wc -l)"
 shell="$(basename "${SHELL}")"
 dns=$(resolvectl dns | grep "wlp47s0f3u3" | awk '{print $NF}')
 
-vm1=152.67.188.50
-vm2=152.67.190.117
+vm1=152.67.163.47
+vm2=144.24.128.86
 
 ## UI DETECTION
 
