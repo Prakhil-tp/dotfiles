@@ -31,6 +31,33 @@ cd ./dotfiles
 stow */
 ```
 
+## setup zsh
+#### 1. Install zsh and make it default
+```sh
+  sudo apt install zsh
+  sudo chsh -s /usr/bin/zsh
+```
+#### 2. Install oh-my-zsh and its plugins
+  Before the installation, you need to make sure there're necessary linux utility tools are present in your system.
+  ```sh
+    sudo apt install curl wget git
+  ```
+  Install oh-my-zsh via wget
+  ```sh
+  $ sh -c "$(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
+  ```
+  Add powerlevel9k theme
+  ```sh
+    git clone https://github.com/bhilburn/powerlevel9k.git ~/.oh-my-zsh/custom/themes/powerlevel9k
+  ```
+  Add zsh-autosuggestions
+  ```sh
+    git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+  ```
+  Load the `.zshrc` file again using the following command
+  ```sh
+    source ~/.zshrc
+  ```
 ## setup nvim
 
 1. open `vim ~/.config/nvim/vim-plug/plugins.vim`
