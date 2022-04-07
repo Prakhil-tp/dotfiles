@@ -32,12 +32,16 @@ stow */
 ```
 
 ## setup zsh
-#### 1. Install zsh and make it default
+#### 1. Import alacritty terminfo
+```sh
+  tic -x ~/dotfiles/remote-machine-zsh/alacritty.terminfo
+```
+#### 2. Install zsh and make it default
 ```sh
   sudo apt install zsh
   sudo chsh -s /usr/bin/zsh
 ```
-#### 2. Install oh-my-zsh and its plugins
+#### 3. Install oh-my-zsh and its plugins
   Before the installation, you need to make sure there're necessary linux utility tools are present in your system.
   ```sh
     sudo apt install curl wget git
