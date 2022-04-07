@@ -94,26 +94,9 @@ plugins=(
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
-
-# export MANPATH="/usr/local/man:$MANPATH"
-
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
-
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
-
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
-
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
+# ===========================================================================================================
+# 																												ALIAS
+# ===========================================================================================================
 #
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
@@ -123,20 +106,18 @@ alias projects="pushd ~/code/projects && clear && ls"
 alias playground="pushd ~/code/playground && clear && ls"
 alias vonnue="pushd ~/code/vonnue && clear && ls"
 alias ..="cd ../ && clear && ls"
-#alias ..="cd ../../ && clear && ls"
-
-# using vim alias for neovim
 alias vim="nvim"
 alias vimdiff="nvim -d"
-
-# use alias for cat (using bat instead of cat)
 alias cat="bat"
-
-# vifm  
 alias vifm="~/.config/vifm/scripts/vifmrun"
 
-export EDITOR="nvim"
+#ls
+alias ls='lsd'
+alias lt='ls --tree'
 
+# ===========================================================================================================
+# 																												EXPORTS
+# ===========================================================================================================
 # Android studio variables
 #export ANDROID_SDK="/home/prakhil/Android/Sdk"
 #export ANDROID_HOME=$ANDROID_SDK
@@ -145,33 +126,17 @@ export EDITOR="nvim"
 #export PATH="$PATH:$ANDROID_HOME/tools/bin"
 #export PATH="$PATH:$ANDROID_HOME/platform-tools"
 
-# Add go binary directory to PATH
+export EDITOR="nvim"
+export BAT_THEME="gruvbox"
 export GOPATH="$HOME/golib"
 export PATH="$PATH:$GOPATH/bin"
 export GOBIN="$HOME/golib/bin"
 export GOPATH=$GOPATH:$HOME/code/go-projects
 export PATH="$HOME/scripts:$HOME/anaconda3/bin:$PATH"
 
+#PUBLIC_IP="$(curl ipinfo.io/ip)"
 
-# setting 'bat' tool theme
-export BAT_THEME="gruvbox"
-
-#export PUBLIC_IP="$(dig +short myip.opendns.com @resolver1.opendns.com)" 
-
-
-# cursor switching to default shape after neovim 
-
-#function zle-keymap-select {
-  #if [[ $KEYMAP == main ]] || [[ $KEYMAP == viins ]] || [[ $KEYMAP = '' ]] || [[ $1 = 'beam' ]]; then
-    #echo -ne '\e[6 q'
-  #fi
-#}
-
-## Start with beam shape cursor on zsh startup and after every command.
-#zle-line-init() { zle-keymap-select 'beam'}
-
-
-# ===========================================================================
+# ===========================================================================================================
 # enable vim mode to terminal
 # Change cursor shape according to the mode in terminal
 zle-keymap-select () {
@@ -194,28 +159,11 @@ zle -N zle-line-init
 
 bindkey -v
 
-# ===========================================================================
+# ===========================================================================================================
 
 # fzf config
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-#__conda_setup="$('/home/prakhil/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-#if [ $? -eq 0 ]; then
-    #eval "$__conda_setup"
-#else
-    #if [ -f "/home/prakhil/anaconda3/etc/profile.d/conda.sh" ]; then
-        #. "/home/prakhil/anaconda3/etc/profile.d/conda.sh"
-    #else
-        #export PATH="/home/prakhil/anaconda3/bin:$PATH"
-    #fi
-#fi
-#unset __conda_setup
-# <<< conda initialize <<<
-
-# ===========================================================================
-# >>> print system information on startup
+# print system information on startup
 ~/.ufetch-fedora
 
