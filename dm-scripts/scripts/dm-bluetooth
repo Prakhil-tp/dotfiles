@@ -1,27 +1,27 @@
 #!/bin/bash
 # a script to turn on bluetooth and choose devices
 deviceName=""
-power=$(echo -e "ON\nOFF" | rofi -dmenu -i -p "Bluetooth" -config ~/.config/rofi/themes/dt-dmenu.rasi)
+#power=$(echo -e "ON\nOFF\nSWITCH_DEVICES" | rofi -dmenu -i -p "Bluetooth" -config ~/.config/rofi/themes/dt-dmenu.rasi)
+power=$(echo -e "ON\nOFF\nSWITCH_DEVICES\nSCAN" | rofi -dmenu -i -p "Bluetooth")
 [ -z "$power" ] && exit 
-
 
 function connectDevice {
   local devices=$(bluetoothctl -- devices)
-  local choise=$(echo $devices | awk '{print $NF}' | rofi -dmenu -i -p "Devices")
+  local choise=$(echo -e $devices | awk 'BEGIN{RS="Device";}NF{print $NF}'| rofi -dmenu -i -p "Devices")
   [ -z "$choise" ] && exit
 
   deviceName=$choise
-  local deviceAddress=$(echo $devices | grep -w "$deviceName" | awk '{print $2}')
+  local deviceAddress=$(echo -e $devices | grep -w "$deviceName" | awk '{print $2}')
   local msg=$(bluetoothctl -- connect $deviceAddress)
   if [[ $msg == *"Connection successful"* ]]; then
     notify-send "$deviceName connected successfully"
   else
     notify-send "Failed to connect $deviceName"
-    pulseaudio --kill
-    sleep 5
-    pulseaudio --start
-    sleep 8 
-    connectDevice
+    #pulseaudio --kill
+    #sleep 5
+    #pulseaudio --start
+    #sleep 8 
+    #connectDevice
     exit
   fi
   return $deviceAddress
@@ -49,6 +49,13 @@ case "$power" in
   OFF) 
     bluetoothctl power off
     notify-send "Bluetooth turned off"
+  ;;
+  SWITCH_DEVICES)
+    connectDevice
+  ;;
+  SCAN)
+    scanChoice=$(echo -e "on\noff\n" | rofi -dmenu -i -p "Bluetooth SCAN")
+    $(bluetoothctl -- scan $scanChoice)
   ;;
 esac
 
