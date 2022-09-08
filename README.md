@@ -28,7 +28,7 @@ Configuration files that are used to personalize your Linux or unix-like systems
 ``` sh
 git clone https://github.com/Prakhil-tp/dotfiles.git
 cd ./dotfiles
-stow */
+stow */         # stow <directory-name>  - for adding a purticular config
 ```
 
 ## setup zsh
