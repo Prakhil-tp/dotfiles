@@ -37,6 +37,7 @@ call plug#begin('~/.config/nvim/autoload/plugged')
     Plug 'yuezk/vim-js'
     Plug 'maxmellon/vim-jsx-pretty'
     Plug 'pangloss/vim-javascript'
+    Plug 'leafgarland/typescript-vim'
     "============================
     " Language support
     "============================

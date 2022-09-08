@@ -167,3 +167,10 @@ bindkey -v
 # print system information on startup
 ~/.ufetch-fedora
 
+
+# Created by `pipx` on 2022-04-10 07:27:45
+export PATH="$PATH:/home/prakhil/.local/bin"
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
