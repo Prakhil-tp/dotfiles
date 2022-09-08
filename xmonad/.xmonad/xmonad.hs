@@ -364,7 +364,7 @@ myManageHook = composeAll
     , className =? "toolbar"         --> doFloat
     , title =? "Planner"             --> doShift (myWorkspaces !! 7)
     , (className =? "Spotify" <||> title =? "Spotify Free") --> doShiftAndGo (myWorkspaces !! 8)
-    , title =? "Mozilla Firefox"     --> doShift (myWorkspaces !! 4)
+--    , title =? "Mozilla Firefox"     --> doShift (myWorkspaces !! 4)
     , className =? "brave-browser"   --> doShift (myWorkspaces !! 4)
     , className =? "mpv"             --> doShift (myWorkspaces !! 7)
     , (className =? "firefox" <&&> resource =? "Dialog") --> doFloat  -- Float Firefox Dialog
