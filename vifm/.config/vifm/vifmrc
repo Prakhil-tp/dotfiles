@@ -176,6 +176,9 @@ command! reload :write | restart
 filextype *.pdf xdg-open
 fileviewer *.pdf pdftotext -nopgbrk %c -
 
+" ebook
+filextype *.epub xdg-open
+
 " exe
 filextype *.exe xdg-open
 
@@ -350,7 +353,6 @@ fileviewer *.7z 7z l %c
 filextype *.odt,*.doc,*.docx,*.xls,*.xlsx,*.odp,*.pptx xdg-open %f &
 fileviewer *.doc catdoc %c
 fileviewer *.docx docx2txt.pl %f -
-
 
 
 " TuDu files
