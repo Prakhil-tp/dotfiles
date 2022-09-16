@@ -17,14 +17,27 @@ function connectDevice {
     notify-send "$deviceName connected successfully"
   else
     notify-send "Failed to connect $deviceName"
-    #pulseaudio --kill
-    #sleep 5
-    #pulseaudio --start
-    #sleep 8 
-    #connectDevice
-    exit
+    local ishandleError = $(echo -e "YES\nNO\n" | rofi -dmenu -i -p "Do you want to run Error Handler?")
+    [ -z "$ishandleError" ] && exit
+
+    case "$ishandleError" in
+      YES)
+        errorHandler
+      ;;
+    esac
+
   fi
   return $deviceAddress
+}
+
+function errorHandler {
+    notify-send "Error handling. Please wait 5 seconds"
+    pulseaudio --kill
+    sleep 5
+    pulseaudio --start
+    notify-send "Pulseaudio restarting. Please wait 8 seconds"
+    sleep 8 
+    connectDevice
 }
 
 function switchOutputDevice {
