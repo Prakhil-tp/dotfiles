@@ -1,9 +1,6 @@
 #!/bin/bash
 # a script to turn on bluetooth and choose devices
 deviceName=""
-#power=$(echo -e "ON\nOFF\nSWITCH_DEVICES" | rofi -dmenu -i -p "Bluetooth" -config ~/.config/rofi/themes/dt-dmenu.rasi)
-power=$(echo -e "ON\nOFF\nSWITCH_DEVICES\nSCAN" | rofi -dmenu -i -p "Bluetooth")
-[ -z "$power" ] && exit 
 
 function connectDevice {
   local devices=$(bluetoothctl -- devices)
@@ -17,15 +14,12 @@ function connectDevice {
     notify-send "$deviceName connected successfully"
   else
     notify-send "Failed to connect $deviceName"
-    local ishandleError = $(echo -e "YES\nNO\n" | rofi -dmenu -i -p "Do you want to run Error Handler?")
-    [ -z "$ishandleError" ] && exit
-
-    case "$ishandleError" in
-      YES)
-        errorHandler
-      ;;
-    esac
-
+    local ishandleError=$(echo -e "YES\nNO" | rofi -dmenu -i -p "Do you want to run Error Handler?")
+    [ -z "$ishandleError" ] || [ "$ishandleError" = "NO" ] && exit
+    
+    if [[ $ishandleError == "YES" ]]; then
+      errorHandler
+    fi
   fi
   return $deviceAddress
 }
@@ -50,25 +44,34 @@ function switchOutputDevice {
   fi
 }
 
-case "$power" in
-  ON)
-    bluetoothctl power on
-    notify-send "Bluetooth turned on"
-    connectDevice
-    deviceAddress=$?
-    device=$(echo $deviceAddress | sed 's/:/_/g')
-    switchOutputDevice $device 
-  ;;
-  OFF) 
-    bluetoothctl power off
-    notify-send "Bluetooth turned off"
-  ;;
-  SWITCH_DEVICES)
-    connectDevice
-  ;;
-  SCAN)
-    scanChoice=$(echo -e "on\noff\n" | rofi -dmenu -i -p "Bluetooth SCAN")
-    $(bluetoothctl -- scan $scanChoice)
-  ;;
-esac
 
+function main {
+  #power=$(echo -e "ON\nOFF\nSWITCH_DEVICES" | rofi -dmenu -i -p "Bluetooth" -config ~/.config/rofi/themes/dt-dmenu.rasi)
+  local power=$(echo -e "ON\nOFF\nSWITCH_DEVICES\nSCAN" | rofi -dmenu -i -p "Bluetooth")
+
+  [ -z "$power" ] && exit 
+  case "$power" in
+    ON)
+      bluetoothctl power on
+      notify-send "Bluetooth turned on"
+      connectDevice
+      deviceAddress=$?
+      device=$(echo $deviceAddress | sed 's/:/_/g')
+      switchOutputDevice $device 
+    ;;
+    OFF) 
+      bluetoothctl power off
+      notify-send "Bluetooth turned off"
+    ;;
+    SWITCH_DEVICES)
+      connectDevice
+    ;;
+    SCAN)
+      scanChoice=$(echo -e "on\noff\n" | rofi -dmenu -i -p "Bluetooth SCAN")
+      $(bluetoothctl -- scan $scanChoice)
+    ;;
+  esac
+}
+
+# execution starts here
+main
