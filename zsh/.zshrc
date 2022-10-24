@@ -94,8 +94,8 @@ plugins=(
 
 source $ZSH/oh-my-zsh.sh
 
-if [ -f ./.zsh/syntax-highlight-dracula.sh ]; then
-    source ./.zsh/syntax-highlight-dracula.sh
+if [ -f ~/.zsh/syntax-highlight-dracula.sh ]; then
+    source ~/.zsh/syntax-highlight-dracula.sh
 else
     print "404: ~/.zsh/syntax-highlight-dracula.sh not found."
 fi
@@ -174,6 +174,9 @@ bindkey -v
 
 # fzf config
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+#dracula theme for fzf
+export FZF_DEFAULT_OPTS='--color=fg:#f8f8f2,bg:#282a36,hl:#bd93f9 --color=fg+:#f8f8f2,bg+:#44475a,hl+:#bd93f9 --color=info:#ffb86c,prompt:#50fa7b,pointer:#ff79c6 --color=marker:#ff79c6,spinner:#ffb86c,header:#6272a4'
 
 # print system information on startup
 ~/.ufetch-fedora
