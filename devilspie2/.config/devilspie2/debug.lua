@@ -5,11 +5,12 @@ unshade()
 undecorate_window()
 
 if(get_application_name()=="Alacritty") then
-  set_window_workspace(2)
   maximize()
   set_on_top()
-  change_workspace(2)
   focus()
+
+  --change_workspace(2)
+  --set_window_workspace(2)
   --set_window_fullscreen(true)
 end
 
