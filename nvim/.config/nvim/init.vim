@@ -16,6 +16,5 @@ source $HOME/.config/nvim/plug-config/indentline.vim
 source $HOME/.config/nvim/plug-config/vimspector.vim
 source $HOME/.config/nvim/plug-config/emmet.vim
 source $HOME/.config/nvim/plug-config/vim-go.vim
-
-
+source $HOME/.config/nvim/plug-config/vimwiki-sync.vim
 

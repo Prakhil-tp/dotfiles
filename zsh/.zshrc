@@ -1,5 +1,5 @@
 # If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
+ export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
 export ZSH="/home/prakhil/.oh-my-zsh"
@@ -128,11 +128,14 @@ alias lt='ls --tree'
 
 export EDITOR="nvim"
 export BAT_THEME="gruvbox"
-export GOPATH="$HOME/golib"
-export PATH="$PATH:$GOPATH/bin"
-export GOBIN="$HOME/golib/bin"
-export GOPATH=$GOPATH:$HOME/code/go-projects
-export PATH="$HOME/scripts:$HOME/anaconda3/bin:$PATH"
+
+# PATH
+if ! [[ "$PATH" =~ "$HOME/.local/bin:$HOME/bin:" ]]
+then
+    PATH="$HOME/.local/bin:$HOME/bin:$PATH"
+fi
+export PATH
+#export PATH="$PATH:$HOME/scripts"
 
 #PUBLIC_IP="$(curl ipinfo.io/ip)"
 
@@ -167,10 +170,9 @@ bindkey -v
 # print system information on startup
 ~/.ufetch-fedora
 
-
-# Created by `pipx` on 2022-04-10 07:27:45
-export PATH="$PATH:/home/prakhil/.local/bin"
-
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+#[ -f "/home/prakhil/.ghcup/env" ] && source "/home/prakhil/.ghcup/env" # ghcup-env
+[ -f "/home/prakhil/.ghcup/env" ] && source "/home/prakhil/.ghcup/env" # ghcup-env

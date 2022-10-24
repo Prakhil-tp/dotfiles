@@ -75,6 +75,7 @@ call plug#begin('~/.config/nvim/autoload/plugged')
     " Wiki
     "============================
     Plug 'vimwiki/vimwiki'
+    Plug 'michal-h21/vimwiki-sync'
     "============================
     " HTML 
     "============================
