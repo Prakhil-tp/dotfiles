@@ -1,3 +1,4 @@
 .netrwhist
 vifminfo.json*
 autoload/*
+nvim/.config/nvim/autoload/*
