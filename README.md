@@ -58,6 +58,10 @@ stow */         # stow <directory-name>  - for adding a purticular config
   ```sh
     git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
   ```
+  Add zsh-syntax-highlighting
+  ```sh
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/plugins/zsh-syntax-highlighting
+  ```
   Load the `.zshrc` file again using the following command
   ```sh
     source ~/.zshrc

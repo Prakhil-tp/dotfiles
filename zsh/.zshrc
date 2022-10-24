@@ -89,9 +89,16 @@ plugins=(
 	git
 	nvm
 	zsh-autosuggestions
+  zsh-syntax-highlighting
 )
 
 source $ZSH/oh-my-zsh.sh
+
+if [ -f ./.zsh/syntax-highlight-dracula.sh ]; then
+    source ./.zsh/syntax-highlight-dracula.sh
+else
+    print "404: ~/.zsh/syntax-highlight-dracula.sh not found."
+fi
 
 # User configuration
 # ===========================================================================================================
@@ -127,7 +134,8 @@ alias lt='ls --tree'
 #export PATH="$PATH:$ANDROID_HOME/platform-tools"
 
 export EDITOR="nvim"
-export BAT_THEME="gruvbox"
+#export BAT_THEME="gruvbox"
+export BAT_THEME="Dracula"
 
 # PATH
 if ! [[ "$PATH" =~ "$HOME/.local/bin:$HOME/bin:" ]]
