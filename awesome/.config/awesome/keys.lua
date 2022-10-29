@@ -92,6 +92,11 @@ keys.globalkeys = gears.table.join(
 	awful.key({ modkey, "Control" }, "r", awesome.restart, { description = "reload awesome", group = "awesome" }),
 	awful.key({ modkey, "Shift" }, "q", awesome.quit, { description = "quit awesome", group = "awesome" }),
 
+	awful.key({ "Mod1", "Control" }, "Delete", function()
+		awful.spawn.with_shell("~/scripts/dm-shutdown")
+	end, { description = "shutdown / reboot / logout", group = "System" }),
+
+  -- layout
 	awful.key({ modkey }, "l", function()
 		awful.tag.incmwfact(0.05)
 	end, { description = "increase master width factor", group = "layout" }),
@@ -117,29 +122,6 @@ keys.globalkeys = gears.table.join(
 		awful.layout.inc(-1)
 	end, { description = "select previous", group = "layout" }),
 
-	awful.key({ modkey, "Control" }, "n", function()
-		local c = awful.client.restore()
-		-- Focus restored client
-		if c then
-			c:emit_signal("request::activate", "key.unminimize", { raise = true })
-		end
-	end, { description = "restore minimized", group = "client" }),
-
-	-- Rofi
-	awful.key({ modkey }, "space", function()
-		awful.util.spawn("rofi -show drun")
-	end, { description = "run rofi", group = "launcher" }),
-
-	-- Brave
-	awful.key({ modkey }, "b", function()
-		awful.util.spawn("brave-browser")
-	end, { description = "launch brave", group = "applications" }),
-
-  -- Vifm
-	awful.key({ modkey }, "e", function()
-    term_scratch:toggle()
-	end, { description = "launch brave", group = "applications" }),
-
 	--[[
     awful.key({ modkey }, "x",
               function ()
@@ -153,7 +135,25 @@ keys.globalkeys = gears.table.join(
               {description = "lua execute prompt", group = "awesome"}),
 --]]
   
-	-- dmenu scripts
+  
+
+  -- ====================================
+  -- Applications
+  -- ====================================
+	awful.key({ modkey }, "space", function()
+		awful.util.spawn("rofi -show drun")
+	end, { description = "run rofi", group = "launcher" }),
+	awful.key({ modkey }, "b", function()
+		awful.util.spawn("brave-browser")
+	end, { description = "launch brave", group = "applications" }),
+	awful.key({ modkey }, "e", function()
+    term_scratch:toggle()
+	end, { description = "launch scratchpad", group = "applications" }),
+
+
+  -- ===================================
+  -- key bindings followed by  Mod + p
+  -- ===================================
 	awful.key({ modkey }, "p", function()
 		awful.keygrabber({
 			mask_modkeys = true,
@@ -161,9 +161,6 @@ keys.globalkeys = gears.table.join(
 			stop_key = "Mod4",
 			timeout = 1,
 			keybindings = {
-        -- ===============================
-        -- key bindings followed by  Mod + p
-        -- ===============================
 				{
 					{},
 					"w",
@@ -191,11 +188,23 @@ keys.globalkeys = gears.table.join(
 			},
 		})
 	end, { description = "Followed by a key", group = "dm-scripts" }),
-	awful.key({ "Mod1", "Control" }, "Delete", function()
-		awful.spawn.with_shell("~/scripts/dm-shutdown")
-	end, { description = "shutdown / reboot / logout", group = "System" })
-)
 
+  -- ===================================
+  -- Music spotify keybindings
+  -- ===================================
+
+	awful.key({ "Control" }, "Right", function()
+    awful.spawn.with_shell("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next")
+	end, { description = "Next track", group = "Music" }),
+
+	awful.key({ "Control" }, "Left", function()
+    awful.spawn.with_shell("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous")
+	end, { description = "Previous track", group = "Music" }),
+
+	awful.key({ "Control" }, "space", function()
+    awful.spawn.with_shell("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause")
+	end, { description = "Play/Pause track", group = "Music" })
+)
 
 -- ===================================================================
 -- Client Key bindings
@@ -224,11 +233,17 @@ keys.clientkeys = gears.table.join(
 	awful.key({ modkey }, "t", function(c)
 		c.ontop = not c.ontop
 	end, { description = "toggle keep on top", group = "client" }),
+  --minimize
 	awful.key({ modkey }, "n", function(c)
-		-- The client currently has the input focus, so it cannot be
-		-- minimized, since minimized clients can't have the focus.
 		c.minimized = true
 	end, { description = "minimize", group = "client" }),
+  --unminimize
+	awful.key({ modkey, "Shift" }, "n", function()
+		local c = awful.client.restore()
+		if c then
+			c:emit_signal("request::activate", "key.unminimize", { raise = true })
+		end
+	end, { description = "restore minimized", group = "client" }),
 	awful.key({ modkey }, "m", function(c)
 		c.maximized = not c.maximized
 		c:raise()
