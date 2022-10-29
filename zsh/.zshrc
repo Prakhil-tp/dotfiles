@@ -111,16 +111,27 @@ fi
 
 alias projects="pushd ~/code/projects && clear && ls"
 alias playground="pushd ~/code/playground && clear && ls"
-alias vonnue="pushd ~/code/vonnue && clear && ls"
 alias ..="cd ../ && clear && ls"
 alias vim="nvim"
 alias vimdiff="nvim -d"
 alias cat="bat"
+
+#vifm
 alias vifm="~/.config/vifm/scripts/vifmrun"
+alias v="~/.config/vifm/scripts/vifmrun"
 
 #ls
-alias ls='lsd'
+alias ls='lsd -alh'
 alias lt='ls --tree'
+
+# Exa 
+#alias ls='exa -al --color=always --group-directories-first' # my preferred listing
+#alias la='exa -a --color=always --group-directories-first'  # all files and dirs
+#alias ll='exa -l --color=always --group-directories-first'  # long format
+#alias lt='exa -aT --color=always --group-directories-first' # tree listing
+#alias l.='exa -a | egrep "^\."'
+
+
 
 # ===========================================================================================================
 # 																												EXPORTS
@@ -185,5 +196,3 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-#[ -f "/home/prakhil/.ghcup/env" ] && source "/home/prakhil/.ghcup/env" # ghcup-env
-[ -f "/home/prakhil/.ghcup/env" ] && source "/home/prakhil/.ghcup/env" # ghcup-env
