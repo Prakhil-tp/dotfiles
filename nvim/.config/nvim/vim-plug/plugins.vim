@@ -29,15 +29,18 @@ call plug#begin('~/.config/nvim/autoload/plugged')
     "============================
     " Syntax hightlight
     "============================
-    Plug 'sheerun/vim-polyglot'
-    Plug 'othree/yajs.vim'
-    Plug 'othree/html5.vim'
-    Plug 'herringtondarkholme/yats.vim'
+    "Plug 'sheerun/vim-polyglot'
+    "Plug 'othree/yajs.vim'
+    "Plug 'othree/html5.vim'
+    "Plug 'herringtondarkholme/yats.vim'
+    Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+    Plug 'p00f/nvim-ts-rainbow'
+    Plug 'nvim-treesitter/playground'
     " javascript
-    Plug 'yuezk/vim-js'
-    Plug 'maxmellon/vim-jsx-pretty'
-    Plug 'pangloss/vim-javascript'
-    Plug 'leafgarland/typescript-vim'
+    "Plug 'yuezk/vim-js'
+    "Plug 'maxmellon/vim-jsx-pretty'
+    "Plug 'pangloss/vim-javascript'
+    "Plug 'leafgarland/typescript-vim'
     "============================
     " Language support
     "============================
@@ -58,7 +61,8 @@ call plug#begin('~/.config/nvim/autoload/plugged')
     "============================
     " Theme
     "============================
-    Plug 'morhetz/gruvbox'
+    "Plug 'morhetz/gruvbox'
+    Plug 'dracula/vim', { 'as': 'dracula' }
     "============================
     " Statusbar and bufferline
     "============================

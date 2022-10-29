@@ -1,7 +1,7 @@
 set laststatus=2
 set noshowmode
 let g:lightline = {
-      \ 'colorscheme': 'gruvbox',
+      \ 'colorscheme': 'dracula',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ], [ 'readonly' ], ['filepath'] ]
       \ },

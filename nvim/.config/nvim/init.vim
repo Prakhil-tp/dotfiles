@@ -1,5 +1,6 @@
 source $HOME/.config/nvim/vim-plug/plugins.vim
-source $HOME/.config/nvim/themes/gruvbox.vim
+"source $HOME/.config/nvim/themes/gruvbox.vim
+source $HOME/.config/nvim/themes/dracula.vim
 source $HOME/.config/nvim/general/settings.vim
 source $HOME/.config/nvim/general/paths.vim
 source $HOME/.config/nvim/keys/mappings.vim
@@ -18,3 +19,6 @@ source $HOME/.config/nvim/plug-config/emmet.vim
 source $HOME/.config/nvim/plug-config/vim-go.vim
 source $HOME/.config/nvim/plug-config/vimwiki-sync.vim
 
+
+" lua files
+luafile $HOME/.config/nvim/plug-config/treesitter.lua
