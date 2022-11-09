@@ -101,6 +101,10 @@ else
 fi
 
 # User configuration
+
+# time command output formatting
+TIMEFMT=$'%J\n==================\nCPU\t%P\nuser\t%*U sec\nsystem\t%*S sec\ntotal\t%*E sec\n'
+
 # ===========================================================================================================
 # 																												ALIAS
 # ===========================================================================================================
@@ -111,6 +115,8 @@ fi
 
 alias projects="pushd ~/code/projects && clear && ls"
 alias playground="pushd ~/code/playground && clear && ls"
+alias notes="pushd ~/Documents/notes && clear && ls"
+
 alias ..="cd ../ && clear && ls"
 alias vim="nvim"
 alias vimdiff="nvim -d"
@@ -123,6 +129,12 @@ alias v="~/.config/vifm/scripts/vifmrun"
 #ls
 alias ls='lsd -alh'
 alias lt='ls --tree'
+
+#foget sudo? try this
+alias fuck="sudo !!"
+
+#math
+alias math="bc <<<"
 
 # Exa 
 #alias ls='exa -al --color=always --group-directories-first' # my preferred listing
