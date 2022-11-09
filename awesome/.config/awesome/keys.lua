@@ -60,9 +60,6 @@ keys.globalkeys = gears.table.join(
 	awful.key({ modkey }, "k", function()
 		awful.client.focus.byidx(-1)
 	end, { description = "focus previous by index", group = "client" }),
-	awful.key({ modkey }, "w", function()
-		mymainmenu:show()
-	end, { description = "show main menu", group = "awesome" }),
 
 	-- Layout manipulation
 	awful.key({ modkey, "Shift" }, "j", function()
@@ -143,6 +140,9 @@ keys.globalkeys = gears.table.join(
 	awful.key({ modkey }, "space", function()
 		awful.util.spawn("rofi -show drun")
 	end, { description = "run rofi", group = "launcher" }),
+	awful.key({ "Mod1" }, "Tab", function()
+		awful.util.spawn("rofi -show window")
+	end, { description = "switch window", group = "launcher" }),
 	awful.key({ modkey }, "b", function()
 		awful.util.spawn("brave-browser")
 	end, { description = "launch brave", group = "applications" }),
@@ -184,10 +184,97 @@ keys.globalkeys = gears.table.join(
 						awful.spawn.with_shell("flatpak run com.spotify.Client")
 						self:stop()
 					end,
+				},
+				{
+					{},
+					".",
+					function(self)
+						--awful.spawn.with_shell("feh --bg-fill -r -z ~/Pictures/Wallpapers")
+						awful.spawn.with_shell("~/scripts/change-wallpaper.sh")
+						self:stop()
+					end,
+				},
+				{
+					{},
+					"o",
+					function(self)
+						awful.spawn.with_shell("~/scripts/dm-sound")
+						self:stop()
+					end,
 				}
 			},
 		})
-	end, { description = "Followed by a key", group = "dm-scripts" }),
+	end, { description = "Followed by a key", group = "scripts" }),
+
+  -- ===================================
+  -- key bindings followed by  Mod + w 
+  -- ===================================
+	awful.key({ modkey }, "w", function()
+    awful.keygrabber({
+			mask_modkeys = true,
+			autostart = true,
+			stop_key = "Mod4",
+			timeout = 1,
+			keybindings = {
+        {
+          {},
+          ".",
+          function(self)
+						awful.spawn.with_shell("~/scripts/change-wallpaper.sh")
+            self:stop()
+          end
+        },
+        {
+          {},
+          "d",
+          function(self)
+						awful.spawn.with_shell("~/scripts/remove-wallpaper.sh")
+            self:stop()
+          end
+        }
+      }
+    })
+	end, { description = "wallpaper scritps", group = "scripts" }),
+
+  -- ===================================
+  -- key bindings followed by  Mod + i
+  -- ===================================
+	awful.key({ modkey }, "i", function()
+
+    function alignMiddle(short, long)
+      local diff = (#long/2) - (#short/2) 
+      for i=1, diff+2 do
+        short = " "..short
+      end
+      return {short, long}
+    end
+    local list = alignMiddle(os.date("%I:%M %p"), os.date("%A, %b %d"))
+
+    awful.keygrabber({
+			mask_modkeys = true,
+			autostart = true,
+			stop_key = "Mod4",
+			timeout = 1,
+			keybindings = {
+        {
+          {},
+          "t",
+          function(self)
+            naughty.notify{
+              title=list[1],
+              text=list[2],
+              margin=10,
+              position="top_middle",
+              bg="#282a36",
+              fg="#f8f8f2",
+              border_color="#bd93f9"
+            }
+            self:stop()
+          end
+        }
+      }
+    })
+	end, { description = "information", group = "scripts" }),
 
   -- ===================================
   -- Music spotify keybindings
@@ -242,6 +329,7 @@ keys.clientkeys = gears.table.join(
 		local c = awful.client.restore()
 		if c then
 			c:emit_signal("request::activate", "key.unminimize", { raise = true })
+      c.minimized = false
 		end
 	end, { description = "restore minimized", group = "client" }),
 	awful.key({ modkey }, "m", function(c)
@@ -263,9 +351,9 @@ keys.clientkeys = gears.table.join(
 -- Mouse bindings
 -- ===================================================================
 keys.desktopbuttons = gears.table.join(
-	awful.button({}, 3, function()
-		mymainmenu:toggle()
-	end),
+	--awful.button({}, 3, function()
+		--mymainmenu:toggle()
+	--end),
 	awful.button({}, 4, awful.tag.viewnext),
 	awful.button({}, 5, awful.tag.viewprev)
 )
