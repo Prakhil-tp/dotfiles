@@ -1,3 +1,2 @@
-hi Comment cterm=italic
-syntax enable
 colorscheme dracula
+highlight DraculaComment cterm=italic
