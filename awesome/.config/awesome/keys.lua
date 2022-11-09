@@ -182,6 +182,7 @@ keys.globalkeys = gears.table.join(
 					"s",
 					function(self)
 						awful.spawn.with_shell("flatpak run com.spotify.Client")
+						awful.spawn.with_shell("~/scripts/spotify-automute.sh >> /tmp/spotify-automute.log")
 						self:stop()
 					end,
 				},
