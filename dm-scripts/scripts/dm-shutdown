@@ -5,7 +5,7 @@
 ###
 
 DMENU='dmenu -i -b -fn -xos4-terminus-medium-r-*--12-*-*-*-*-*-iso10646-1 -nb #282c34  -nf #ededed -sb #ff6c6b  -sf #ededed'
-choice=$(echo -e "shutdown\nreboot\nsuspend\nhibernate" | $DMENU)
+choice=$(echo -e "shutdown\nreboot\nlogout\nsuspend" | $DMENU)
 [ -z "$choice" ] && exit 
 
 answer=$(echo -e "Yes\nNo" | $DMENU -i -p "Are you sure want to $choice?") 
@@ -13,8 +13,8 @@ if [[ $answer == "Yes" ]]; then
   case "$choice" in
     shutdown) sudo shutdown -h now & ;;
     reboot) sudo shutdown -r now & ;;
+    logout) sudo service lightdm restart & ;;
     suspend) sudo systemctl suspend & ;;
-    hibernate) sudo pm-hibernate & ;;
   esac
 fi
 
