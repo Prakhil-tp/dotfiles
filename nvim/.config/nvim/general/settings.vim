@@ -24,8 +24,8 @@ set smartindent                         " Makes indenting smart
 set autoindent                          " Good auto indent
 set laststatus=0                        " Always display the status line
 set number relativenumber               " Line numbers
-"set cursorline                           Enable highlighting of the current line
-set background=dark                     " tell vim what the background color looks like
+"set cursorline                          "Enable highlighting of the current line
+"set background=dark                     " tell vim what the background color looks like
 set showtabline=2                       " Always show tabs
 set noshowmode                          " We don't need to see things like -- INSERT -- anymore
 set nobackup                            " This is recommended by coc
@@ -37,8 +37,8 @@ set clipboard=unnamedplus               " Copy paste between vim and everything 
 set nocompatible
 "set incsearch
 set nohlsearch
-highlight Comment cterm=italic
-highlight Keyword cterm=italic
+"highlight Comment cterm=italic
+"highlight Keyword cterm=italic
 " change vertical splitbar background
 set fillchars+=vert:\ 
 "set autochdir                           " Your working directory will always be the same as your working directory
@@ -53,9 +53,6 @@ vmap > >gv
 
 " Vertically center document when entering insert mode
 " autocmd InsertEnter * norm zz
-
-" You can't stop me 
-cmap w!! w !sudo tee %
 
 "Delete all buffers instead of current one. command :BufOnly
 command! BufOnly silent! execute "%bd|e#|bd#" 
