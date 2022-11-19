@@ -349,12 +349,27 @@ keys.clientkeys = gears.table.join(
 
 
 -- ===================================================================
--- Mouse bindings
+-- Mouse menu & bindings
 -- ===================================================================
+ 
+-- styles
+beautiful.menu_height = 20
+beautiful.menu_width = 180
+
+-- menu
+mousemenu = awful.menu({ 
+  items = { 
+    { "open alacritty", terminal },
+    { "open xterm", "xterm" },
+    { "open gnome-terminal", "gnome-terminal" },
+  }
+})
+
+-- button bindings
 keys.desktopbuttons = gears.table.join(
-	--awful.button({}, 3, function()
-		--mymainmenu:toggle()
-	--end),
+	awful.button({}, 3, function()
+		mousemenu:toggle()
+	end),
 	awful.button({}, 4, awful.tag.viewnext),
 	awful.button({}, 5, awful.tag.viewprev)
 )

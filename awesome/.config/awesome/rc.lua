@@ -45,7 +45,6 @@ end
 -- ===================================================================
 
 
-
 -- Themes define colours, icons, font and wallpapers.
 --beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
 --beautiful.init(gears.filesystem.get_configuration_dir().."themes/pastel.lua" )
@@ -114,3 +113,4 @@ awful.spawn.with_shell("picom")
 awful.spawn.with_shell("conky -c ~/.config/conky/dracula.conkyrc")
 --awful.spawn.with_shell("feh --bg-fill -r -z ~/Pictures/wallpapers")
 awful.spawn.with_shell("~/scripts/change-wallpaper.sh")
+awful.spawn.with_shell("openrgb --profile static")
