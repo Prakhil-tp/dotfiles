@@ -1,4 +1,4 @@
-"" auto-install vim-plug
+""" auto-install vim-plug
 if empty(glob('~/.config/nvim/autoload/plug.vim'))
   silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -33,8 +33,6 @@ call plug#begin('~/.config/nvim/autoload/plugged')
     Plug 'p00f/nvim-ts-rainbow' 
     Plug 'nvim-treesitter/playground'
     Plug 'plasticboy/vim-markdown'
-    Plug 'vim-pandoc/vim-pandoc'
-    Plug 'vim-pandoc/vim-pandoc-syntax'
     "============================
     " Language support
     "============================
@@ -67,7 +65,8 @@ call plug#begin('~/.config/nvim/autoload/plugged')
     " MarkDown
     "============================
     Plug 'godlygeek/tabular'
-    Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
+    "Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
+    Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
     Plug 'junegunn/goyo.vim'
     "============================
     " Wiki

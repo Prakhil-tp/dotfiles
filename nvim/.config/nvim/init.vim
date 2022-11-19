@@ -18,6 +18,7 @@ source $HOME/.config/nvim/plug-config/emmet.vim
 source $HOME/.config/nvim/plug-config/vim-go.vim
 source $HOME/.config/nvim/plug-config/vimwiki.vim
 source $HOME/.config/nvim/plug-config/vimwiki-sync.vim
+source $HOME/.config/nvim/plug-config/markdown-preview.vim
 
 
 " lua files

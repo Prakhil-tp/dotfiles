@@ -6,3 +6,4 @@ let g:vimwiki_ex2syntax = {'.md':'markdown', '.markdown':'markdown', '.mdown':'m
 let g:vimwiki_markdown_link_ext = 1
 let g:taskwiki_markup_syntax = 'markdown'
 let g:markdown_folding = 1
+let g:vimwiki_key_mappings = { 'table_mappings': 0 }
