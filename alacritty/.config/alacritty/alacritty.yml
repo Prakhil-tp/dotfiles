@@ -1,18 +1,18 @@
 import:
-  -   ./dracula.yml
+  - ./dracula.yml
 font:
   normal:
-    family: "Dank Mono"
+    family: "Hack NF"
     style: Regular
-  bold:
-    family: "Dank Mono"
-    style: Bold
-  italic:
-    family: "Dank Mono"
-    style: Italic
-  bold_italic:
-    family: "Dank Mono"
-    style: Bold Italic
+  #bold:
+  #family: ""
+  #style: Bold
+  #italic:
+  #family: "Ubuntu Mono"
+  #style: Italic
+  #bold_italic:
+  #family: "Dank Mono"
+  #style: Bold Italic
 
   # Point size
   size: 10
