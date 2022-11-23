@@ -1,7 +1,7 @@
 #!/bin/sh
 
 export DISPLAY=:0 #initializing the display for CRON job support
-wallpaper_path="/home/prakhil/Pictures/wallpapers"
+wallpaper_path="/home/prakhil/pictures/wallpapers"
 list=( `ls -w1 $wallpaper_path | grep "[a-zA-Z0-9-]*\.\(jpg\|png\)"` )
 list_length=${#list[@]}
 let "number = $RANDOM % $list_length"
