@@ -1,5 +1,5 @@
 #!/bin/bash
-[-z "$5"] && echo "Usage: $0 <image> <x> <y> <max height> <max width>" && exit 
+[ -z "$5" ] && echo "Usage: $0 <image> <x> <y> <max height> <max width>" && exit 
 source "`ueberzug library`"
 
 ImageLayer 0< <(
