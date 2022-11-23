@@ -144,12 +144,24 @@ keys.globalkeys = gears.table.join(
 		awful.util.spawn("rofi -show window")
 	end, { description = "switch window", group = "launcher" }),
 	awful.key({ modkey }, "b", function()
-		awful.util.spawn("brave-browser")
+		awful.util.spawn("flatpak run com.brave.Browser")
 	end, { description = "launch brave", group = "applications" }),
 	awful.key({ modkey }, "e", function()
     term_scratch:toggle()
 	end, { description = "launch scratchpad", group = "applications" }),
 
+
+	awful.key({ modkey, "Shift" }, "b", function()
+		awful.spawn.with_shell("~/scripts/dm-bookmark.sh")
+	end, { description = "bookmark this", group = "scripts" }),
+
+	awful.key({ "Control", "Shift" }, "l", function()
+		awful.spawn.with_shell("~/scripts/dm-passmenu")
+	end, { description = "pass password manager dmenu script", group = "script" }),
+
+	awful.key({ modkey }, "Insert", function()
+    awful.spawn.with_shell("xdotool type $(grep -v '^#' ~/.local/share/script-files/snippets.txt | dmenu -i -l 20 | cut -d' ' -f1)")
+	end, { description = "get bookmarked values to any textfield", group = "applications" }),
 
   -- ===================================
   -- key bindings followed by  Mod + p
@@ -200,6 +212,22 @@ keys.globalkeys = gears.table.join(
 					"o",
 					function(self)
 						awful.spawn.with_shell("~/scripts/dm-sound")
+						self:stop()
+					end,
+				},
+				{
+					{},
+					"f",
+					function(self)
+						awful.spawn.with_shell("~/scripts/dm-fontviewer.sh")
+						self:stop()
+					end,
+				},
+				{
+					{},
+					"v",
+					function(self)
+						awful.spawn.with_shell("clipmenu -i")
 						self:stop()
 					end,
 				}
