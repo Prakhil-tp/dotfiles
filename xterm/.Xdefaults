@@ -1,0 +1,8 @@
+
+xterm*faceName: Hack NF
+xterm*faceSize: 10
+
+xterm*foreground: #f8f8f2
+xterm*background: #282a36
+
+xterm*termName: xterm-256color
