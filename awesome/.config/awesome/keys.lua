@@ -150,6 +150,9 @@ keys.globalkeys = gears.table.join(
     term_scratch:toggle()
 	end, { description = "launch scratchpad", group = "applications" }),
 
+	awful.key({ modkey }, "r", function()
+		awful.spawn.spawn("dmenu_run")
+	end, { description = "launch dmenu_run", group = "applications" }),
 
 	awful.key({ modkey, "Shift" }, "b", function()
 		awful.spawn.with_shell("~/scripts/dm-bookmark.sh")
@@ -238,7 +241,15 @@ keys.globalkeys = gears.table.join(
 						awful.spawn.with_shell("~/scripts/rofi-screen.sh")
 						self:stop()
 					end,
-				}
+				},
+				{
+					{},
+					"/",
+					function(self)
+						awful.spawn.with_shell("~/scripts/dm-websearch/dm-websearch")
+						self:stop()
+					end,
+				},
 			},
 		})
 	end, { description = "Followed by a key", group = "scripts" }),
