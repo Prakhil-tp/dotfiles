@@ -1,2 +1,4 @@
 lxappearance
 conky
+xdotool
+htop
