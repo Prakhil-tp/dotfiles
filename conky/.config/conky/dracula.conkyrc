@@ -54,10 +54,10 @@ conky.config = {
 
 	--Textual
 	format_human_readable = true,				-- KiB, MiB rather then number of bytes
-	font  = 'Hack NF:size=12',  	-- the default font used
+	font  = 'Hack NF:size=10',  	-- the default font used
 	font2 = 'Ubuntu:bold:size=30',         	-- font for the time
 	font3 = 'Ubuntu:size=14',               	-- font for the date
-	font4 = 'Raleway:bold:size=12',              -- font for the keybindings heading
+	font4 = 'Raleway:bold:size=10',              -- font for the keybindings heading
 	max_text_width = 0,							-- 0 will make sure line does not get broken if width too smal
 	max_user_text = 16384,						-- max text in conky default 16384
 	override_utf8_locale = true,				-- force UTF8 requires xft
@@ -119,6 +119,7 @@ ${color1}[S]+p, w${alignr}${color2}wifi${color}
 ${color1}[S]+p, b${alignr}${color2}bluetooth${color}
 ${color1}[S]+p, s${alignr}${color2}spotify${color}
 ${color1}[S]+p, f${alignr}${color2}list font names${color}
+${color1}[S]+p, x${alignr}${color2}select screen${color}
 ${color1}${hr}${color}
 # Mod + w
 ${color1}[S]+w, .${alignr}${color2}change wallpaper${color}
@@ -126,6 +127,7 @@ ${color1}[S]+w, d${alignr}${color2}remove wallpaper${color}
 ${color1}${hr}${color}
 # Mod + i
 ${color1}[S]+i, t${alignr}${color2}show time${color}
+${color1}[S]+i, b${alignr}${color2}show battery capacity${color}
 ${color1}${hr}${color}
 # Power off settings
 ${color1}[S]+[CTRL]+r${alignr}${color2}restart awesome${color}
