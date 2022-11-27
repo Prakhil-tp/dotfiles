@@ -144,7 +144,7 @@ keys.globalkeys = gears.table.join(
 		awful.util.spawn("rofi -show window")
 	end, { description = "switch window", group = "launcher" }),
 	awful.key({ modkey }, "b", function()
-		awful.util.spawn("flatpak run com.brave.Browser")
+		awful.spawn.with_shell("flatpak run com.brave.Browser")
 	end, { description = "launch brave", group = "applications" }),
 	awful.key({ modkey }, "e", function()
     term_scratch:toggle()
@@ -230,6 +230,14 @@ keys.globalkeys = gears.table.join(
 						awful.spawn.with_shell("clipmenu -i")
 						self:stop()
 					end,
+				},
+				{
+					{},
+					"x",
+					function(self)
+						awful.spawn.with_shell("~/scripts/rofi-screen.sh")
+						self:stop()
+					end,
 				}
 			},
 		})
@@ -270,15 +278,6 @@ keys.globalkeys = gears.table.join(
   -- ===================================
 	awful.key({ modkey }, "i", function()
 
-    function alignMiddle(short, long)
-      local diff = (#long/2) - (#short/2) 
-      for i=1, diff+2 do
-        short = " "..short
-      end
-      return {short, long}
-    end
-    local list = alignMiddle(os.date("%I:%M %p"), os.date("%A, %b %d"))
-
     awful.keygrabber({
 			mask_modkeys = true,
 			autostart = true,
@@ -289,9 +288,36 @@ keys.globalkeys = gears.table.join(
           {},
           "t",
           function(self)
+
+            function alignMiddle(short, long)
+              local diff = (#long/2) - (#short/2) 
+              for i=1, diff+2 do
+                short = " "..short
+              end
+              return {short, long}
+            end
+            local list = alignMiddle(os.date("%I:%M %p"), os.date("%A, %b %d"))
             naughty.notify{
               title=list[1],
               text=list[2],
+              margin=10,
+              position="top_middle",
+              bg="#282a36",
+              fg="#f8f8f2",
+              border_color="#bd93f9"
+            }
+            self:stop()
+          end
+        },
+        {
+          {},
+          "b",
+          function(self)
+            local f = io.open("/sys/class/power_supply/BAT1/capacity")
+            local battery = " ".. f:read() .. "%" 
+            f:close()
+            naughty.notify{
+              text=battery,
               margin=10,
               position="top_middle",
               bg="#282a36",

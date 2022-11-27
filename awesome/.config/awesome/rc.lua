@@ -113,3 +113,4 @@ awful.spawn.with_shell("picom")
 awful.spawn.with_shell("clipmenud")   -- clipmenu
 awful.spawn.with_shell("conky -c ~/.config/conky/dracula.conkyrc")
 awful.spawn.with_shell("~/scripts/change-wallpaper.sh")
+
