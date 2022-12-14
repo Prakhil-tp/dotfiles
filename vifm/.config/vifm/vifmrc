@@ -264,7 +264,7 @@ fileviewer *.[1-8] man ./%c | col -b
 
 " Images
 filextype *.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm
-        \ xdg-open %f
+        \ feh --image-bg black --scale-down %f
         "\ {View in sxiv}
         "\ sxiv %f,
         "\ {View in gpicview}
