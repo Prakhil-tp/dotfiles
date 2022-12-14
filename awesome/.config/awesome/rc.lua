@@ -60,7 +60,10 @@ local modkey = "Mod4"
 awful.layout.layouts = {
 	awful.layout.suit.tile,
 	--awful.layout.suit.floating,
-  awful.layout.suit.max
+  awful.layout.suit.max,
+	awful.layout.suit.spiral,
+	awful.layout.suit.magnifier,
+	awful.layout.suit.fair
 }
 
 -- Keyboard map indicator and switcher
@@ -111,6 +114,6 @@ end)
 -- Autostart
 awful.spawn.with_shell("picom")
 awful.spawn.with_shell("clipmenud")   -- clipmenu
-awful.spawn.with_shell("conky -c ~/.config/conky/dracula.conkyrc")
 awful.spawn.with_shell("~/scripts/change-wallpaper.sh")
+awful.spawn.with_shell("~/.config/awesome/autorun.sh")
 

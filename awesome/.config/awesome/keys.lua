@@ -138,14 +138,17 @@ keys.globalkeys = gears.table.join(
   -- Applications
   -- ====================================
 	awful.key({ modkey }, "space", function()
-		awful.util.spawn("rofi -show drun")
+		awful.spawn("rofi -show drun")
 	end, { description = "run rofi", group = "launcher" }),
 	awful.key({ "Mod1" }, "Tab", function()
-		awful.util.spawn("rofi -show window")
+		awful.spawn("rofi -show window")
 	end, { description = "switch window", group = "launcher" }),
 	awful.key({ modkey }, "b", function()
-		awful.spawn.with_shell("flatpak run com.brave.Browser")
+		awful.spawn("brave")
 	end, { description = "launch brave", group = "applications" }),
+	awful.key({ modkey }, "q", function()
+		awful.spawn("qutebrowser")
+	end, { description = "launch qutebrowser", group = "applications" }),
 	awful.key({ modkey }, "e", function()
     term_scratch:toggle()
 	end, { description = "launch scratchpad", group = "applications" }),
@@ -249,7 +252,7 @@ keys.globalkeys = gears.table.join(
 						awful.spawn.with_shell("~/scripts/dm-websearch/dm-websearch")
 						self:stop()
 					end,
-				},
+				}
 			},
 		})
 	end, { description = "Followed by a key", group = "scripts" }),
@@ -354,7 +357,7 @@ keys.globalkeys = gears.table.join(
     awful.spawn.with_shell("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous")
 	end, { description = "Previous track", group = "Music" }),
 
-	awful.key({ "Control" }, "space", function()
+	awful.key({ "Control" }, "Down", function()
     awful.spawn.with_shell("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause")
 	end, { description = "Play/Pause track", group = "Music" })
 )
@@ -377,9 +380,12 @@ keys.clientkeys = gears.table.join(
 		awful.client.floating.toggle,
 		{ description = "toggle floating", group = "client" }
 	),
-	awful.key({ modkey, "Control" }, "Return", function(c)
-		c:swap(awful.client.getmaster())
-	end, { description = "move to master", group = "client" }),
+	--awful.key({ modkey, "Control" }, "Return", function(c)
+		--c:swap(awful.client.getmaster())
+	--end, { description = "move to master", group = "client" }),
+  awful.key({ modkey, "Shift" }, "m", function(c)
+    c:swap(awful.client.getmaster())
+  end, { description = "move to master", group = "client" }),
 	awful.key({ modkey }, "o", function(c)
 		c:move_to_screen()
 	end, { description = "move to screen", group = "client" }),
@@ -405,11 +411,11 @@ keys.clientkeys = gears.table.join(
 	awful.key({ modkey, "Control" }, "m", function(c)
 		c.maximized_vertical = not c.maximized_vertical
 		c:raise()
-	end, { description = "(un)maximize vertically", group = "client" }),
-	awful.key({ modkey, "Shift" }, "m", function(c)
-		c.maximized_horizontal = not c.maximized_horizontal
-		c:raise()
-	end, { description = "(un)maximize horizontally", group = "client" })
+	end, { description = "(un)maximize vertically", group = "client" })
+	--awful.key({ modkey, "Shift" }, "m", function(c)
+		--c.maximized_horizontal = not c.maximized_horizontal
+		--c:raise()
+	--end, { description = "(un)maximize horizontally", group = "client" })
 )
 
 
