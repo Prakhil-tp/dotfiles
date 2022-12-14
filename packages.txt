@@ -2,3 +2,4 @@ lxappearance
 conky
 xdotool
 htop
+mutt
