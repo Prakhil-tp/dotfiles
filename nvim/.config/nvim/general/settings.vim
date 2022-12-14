@@ -37,7 +37,8 @@ set clipboard+=unnamedplus               " Copy paste between vim and everything
 
 set nocompatible
 "set incsearch
-set nohlsearch
+"set nohlsearch
+
 "highlight Comment cterm=italic
 "highlight Keyword cterm=italic
 " change vertical splitbar background
@@ -59,4 +60,10 @@ vmap > >gv
 command! BufOnly silent! execute "%bd|e#|bd#" 
 
 autocmd! bufreadpost *.csv set syntax=off
+
+" autoindent files on save
+"augroup autoindent
+"au!
+"autocmd BufWritePre * :normal migg=G`i
+"augroup End
 

@@ -20,6 +20,10 @@ call plug#begin('~/.config/nvim/autoload/plugged')
     Plug 'alvan/vim-closetag'
     " File manager
     Plug 'vifm/vifm.vim'
+    " Auto format
+    Plug 'vim-autoformat/vim-autoformat'
+    " Better hlsearch
+    Plug 'romainl/vim-cool'
     "============================
     " Vim games
     "============================

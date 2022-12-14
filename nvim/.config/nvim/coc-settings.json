@@ -11,7 +11,8 @@
     "typescript",
     "typescriptreact",
     "go",
-    "lua"
+    "lua",
+    "python"
   ],
   "snippets.userSnippetsDirectory": "~/.config/nvim/snips",
   "explorer.width": 40,
