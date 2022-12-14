@@ -1,0 +1,15 @@
+
+
+#set folder = "imaps://prakhil.tp@gmail.com@imap.gmail.com:993"
+#set imap_user = "prakhil.tp@gmail.com"
+#set spoolfile = "+INBOX"
+
+source /usr/local/share/mutt-wizard/mutt-wizard.muttrc
+source /home/prakhil/.config/mutt/accounts/prakhil.tp@gmail.com.muttrc
+macro index,pager i1 '<sync-mailbox><enter-command>source /home/prakhil/.config/mutt/accounts/prakhil.tp@gmail.com.muttrc<enter><change-folder>!<enter>;<check-stats>' "switch to prakhil.tp@gmail.com"
+macro index,pager i2 '<sync-mailbox><enter-command>source /home/prakhil/.config/mutt/accounts/jjunky93@gmail.com.muttrc<enter><change-folder>!<enter>;<check-stats>' "switch to jjunky93@gmail.com"
+
+set use_threads=yes sort=reverse-last-date sort_aux=last-date
+set date_format="%a %d/%m/%y %I:%M%p"
+source ./color-scheme.muttrc
+
