@@ -3,3 +3,5 @@ conky
 xdotool
 htop
 mutt
+youtube-dl
+yt-dlp
