@@ -1,6 +1,10 @@
 
 export EDITOR="nvim"
 export ZSH="/home/prakhil/.oh-my-zsh"
+#export BROWSER="firefox"
+#export BROWSER="flatpak run com.brave.Browser"
+export BROWSER="qutebrowser"
+export CONFIG="~/.config"
 
 # PATH
 PATH=$HOME/bin:/usr/local/bin:$PATH
@@ -19,4 +23,5 @@ export CM_SELECTIONS="clipboard"
 export CM_DEBUG=0
 export CM_OUTPUT_CLIP=1
 export CM_MAX_CLIPS=10
+
 

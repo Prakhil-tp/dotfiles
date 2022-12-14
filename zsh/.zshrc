@@ -56,6 +56,9 @@ alias cat="bat"
 alias vifm="~/.config/vifm/scripts/vifmrun"
 alias v="~/.config/vifm/scripts/vifmrun"
 
+#htop
+alias h="htop"
+
 #ls
 alias ls='lsd -alh'
 alias lt='ls --tree'
@@ -68,6 +71,24 @@ alias pacman="sudo pacman"
 
 #perl-rename
 alias rename="perl-rename"
+
+#neomutt
+alias mail="neomutt"
+
+# random
+alias open="xdg-open"
+alias worldcup="/home/prakhil/scripts/world-cup-2022-cli-dashboard"
+alias iftop="sudo iftop"
+
+#journalctl and systemctl
+alias j="journalctl"
+alias s="systemctl"
+
+#config
+alias ac="nvim ~/.config/awesome/rc.lua"
+alias qc="nvim ~/.config/qutebrowser/config.py"
+alias nc="nvim ~/.config/nvim/init.vim"
+
 
 # Exa 
 #alias ls='exa -al --color=always --group-directories-first' # my preferred listing
