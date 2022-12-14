@@ -2,3 +2,5 @@
 vifminfo.json*
 autoload/*
 **/autoload/*
+**/__pycache__/*
+qutebrowser/.config/qutebrowser/qsettings
