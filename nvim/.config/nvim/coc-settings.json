@@ -40,5 +40,6 @@
         "lintTool": "golint"
       }
     }
-  }
+  },
+  "snippets.ultisnips.pythonPrompt": false
 }
