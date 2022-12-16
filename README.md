@@ -34,10 +34,10 @@ Configuration files that are used to customize your Linux or unix-like systems.
 ``` sh
 git clone https://github.com/Prakhil-tp/dotfiles.git
 cd ./dotfiles
-stow */         # stow <directory-name>  - for adding a purticular config
+stow <directory-name>      #  add a purticular config. example: $ stow alacritty
 ```
 
-## setup zsh
+## zsh
 #### 1. Import alacritty terminfo
 ```sh
   tic -x ~/dotfiles/remote-machine-zsh/alacritty.terminfo
@@ -72,17 +72,17 @@ stow */         # stow <directory-name>  - for adding a purticular config
   ```sh
     source ~/.zshrc
   ```
-## setup nvim
+## nvim
 
 1. open `vim ~/.config/nvim/vim-plug/plugins.vim`
 2. run the vim commands one after another.
 
 ``` vim-snippet
 :PlugInstall
-:CocInstall coc-prettier coc-snippets
+:CocInstall coc-explorer coc-snippets
 ```
 
-## setup fzf 
+## fzf 
 
 1. clone and install `fzf`
 2. stow .fzf.bash / .fzf.zsh files
