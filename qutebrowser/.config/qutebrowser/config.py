@@ -32,7 +32,8 @@ c.url.searchengines = {
     "le": "https://www.britannica.com/dictionary/{}", 
     "yt": "https://youtube.com/results?search_query={}",
     "aw": "https://wiki.archlinux.org/?search={}",
-    "olam": "https://olam.in/Dictionary/en_ml/{}"
+    "olam": "https://olam.in/Dictionary/en_ml/{}",
+    "pronounce": "https://youglish.com/pronounce/{}/english"
 }
 
 c.aliases = {

@@ -16,6 +16,7 @@
 // @exclude       https://www.google.com/*
 // @exclude       https://www.jiocinema.com/*
 // @exclude       https://www.gnu.org/*
+// @exclude       https://*.google.com/*
 //#### @exclude       https://www.google.com/search?q=*&tbm=isch*
 // @require       https://cdn.jsdelivr.net/npm/darkreader/darkreader.min.js
 // @noframes

@@ -6,14 +6,7 @@
 
 config_version: 2
 settings:
-  aliases:
-    global:
-      adb: config-cycle -t content.blocking.enabled
-      bk: bookmark-add
-      dev: devtools
-      incognito: open --private
-      o: open
-      paywall: open https://www.google.com/search?q=cache:{url}
-      q: quit
-      qrcode: spawn st -e watch --color -t -x qrcode-terminal "{url}"
-      wq: quit --save
+  content.blocking.enabled:
+    global: false
+  content.blocking.hosts.block_subdomains:
+    global: false
