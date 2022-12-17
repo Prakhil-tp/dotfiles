@@ -28,7 +28,7 @@ window:
   padding:
     x: 2
     y: 2
-  opacity: 0.95
+  opacity: 0.98
 
 shell:
   program: /usr/bin/zsh
