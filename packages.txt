@@ -1,7 +1,10 @@
-lxappearance
-conky
+#pacman                        #AUR
+
+lxappearance                    yt-dlp
+conky                           networkmanager-openvpn
 xdotool
 htop
-mutt
+neomutt
 youtube-dl
-yt-dlp
+dnsutils
+
