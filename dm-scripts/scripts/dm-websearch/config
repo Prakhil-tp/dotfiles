@@ -156,7 +156,7 @@ websearch[reddit]="https://www.reddit.com/search/?q="
 websearch[odysee]="https://odysee.com/$/search?q="
 websearch[youtube]="https://www.youtube.com/results?search_query="
 # Online Shopping
-websearch[amazon]="https://www.amazon.com/s?k="
+websearch[amazon]="https://www.amazon.in/s?k="
 websearch[craigslist]="https://www.craigslist.org/search/sss?query="
 websearch[ebay]="https://www.ebay.com/sch/i.html?&_nkw="
 websearch[gumtree]="https://www.gumtree.com/search?search_category=all&q="
