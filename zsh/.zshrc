@@ -22,7 +22,7 @@ DISABLE_AUTO_TITLE="true"
 
 plugins=(
 	git
-	nvm
+	#nvm
 	zsh-autosuggestions
   zsh-syntax-highlighting
 )
@@ -92,6 +92,10 @@ alias ac="nvim ~/.config/awesome/rc.lua"
 alias qc="nvim ~/.config/qutebrowser/config.py"
 alias nc="nvim ~/.config/nvim/init.vim"
 
+# nvm
+alias nvm='. ~/.nvm/loadnvm.sh; nvm "$@"'
+alias npm='. ~/.nvm/loadnvm.sh; npm "$@"'
+alias node='. ~/.nvm/loadnvm.sh; node "$@"'
 
 # Exa 
 #alias ls='exa -al --color=always --group-directories-first' # my preferred listing
@@ -128,9 +132,6 @@ bindkey -v
 # fzf config
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-# nvm
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # print system information on startup
 susefetch
