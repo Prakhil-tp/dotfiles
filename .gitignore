@@ -4,3 +4,4 @@ autoload/*
 **/autoload/*
 **/__pycache__/*
 qutebrowser/.config/qutebrowser/qsettings
+awesome/.config/awesome/autorun.sh
