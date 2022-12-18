@@ -33,3 +33,9 @@
 ```
 
 Please refer the note for testing: https://github.com/Prakhil-tp/vim-wiki-notes/blob/master/ueberzug.md
+
+## susefetch (superfast neofetch alternative)
+
+```
+cp susefetch ~/.local/bin/
+```
