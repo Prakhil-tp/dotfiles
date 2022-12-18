@@ -72,6 +72,9 @@ alias pacman="sudo pacman"
 #perl-rename
 alias rename="perl-rename"
 
+#vimwiki
+alias wiki="nvim -c VimwikiIndex"
+
 #neomutt
 alias mail="neomutt"
 
