@@ -1,6 +1,6 @@
-#pacman                        #AUR
+#Pacman                        #AUR                                    #Manual
 
-lxappearance                    yt-dlp
+lxappearance                    yt-dlp                                  asdf
 conky                           networkmanager-openvpn
 xdotool
 htop
