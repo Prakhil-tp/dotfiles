@@ -35,6 +35,11 @@ else
     print "404: ~/.zsh/syntax-highlight-dracula.sh not found."
 fi
 
+#asdf config
+. $HOME/.asdf/asdf.sh
+fpath=(${ASDF_DIR}/completions $fpath)
+autoload -Uz compinit && compinit
+
 
 # time command output formatting
 TIMEFMT=$'%J\n==================\nCPU\t%P\nuser\t%*U sec\nsystem\t%*S sec\ntotal\t%*E sec\n'
@@ -91,11 +96,6 @@ alias s="systemctl"
 alias ac="nvim ~/.config/awesome/rc.lua"
 alias qc="nvim ~/.config/qutebrowser/config.py"
 alias nc="nvim ~/.config/nvim/init.vim"
-
-# nvm
-alias nvm='. ~/.nvm/loadnvm.sh; nvm "$@"'
-alias npm='. ~/.nvm/loadnvm.sh; npm "$@"'
-alias node='. ~/.nvm/loadnvm.sh; node "$@"'
 
 # Exa 
 #alias ls='exa -al --color=always --group-directories-first' # my preferred listing
