@@ -49,7 +49,7 @@ end
 --beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
 --beautiful.init(gears.filesystem.get_configuration_dir().."themes/pastel.lua" )
 beautiful.init(gears.filesystem.get_configuration_dir().."themes/default/theme.lua" )
-naughty.config.icon_dirs = {"/usr/share/icons/dracula-icons/scalable/apps/"}
+naughty.config.icon_dirs = {"/usr/share/icons/dracula-icons/scalable/apps/", "/usr/share/icons/custom-icons/"}
 naughty.config.icon_formats = {"png","svg"}
 
 -- This is used later as the default terminal and editor to run.
