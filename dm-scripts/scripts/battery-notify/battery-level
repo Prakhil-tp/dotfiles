@@ -1,0 +1,26 @@
+export DISPLAY=:0
+export DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/1000/bus"
+
+WARNING_LEVEL=25
+BATTERY_DISCHARGING=`cat "/sys/class/power_supply/BAT1/status" | grep -c "Discharging"`
+BATTERY_LEVEL=`cat "/sys/class/power_supply/BAT1/capacity"`
+EMPTY_FILE=/tmp/batteryempty
+FULL_FILE=/tmp/batteryfull
+
+# Remove temp file to indicate status
+if [ $BATTERY_DISCHARGING -eq 1 ] && [ -f $FULL_FILE ]; then
+    rm $FULL_FILE
+elif [ $BATTERY_DISCHARGING -eq 0 ] && [ -f $EMPTY_FILE ]; then
+    rm $EMPTY_FILE
+fi
+
+# battery full
+if [ $BATTERY_LEVEL -gt 75 ] && [ $BATTERY_DISCHARGING -eq 0 ] && [ ! -f $FULL_FILE ]; then
+    notify-send "Battery Charged" "Battery is ${BATTERY_LEVEL}% charged." -i "battery-75" -r 9991 -t 6000
+    touch $FULL_FILE
+
+# battery is low
+elif [ $BATTERY_LEVEL -le $WARNING_LEVEL ] && [ $BATTERY_DISCHARGING -eq 1 ] && [ ! -f $EMPTY_FILE ]; then
+    notify-send "Low Battery" "${BATTERY_LEVEL}% of battery remaining." -u critical -i "battery-alert" -r 9991 -t 6000
+    touch $EMPTY_FILE
+fi

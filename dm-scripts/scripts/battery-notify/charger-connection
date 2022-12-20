@@ -1,0 +1,16 @@
+#!/bin/sh
+
+export XAUTHORITY=/home/prakhil/.Xauthority
+export DISPLAY=:0
+export DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/1000/bus"
+# Pass 1 as an argument for charging, 0 for discharging
+BATTERY_CHARGING=$1
+BATTERY_LEVEL=`cat "/sys/class/power_supply/BAT1/capacity"`
+
+
+# Send notifications
+if [ $BATTERY_CHARGING -eq 1 ]; then
+    notify-send "Charger connected" "${BATTERY_LEVEL}% of battery charged." -u low -i "charger" -t 5000 -r 9991
+elif [ $BATTERY_CHARGING -eq 0 ]; then
+    notify-send "Charger disconnected" "${BATTERY_LEVEL}% of battery remaining." -u low -i "charger-off" -t 5000 -r 9991
+fi
