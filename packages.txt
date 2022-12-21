@@ -8,3 +8,4 @@ neomutt
 youtube-dl
 dnsutils
 clipmenu
+flameshot
