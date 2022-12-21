@@ -113,6 +113,15 @@ client.connect_signal("request::activate", function(c)
   awful.ewmh.activate(c, context, hints)
 end)
 
+-- rounded corners
+--client.connect_signal("manage", function(c)
+  --if not c.fullscreen then
+    --c.shape = function(cr,w,h)
+        --gears.shape.rounded_rect(cr,w,h,5)
+    --end
+  --end
+--end)
+
 -- Autostart
 awful.spawn.with_shell("picom")
 awful.spawn.with_shell("clipmenud")   -- clipmenu

@@ -27,10 +27,8 @@ theme.fg_minimize   = "#ffffff"
 theme.useless_gap   = 5
 theme.border_width  = dpi(1)
 theme.border_normal = "#000000"
---theme.border_focus  = "#535d6c"
 theme.border_focus  = "#ff79c6"
 theme.border_marked = "#91231c"
-
 -- There are other variable sets
 -- overriding the default one when
 -- defined, the sets are:
@@ -62,10 +60,15 @@ theme.taglist_squares_unsel = theme_assets.taglist_squares_unsel(
 -- Variables set for theming the menu:
 -- menu_[bg|fg]_[normal|focus]
 -- menu_[border_color|border_width]
-notification_bg = "#282a36"
-notification_fg = "#f8f8f2"
-notification_icon_size = 80
-notification_border_color = theme.border_focus
+
+theme.notification_bg = "#bd93f9"
+theme.notification_fg = "#282a36"
+theme.notification_font = "Lato Light"
+theme.notification_icon_size = 80
+--theme.notification_border_color = theme.border_focus
+--theme.notification_shape = function(cr, w, h)
+   --shape.rounded_rect(cr, w, h, theme.border_radius or 0)
+--end
 
 theme.menu_submenu_icon = themes_path.."default/submenu.png"
 theme.menu_height = dpi(15)
