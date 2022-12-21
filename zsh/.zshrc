@@ -134,5 +134,5 @@ bindkey -v
 
 
 # print system information on startup
-susefetch
+paleofetch
 
