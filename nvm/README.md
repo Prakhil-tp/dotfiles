@@ -43,3 +43,7 @@ alias npm='. ~/.nvm/loadnvm.sh; npm "$@"'
 alias node='. ~/.nvm/loadnvm.sh; node "$@"'
 ```
 
+## Notes
+
+There's a better alternative `asdf` use that to save some pain.
+
