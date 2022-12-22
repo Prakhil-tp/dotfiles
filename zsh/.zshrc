@@ -1,58 +1,55 @@
 
-ZSH_THEME="powerlevel9k/powerlevel9k"
-POWERLEVEL9K_DISABLE_RPROMPT=true
-POWERLEVEL9K_PROMPT_ON_NEWLINE=true
-POWERLEVEL9K_MULTILINE_LAST_PROMPT_PREFIX="▶ "
-POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX=""
-POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir vcs)
-POWERLEVEL9K_MODE="nerdfont-complete"
+# ===========================================================================================================
+# 																												PROMPT
+# ===========================================================================================================
 
-POWERLEVEL9K_DIR_HOME_BACKGROUND="60"
-POWERLEVEL9K_DIR_HOME_FOREGROUND="black"
-POWERLEVEL9K_DIR_HOME_SUBFOLDER_BACKGROUND="60"
-POWERLEVEL9K_DIR_HOME_SUBFOLDER_FOREGROUND="black"
-POWERLEVEL9K_DIR_DEFAULT_BACKGROUND="60"
-POWERLEVEL9K_DIR_DEFAULT_FOREGROUND="black"
+autoload -Uz vcs_info
+zstyle ':vcs_info:*' enable git svn
+zstyle ':vcs_info:*' check-for-changes true
+zstyle ':vcs_info:*' unstagedstr '\033[48;5;222m'
+zstyle ':vcs_info:*' stagedstr '\033[48;5;222m'
+zstyle ':vcs_info:git*' formats "%u%c  %b "
+zstyle ':vcs_info:git:*' actionformats " %b | %a"
+setopt prompt_subst
 
-POWERLEVEL9K_VCS_MODIFIED_BACKGROUND="222"
-POWERLEVEL9K_VCS_CLEAN_BACKGROUND="183"
+zsh_prompt_home_indicator() {
+    if [[ "$PWD" = "$HOME" ]];then
+        echo "  "
+    else
+        echo "  "
+    fi
+}
 
-POWERLEVEL9K_LEFT_SUBSEGMENT_SEPARATOR=''
-POWERLEVEL9K_RIGHT_SUBSEGMENT_SEPARATOR=''
-POWERLEVEL9K_RIGHT_SEGMENT_SEPARATOR=""
-POWERLEVEL9K_LEFT_SEGMENT_SEPARATOR=""
-DISABLE_AUTO_UPDATE="true"
-DISABLE_UPDATE_PROMPT="true"
-DISABLE_AUTO_TITLE="true"
+precmd() {
+  bg_color='\033[48;5;183m'
+  fg_color='\033[1;38;5;16m'
+  clear='\033[m'
+  #vcs_bg_color='\033[48;5;120m'
+  vcs_bg_color='\033[48;5;159m'
 
-plugins=(
-	git
-	#nvm
-	zsh-autosuggestions
-  zsh-syntax-highlighting
-)
+  vcs_info
+  print -P $bg_color$fg_color$(zsh_prompt_home_indicator)'%~ '$clear$vcs_bg_color$fg_color${vcs_info_msg_0_}$clear
+}
+PROMPT='▶ '
 
-source $ZSH/oh-my-zsh.sh
+# ===========================================================================================================
+# 																								VARIABLES & CONFIGS
+# ===========================================================================================================
+HISTSIZE=10000
+SAVEHIST=10000
+HISTFILE=~/.cache/zsh/history
 
-if [ -f ~/.zsh/syntax-highlight-dracula.sh ]; then
-    source ~/.zsh/syntax-highlight-dracula.sh
-else
-    print "404: ~/.zsh/syntax-highlight-dracula.sh not found."
-fi
-
-#asdf config
-. $HOME/.asdf/asdf.sh
-fpath=(${ASDF_DIR}/completions $fpath)
-autoload -Uz compinit && compinit
-
-
-# time command output formatting
-TIMEFMT=$'%J\n==================\nCPU\t%P\nuser\t%*U sec\nsystem\t%*S sec\ntotal\t%*E sec\n'
+# basic auto/tab complete:
+autoload -Uz compinit 
+zstyle ':completion:*' menu select
+zmodload zsh/complist
+compinit
+_comp_options+=(globdots)
 
 # ===========================================================================================================
 # 																												ALIAS
 # ===========================================================================================================
-#
+
 alias projects="pushd ~/code/projects && clear && ls"
 alias playground="pushd ~/code/playground && clear && ls"
 alias notes="pushd ~/documents/notes && clear && ls"
@@ -90,7 +87,6 @@ alias mail="neomutt"
 
 # random
 alias open="xdg-open"
-alias worldcup="/home/prakhil/scripts/world-cup-2022-cli-dashboard"
 alias iftop="sudo iftop"
 
 #journalctl and systemctl
@@ -101,13 +97,6 @@ alias s="systemctl"
 alias ac="nvim ~/.config/awesome/rc.lua"
 alias qc="nvim ~/.config/qutebrowser/config.py"
 alias nc="nvim ~/.config/nvim/init.vim"
-
-# Exa 
-#alias ls='exa -al --color=always --group-directories-first' # my preferred listing
-#alias la='exa -a --color=always --group-directories-first'  # all files and dirs
-#alias ll='exa -l --color=always --group-directories-first'  # long format
-#alias lt='exa -aT --color=always --group-directories-first' # tree listing
-#alias l.='exa -a | egrep "^\."'
 
 # ===========================================================================================================
 # enable vim mode to terminal
@@ -131,12 +120,27 @@ zle-line-init () {
 zle -N zle-line-init
 
 bindkey -v
+export KEYTIMEOUT=1
+
+autoload edit-command-line; zle -N edit-command-line
+bindkey '^e' edit-command-line
+# ===========================================================================================================
+# 																							 PLUGINS & CONFIGS
+# ===========================================================================================================
+source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+source ~/.zsh/syntax-highlight-dracula.sh
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+#asdf config
+. $HOME/.asdf/asdf.sh
+fpath=(${ASDF_DIR}/completions $fpath)
 
 # ===========================================================================================================
 
-# fzf config
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
+# time command output formatting
+TIMEFMT=$'%J\n==================\nCPU\t%P\nuser\t%*U sec\nsystem\t%*S sec\ntotal\t%*E sec\n'
 
 # print system information on startup
 paleofetch
