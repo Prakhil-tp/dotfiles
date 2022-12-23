@@ -43,18 +43,16 @@ HISTFILE=~/.cache/zsh/history
 autoload -Uz compinit 
 zstyle ':completion:*' menu select
 zmodload zsh/complist
-compinit -d "$XDG_CACHE_HOME"/zsh/zcompdump-"$ZSH_VERSION"
+compinit -d "$XDG_CACHE_HOME/zsh/zcompdump-$ZSH_VERSION"
 _comp_options+=(globdots)
 # ===========================================================================================================
 # 																												ALIAS
 # ===========================================================================================================
 # cleanup
-alias mbsync=mbsync -c "$XDG_CONFIG_HOME/isync/mbsyncrc"
-alias wget=wget --hsts-file="$XDG_DATA_HOME/wget-hsts"
+alias mbsync="mbsync -c $XDG_CONFIG_HOME/isync/mbsyncrc"
+alias wget="wget --hsts-file=$XDG_DATA_HOME/wget-hsts"
 
 # cleaned from $Home
-alias mbsync=mbsync -c "$XDG_CONFIG_HOME/isync/mbsyncrc"
-alias wget=wget --hsts-file="$XDG_DATA_HOME/wget-hsts"
 alias zshrc="vim $ZDOTDIR/.zshrc"
 alias /tmp="cd /tmp"
 
