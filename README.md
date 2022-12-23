@@ -4,6 +4,8 @@
 [![tag](https://img.shields.io/github/v/tag/prakhil-tp/dotfiles)](https://github.com/prakhil-tp/dotfiles/tags)
 [![last commit](https://img.shields.io/github/last-commit/prakhil-tp/dotfiles)](https://github.com/Prakhil-tp/dotfiles/commits/master)
 
+![dotfiles image](./dotfiles.png)
+
 Configuration files that are used to customize your Linux or unix-like systems. 
 
 ## Configs
