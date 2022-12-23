@@ -43,12 +43,14 @@ HISTFILE=~/.cache/zsh/history
 autoload -Uz compinit 
 zstyle ':completion:*' menu select
 zmodload zsh/complist
-compinit
+compinit -d "$XDG_CACHE_HOME"/zsh/zcompdump-"$ZSH_VERSION"
 _comp_options+=(globdots)
-
 # ===========================================================================================================
 # 																												ALIAS
 # ===========================================================================================================
+# cleanup
+alias mbsync=mbsync -c "$XDG_CONFIG_HOME/isync/mbsyncrc"
+alias wget=wget --hsts-file="$XDG_DATA_HOME/wget-hsts"
 
 alias projects="pushd ~/code/projects && clear && ls"
 alias playground="pushd ~/code/playground && clear && ls"
@@ -129,13 +131,11 @@ bindkey '^e' edit-command-line
 # ===========================================================================================================
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-source ~/.zsh/syntax-highlight-dracula.sh
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+source $XDG_CONFIG_HOME/zsh/syntax-highlight-dracula.sh
+source $XDG_DATA_HOME/fzf/fzf.zsh
 
 #asdf config
-. $HOME/.asdf/asdf.sh
-fpath=(${ASDF_DIR}/completions $fpath)
+. /opt/asdf-vm/asdf.sh
 
 # ===========================================================================================================
 
