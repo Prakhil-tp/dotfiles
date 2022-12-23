@@ -9,7 +9,7 @@ zstyle ':vcs_info:*' check-for-changes true
 zstyle ':vcs_info:*' unstagedstr '\033[48;5;222m'
 zstyle ':vcs_info:*' stagedstr '\033[48;5;222m'
 zstyle ':vcs_info:git*' formats "%u%c  %b "
-zstyle ':vcs_info:git:*' actionformats "\033[48;5;210m %b | %a "
+zstyle ':vcs_info:git:*' actionformats "\033[48;5;210m   %b | %a "
 setopt prompt_subst
 
 zsh_prompt_home_indicator() {
