@@ -21,6 +21,6 @@ if [ $BATTERY_LEVEL -gt 75 ] && [ $BATTERY_DISCHARGING -eq 0 ] && [ ! -f $FULL_F
 
 # battery is low
 elif [ $BATTERY_LEVEL -le $WARNING_LEVEL ] && [ $BATTERY_DISCHARGING -eq 1 ] && [ ! -f $EMPTY_FILE ]; then
-    notify-send "Low Battery" "${BATTERY_LEVEL}% of battery remaining." -u critical -i "battery-alert" -r 9991 -t 6000
+    notify-send "Low Battery" "${BATTERY_LEVEL}% of battery remaining." -u critical -i "battery-alert" -r 9991
     touch $EMPTY_FILE
 fi

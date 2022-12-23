@@ -11,6 +11,6 @@ while [ $last_num == $number ]; do
 done
 echo $number > $wallpaper_path/.last
 #nitrogen --set-scaled --save $WALLPAPERS/${ALIST[$number]}
-feh --bg-fill $wallpaper_path/${list[$number]}
+feh --bg-fill $wallpaper_path/${list[$number]} --no-fehbg
 echo "LAST_WALLPAPER=\"$wallpaper_path/${list[$number]}\"" > /tmp/wallpaper.log
 exit 
