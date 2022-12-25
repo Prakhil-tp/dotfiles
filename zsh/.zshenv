@@ -17,7 +17,8 @@ fi
 export PATH
 
 # dracula theme for fzf
-export FZF_DEFAULT_OPTS='--color=fg:#f8f8f2,bg:#282a36,hl:#bd93f9 --color=fg+:#f8f8f2,bg+:#44475a,hl+:#bd93f9 --color=info:#ffb86c,prompt:#50fa7b,pointer:#ff79c6 --color=marker:#ff79c6,spinner:#ffb86c,header:#6272a4'
+#export FZF_DEFAULT_OPTS='--color=fg:#f8f8f2,bg:#282a36,hl:#bd93f9 --color=fg+:#f8f8f2,bg+:#44475a,hl+:#bd93f9 --color=info:#ffb86c,prompt:#50fa7b,pointer:#ff79c6 --color=marker:#ff79c6,spinner:#ffb86c,header:#6272a4'
+export FZF_DEFAULT_OPTS='--color=fg:#f8f8f2,hl:#bd93f9 --color=fg+:#f8f8f2,hl+:#bd93f9 --color=info:#ffb86c,prompt:#50fa7b,pointer:#ff79c6 --color=marker:#ff79c6,spinner:#ffb86c,header:#6272a4 --layout=reverse --height 40%'
 
 # clipmenu
 export CM_SELECTIONS="clipboard"
@@ -39,5 +40,5 @@ export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
 export NODE_REPL_HISTORY="$XDG_DATA_HOME/node_repl_history"
 export PASSWORD_STORE_DIR="$XDG_DATA_HOME/pass"
 export PYTHONSTARTUP="$XDG_CONFIG_HOME/python/pythonrc"
-export HISTFILE="$XDG_STATE_HOME/zsh/history"
+export HISTFILE="$XDG_CACHE_HOME/zsh/history"
 export CUDA_CACHE_PATH="$XDG_CACHE_HOME/nv"
