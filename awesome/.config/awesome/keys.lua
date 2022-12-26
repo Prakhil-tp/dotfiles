@@ -169,6 +169,26 @@ keys.globalkeys = gears.table.join(
     awful.spawn.with_shell("xdotool type $(grep -v '^#' ~/.local/share/script-files/snippets.txt | dmenu -i -l 20 | cut -d' ' -f1)")
 	end, { description = "get bookmarked values to any textfield", group = "applications" }),
 
+  awful.key({ modkey}, "o", function()
+    local handle = io.popen("find $HOME -type f | dmenu -i -l 20")
+    local result = handle:read("*a")
+    handle:close() 
+    filepath = result:gsub("\n[^\n]*$", "")
+
+    if(filepath ~= "") then
+      handle = io.popen("xdg-mime query filetype "..filepath.." | xargs -e -I {} xdg-mime query default {}")
+      result = handle:read("*a")
+      handle:close() 
+      application = result:gsub("\n[^\n]*$", "")
+
+      if(application == "nvim.desktop") then
+        awful.spawn(terminal.." -e nvim "..filepath)
+      else
+        awful.spawn.with_shell("xdg-open "..filepath)
+      end
+    end
+  end, { description = "open any files", group = "applications"}),
+
   -- ===================================
   -- key bindings followed by  Mod + p
   -- ===================================
@@ -327,17 +347,24 @@ keys.globalkeys = gears.table.join(
           {},
           "b",
           function(self)
-            local f = io.open("/sys/class/power_supply/BAT1/capacity")
-            local battery = " ".. f:read() .. "%" 
-            f:close()
-            naughty.notify{
-              text=battery,
-              margin=10,
-              position="top_middle",
-              bg="#282a36",
-              fg="#f8f8f2",
-              border_color="#bd93f9"
-            }
+            if gears.filesystem.file_readable("/sys/class/power_supply/BAT1/capacity") then
+              local f = io.open("/sys/class/power_supply/BAT1/capacity")
+                local battery = " ".. f:read() .. "%" 
+                f:close()
+                naughty.notify{
+                  text=battery,
+                  margin=10,
+                  position="top_middle",
+                  bg="#282a36",
+                  fg="#f8f8f2",
+                  border_color="#bd93f9"
+               }
+            else
+                naughty.notify{
+                  title="Attention!",
+                  text="No Battery information available",
+               }
+            end
             self:stop()
           end
         }

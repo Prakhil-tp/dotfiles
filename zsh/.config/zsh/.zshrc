@@ -1,6 +1,6 @@
 
 # ===========================================================================================================
-# 																												PROMPT
+#                                                         PROMPT
 # ===========================================================================================================
 
 autoload -Uz vcs_info
@@ -13,11 +13,11 @@ zstyle ':vcs_info:git:*' actionformats "\033[48;5;210m   %b | %a "
 setopt prompt_subst
 
 zsh_prompt_home_indicator() {
-    if [[ "$PWD" = "$HOME" ]];then
-        echo "  "
-    else
-        echo "  "
-    fi
+  if [[ "$PWD" = "$HOME" ]];then
+    echo "  "
+  else
+    echo "  "
+  fi
 }
 
 precmd() {
@@ -33,28 +33,32 @@ precmd() {
 PROMPT='▶ '
 
 # ===========================================================================================================
-# 																								VARIABLES & CONFIGS
+#                                                      CONFIGS
 # ===========================================================================================================
 HISTSIZE=10000
 SAVEHIST=10000
-HISTFILE=~/.cache/zsh/history
+HISTFILE="$XDG_CACHE_HOME/zsh/history"
 
 # basic auto/tab complete:
-autoload -Uz compinit 
+autoload -Uz compinit
 zstyle ':completion:*' menu select
 zmodload zsh/complist
-compinit -d "$XDG_CACHE_HOME"/zsh/zcompdump-"$ZSH_VERSION"
+compinit -d "$XDG_CACHE_HOME/zsh/zcompdump-$ZSH_VERSION"
 _comp_options+=(globdots)
+
+#asdf config
+. /opt/asdf-vm/asdf.sh
+
+# time command output formatting
+TIMEFMT=$'%J\n==================\nCPU\t%P\nuser\t%*U sec\nsystem\t%*S sec\ntotal\t%*E sec\n'
 # ===========================================================================================================
-# 																												ALIAS
+#                                                         ALIAS
 # ===========================================================================================================
 # cleanup
-alias mbsync=mbsync -c "$XDG_CONFIG_HOME/isync/mbsyncrc"
-alias wget=wget --hsts-file="$XDG_DATA_HOME/wget-hsts"
+alias mbsync="mbsync -c $XDG_CONFIG_HOME/isync/mbsyncrc"
+alias wget="wget --hsts-file=$XDG_DATA_HOME/wget-hsts"
 
 # cleaned from $Home
-alias mbsync=mbsync -c "$XDG_CONFIG_HOME/isync/mbsyncrc"
-alias wget=wget --hsts-file="$XDG_DATA_HOME/wget-hsts"
 alias zshrc="vim $ZDOTDIR/.zshrc"
 alias /tmp="cd /tmp"
 
@@ -107,6 +111,31 @@ alias qc="nvim ~/.config/qutebrowser/config.py"
 alias nc="nvim ~/.config/nvim/init.vim"
 
 # ===========================================================================================================
+#                                                 CUSTOM COMMANDS
+# ===========================================================================================================
+# so - command to search and open anyfile
+function so() {
+  file=$( \
+    find $HOME -type f \
+    ! -path '**/node_modules/*' \
+    ! -path '**/[Cc]ache*/*' \
+    ! -path '**/autoload/*' \
+    ! -path '**/Code Cache/*' | \
+    fzf -e \
+  )
+  xdg-open $file
+}
+
+# se - search and open a file to edit 
+function se() {
+    find $HOME/scripts $HOME/.config $HOME/dotfiles \
+    ! -path '**/node_modules/*' \
+    ! -path '**/autoload/*' | \
+    fzf -e | \
+    xargs -r $EDITOR
+}
+
+# ===========================================================================================================
 # enable vim mode to terminal
 # Change cursor shape according to the mode in terminal
 zle-keymap-select () {
@@ -130,23 +159,19 @@ zle -N zle-line-init
 bindkey -v
 export KEYTIMEOUT=1
 
+# Edit command in vim buffer ( Ctrl + e )
 autoload edit-command-line; zle -N edit-command-line
 bindkey '^e' edit-command-line
+
 # ===========================================================================================================
-# 																							 PLUGINS & CONFIGS
+#                                                 PLUGINS & TOOLS 
 # ===========================================================================================================
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 source $XDG_CONFIG_HOME/zsh/syntax-highlight-dracula.sh
 source $XDG_DATA_HOME/fzf/fzf.zsh
 
-#asdf config
-. /opt/asdf-vm/asdf.sh
-
 # ===========================================================================================================
-
-# time command output formatting
-TIMEFMT=$'%J\n==================\nCPU\t%P\nuser\t%*U sec\nsystem\t%*S sec\ntotal\t%*E sec\n'
 
 # print system information on startup
 paleofetch

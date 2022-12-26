@@ -19,7 +19,7 @@ set highlight-color             "#657b83" # base00  # hightlight match when sear
 set highlight-active-color      "#268bd2" # blue
 
 # Recolor book content's color
-set recolor                     true
+# set recolor                     true
 set recolor-lightcolor          "#073642" # base02
 set recolor-darkcolor           "#93a1a1" # base1
 set recolor-keephue             true      # keep original color

@@ -4,6 +4,8 @@
 [![tag](https://img.shields.io/github/v/tag/prakhil-tp/dotfiles)](https://github.com/prakhil-tp/dotfiles/tags)
 [![last commit](https://img.shields.io/github/last-commit/prakhil-tp/dotfiles)](https://github.com/Prakhil-tp/dotfiles/commits/master)
 
+![dotfiles image](./dotfiles.png)
+
 Configuration files that are used to customize your Linux or unix-like systems. 
 
 ## Configs
@@ -16,7 +18,7 @@ Configuration files that are used to customize your Linux or unix-like systems.
 - [Devilspie 2](https://github.com/Prakhil-tp/dotfiles/tree/master/devilspie2/.config/devilspie2/)
 - [Dm-scripts](https://github.com/Prakhil-tp/dotfiles/tree/master/dm-scripts/scripts)
 - [Doom Emacs](https://github.com/Prakhil-tp/dotfiles/tree/master/emacs/)
-- [Fzf](https://github.com/Prakhil-tp/dotfiles/tree/master/fzf/)
+- [Fzf](https://github.com/Prakhil-tp/dotfiles/tree/master/fzf/.local/share/fzf)
 - [Lsd](https://github.com/Prakhil-tp/dotfiles/tree/master/lsd/.config/lsd)
 - [Mutt](https://github.com/Prakhil-tp/dotfiles/tree/master/mutt/.config/mutt/)
 - [Neovim](https://github.com/Prakhil-tp/dotfiles/tree/master/nvim/.config/nvim/)
