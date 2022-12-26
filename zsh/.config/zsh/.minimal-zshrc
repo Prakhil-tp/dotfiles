@@ -1,0 +1,10 @@
+#!/bin/zsh
+# a file to source asdf and fzf config.
+# this script is useful while launching nvim directly from Window manager
+# example usage:
+# awful.spawn("alacritty -e zsh -c 'source .mininal-zshrc && nvim path/to/any/file'")
+
+# asdf config
+. /opt/asdf-vm/asdf.sh
+# fzf
+source $XDG_DATA_HOME/fzf/fzf.zsh

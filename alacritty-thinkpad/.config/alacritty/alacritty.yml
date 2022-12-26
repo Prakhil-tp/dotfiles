@@ -34,7 +34,7 @@ window:
   opacity: 0.95
 
 shell:
-  program: /usr/bin/zsh
+  program: /bin/zsh
 
 scrolling:
   # Maximum number of lines in the scrollback buffer.

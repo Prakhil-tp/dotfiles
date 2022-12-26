@@ -182,7 +182,7 @@ keys.globalkeys = gears.table.join(
       application = result:gsub("\n[^\n]*$", "")
 
       if(application == "nvim.desktop") then
-        awful.spawn(terminal.." -e nvim "..filepath)
+        awful.spawn("alacritty -e zsh -c 'source $ZDOTDIR/.minimal-zshrc && nvim "..filepath.."'")
       else
         awful.spawn.with_shell("xdg-open "..filepath)
       end
