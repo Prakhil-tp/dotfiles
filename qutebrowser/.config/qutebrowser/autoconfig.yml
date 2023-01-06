@@ -6,7 +6,6 @@
 
 config_version: 2
 settings:
-  content.blocking.enabled:
-    global: false
-  content.blocking.hosts.block_subdomains:
-    global: false
+  content.geolocation:
+    https://where-am-i.org: false
+    https://www.where-am-i.net: false

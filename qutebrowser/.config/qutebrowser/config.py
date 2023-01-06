@@ -28,7 +28,7 @@ c.url.default_page = c.url.start_pages
 
 # search engines
 c.url.searchengines = {
-    "DEFAULT": "http://searx.prakhil.dev/search?q={}",
+    "DEFAULT": "https://searx.prakhil.xyz/search?q={}",
     "go": "https://google.com/search?q={}", 
     "le": "https://www.britannica.com/dictionary/{}", 
     "yt": "https://youtube.com/results?search_query={}",
