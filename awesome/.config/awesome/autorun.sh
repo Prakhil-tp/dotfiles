@@ -1,10 +1,21 @@
 #!/bin/sh
 
 run() {
-  if ! pgrep -f "$1" ;
-  then
-    "$@"
-  fi
+  case $1 in
+    "sudo")
+      if ! pgrep -f "$2" ;
+      then
+        "${@:1}"
+      fi
+      ;;
+    *)
+      if ! pgrep -f "$1" ;
+      then
+        "$@"
+      fi
+      ;;
+  esac
 }
 
-run conky -c ~/.config/conky/dracula.conkyrc
+run conky -c /home/prakhil/.config/conky/dracula.conkyrc > /dev/null 2>&1 &
+run sudo -b openvpn /home/prakhil/.config/openvpn/client.ovpn
