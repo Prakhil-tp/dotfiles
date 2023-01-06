@@ -39,6 +39,8 @@ HISTSIZE=10000
 SAVEHIST=10000
 HISTFILE="$XDG_CACHE_HOME/zsh/history"
 
+setopt autocd 
+
 # basic auto/tab complete:
 autoload -Uz compinit
 zstyle ':completion:*' menu select
@@ -46,11 +48,18 @@ zmodload zsh/complist
 compinit -d "$XDG_CACHE_HOME/zsh/zcompdump-$ZSH_VERSION"
 _comp_options+=(globdots)
 
+# automatically load bash completion functions
+autoload -Uz bashcompinit && bashcompinit
+
 #asdf config
 . /opt/asdf-vm/asdf.sh
 
 # time command output formatting
 TIMEFMT=$'%J\n==================\nCPU\t%P\nuser\t%*U sec\nsystem\t%*S sec\ntotal\t%*E sec\n'
+
+# Edit command in vim buffer ( Ctrl + e )
+autoload edit-command-line; zle -N edit-command-line
+bindkey '^e' edit-command-line
 # ===========================================================================================================
 #                                                         ALIAS
 # ===========================================================================================================
@@ -60,7 +69,6 @@ alias wget="wget --hsts-file=$XDG_DATA_HOME/wget-hsts"
 
 # cleaned from $Home
 alias zshrc="vim $ZDOTDIR/.zshrc"
-alias /tmp="cd /tmp"
 
 alias projects="pushd ~/code/projects && clear && ls"
 alias playground="pushd ~/code/playground && clear && ls"
@@ -128,40 +136,12 @@ function so() {
 
 # se - search and open a file to edit 
 function se() {
-    find $HOME/scripts $HOME/.config $HOME/dotfiles \
+    find $HOME/scripts $HOME/.config $HOME/dotfiles $HOME/documents \
     ! -path '**/node_modules/*' \
     ! -path '**/autoload/*' | \
     fzf -e | \
     xargs -r $EDITOR
 }
-
-# ===========================================================================================================
-# enable vim mode to terminal
-# Change cursor shape according to the mode in terminal
-zle-keymap-select () {
-  if [ $KEYMAP = vicmd ]; then
-    echo -ne '\e[1 q'
-  else
-    echo -ne '\e[6 q'
-  fi
-}
-
-zle -N zle-keymap-select
-
-# Start with beam shape cursor on every new line
-zle-line-init () {
-  zle -K viins
-  echo -ne '\e[6 q'
-}
-
-zle -N zle-line-init
-
-bindkey -v
-export KEYTIMEOUT=1
-
-# Edit command in vim buffer ( Ctrl + e )
-autoload edit-command-line; zle -N edit-command-line
-bindkey '^e' edit-command-line
 
 # ===========================================================================================================
 #                                                 PLUGINS & TOOLS 
@@ -170,6 +150,7 @@ source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zs
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 source $XDG_CONFIG_HOME/zsh/syntax-highlight-dracula.sh
 source $XDG_DATA_HOME/fzf/fzf.zsh
+source $ZDOTDIR/vim-mode.zsh
 
 # ===========================================================================================================
 
