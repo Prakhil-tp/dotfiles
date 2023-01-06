@@ -64,7 +64,7 @@ key_action_map = {
         ";R": "hint --rapid links window",
         ";d": "hint links download",
         ";i": "hint inputs",
-        ";m": "hint links spawn mpv {hint-url}",
+        ";m": "hint links spawn --detach mpv {hint-url}",
         "gi": "hint inputs --first",
 
 #= / ==========================================
