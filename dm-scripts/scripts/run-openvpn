@@ -1,0 +1,3 @@
+#!/bin/bash
+
+sudo /usr/bin/openvpn /home/prakhil/.config/openvpn/client.ovpn

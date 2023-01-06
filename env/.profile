@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # path
-export PATH="$HOME/bin:/usr/local/bin:$HOME/.local/bin:$HOME/bin:$PATH"
+export PATH="$HOME/bin:/usr/local/bin:$HOME/.local/bin:$HOME/bin:$HOME/scripts/run-openvpn:$PATH"
 
 # xdg environment variables
 export XDG_DATA_HOME="$HOME/.local/share"
