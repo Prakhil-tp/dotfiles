@@ -9,3 +9,8 @@ youtube-dl
 dnsutils
 clipmenu
 flameshot
+zathura
+zathura-cb
+zathura-pdf-mupdf
+zathura-djvu
+zathura-ps
