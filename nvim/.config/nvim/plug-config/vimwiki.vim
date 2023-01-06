@@ -10,5 +10,5 @@ let g:vimwiki_key_mappings = { 'table_mappings': 0, 'links': 0 }
 
 nmap <CR> <Plug>VimwikiFollowLink
 nmap <Backspace> <Plug>VimwikiGoBackLink
-
+nmap <C-CR> <Plug>VimwikiVSplitLink
 
