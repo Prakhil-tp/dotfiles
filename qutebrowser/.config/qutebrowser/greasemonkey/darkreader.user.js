@@ -19,6 +19,8 @@
 // @exclude       https://*.google.com/*
 // @exclude       http*://searx.*
 // @exclude       http*://*.cloudflare.com/*
+// @exclude       http*://*wordtune.com/*
+// @exclude       http*://*ultravioletsoftware.com/*
 //#### @exclude       https://www.google.com/search?q=*&tbm=isch*
 // @require       https://cdn.jsdelivr.net/npm/darkreader/darkreader.min.js
 // @noframes

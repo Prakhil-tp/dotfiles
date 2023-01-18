@@ -2,7 +2,7 @@ import dracula.draw
 import keybindings
 
 
-config.load_autoconfig(False)
+config.load_autoconfig(True)
 #key
 c.bindings.default = keybindings.key_action_map
 
