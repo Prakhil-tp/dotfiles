@@ -13,3 +13,4 @@ set use_threads=yes sort=reverse-last-date sort_aux=last-date
 set date_format="%a %d/%m/%y %I:%M%p"
 source ./color-scheme.muttrc
 
+macro index,pager i3 '<sync-mailbox><enter-command>source /home/prakhil/.config/mutt/accounts/prakhil@prakhil.xyz.muttrc<enter><change-folder>!<enter>;<check-stats>' "switch to prakhil@prakhil.xyz"
