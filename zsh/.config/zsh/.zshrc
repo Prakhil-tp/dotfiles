@@ -108,6 +108,7 @@ alias mail="neomutt"
 # random
 alias open="xdg-open"
 alias iftop="sudo iftop"
+alias docker="sudo docker"
 
 #journalctl and systemctl
 alias j="journalctl"
