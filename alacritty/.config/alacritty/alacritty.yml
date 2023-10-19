@@ -1,8 +1,15 @@
 import:
-  - ./dracula.yml
+  - ~/.config/alacritty/catppuccin/catppuccin-mocha.yml
+  # - ~/.config/alacritty/catppuccin/catppuccin-macchiato.yml
+  # - ~/.config/alacritty/dracula.yml
+
+env:
+  TERM: xterm-256color
+
 font:
   normal:
-    family: "Hack NF"
+    #family: "Hack NF"
+    family: "JetBrainsMono NF"
     style: Regular
   #bold:
   #family: ""
@@ -15,7 +22,8 @@ font:
   #style: Bold Italic
 
   # Point size
-  size: 10
+  size: 12
+  #size: 9
 
   offset:
     x: 0
@@ -28,7 +36,7 @@ window:
   padding:
     x: 2
     y: 2
-  opacity: 0.99
+  opacity: 0.96
 
 shell:
   program: /usr/bin/zsh
@@ -48,8 +56,7 @@ draw_bold_text_with_bright_colors: true
 selection:
   semantic_escape_chars: ',│`|:"'' ()[]{}<>'
   save_to_clipboard: true
-
-live_config_reload: true
+#live_config_reload: true
 #key_bindings:
 #- { key: V, mods: Control|Shift, action: Paste }
 #- { key: C, mods: Control|Shift, action: Copy }
