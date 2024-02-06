@@ -1,4 +1,5 @@
-import = ["/home/prakhil/.config/alacritty/dracula.toml"]
+#import = ["/home/prakhil/.config/alacritty/dracula.toml"]
+import = ["/home/prakhil/.config/alacritty/cappuccin-mocha.toml"]
 live_config_reload = true
 
 [colors]
