@@ -28,8 +28,8 @@ c.url.default_page = c.url.start_pages
 
 # search engines
 c.url.searchengines = {
-    "DEFAULT": "https://searx.prakhil.xyz/search?q={}",
-    "go": "https://google.com/search?q={}", 
+    "DEFAULT": "https://google.com/search?q={}", 
+    "st": "https://startpage.com/do/search?q={}",
     "le": "https://www.britannica.com/dictionary/{}", 
     "yt": "https://youtube.com/results?search_query={}",
     "aw": "https://wiki.archlinux.org/?search={}",

@@ -15,5 +15,7 @@ settings:
     https://www.where-am-i.net: false
   content.notifications.enabled:
     https://emailanalytics.com: false
+  statusbar.show:
+    global: always
   tabs.show:
     global: always

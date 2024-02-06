@@ -21,23 +21,26 @@
 // @exclude       http*://*.cloudflare.com/*
 // @exclude       http*://*wordtune.com/*
 // @exclude       http*://*ultravioletsoftware.com/*
+// @exclude       http*://*startpage.com/*
+// @exclude       http*://*visualstudio.com/*
+// @exclude       http*://*adobe.com/*
+// @exclude       http*://localhost*
+// @exclude       http*://*mui.com/*
+// @exclude       http*://*apexcharts.com/*
+// @exclude       http*://*openai.com/*
+// @exclude       http*://*amazon.*/*
+//
 //#### @exclude       https://www.google.com/search?q=*&tbm=isch*
 // @require       https://cdn.jsdelivr.net/npm/darkreader/darkreader.min.js
 // @noframes
 // ==/UserScript==
 
-
 DarkReader.enable({
   brightness: 100,
   contrast: 100,
   sepia: 0,
-  grayscale:60
+  grayscale: 60,
 });
-
-
-
-
-
 
 /*
 let applyDarkMode = true
