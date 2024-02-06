@@ -145,8 +145,9 @@ keys.globalkeys = gears.table.join(
 	end, { description = "switch window", group = "launcher" }),
 	awful.key({ modkey }, "b", function()
 		--awful.spawn("brave")
-		awful.spawn.with_shell("flatpak run com.brave.Browser")
-	end, { description = "launch brave", group = "applications" }),
+	--end, { description = "launch brave", group = "applications" }),
+		awful.spawn.with_shell("thorium-browser")
+  end, { description = "launch thorium", group = "applications" }),
 	awful.key({ modkey }, "q", function()
 		awful.spawn("qutebrowser")
 	end, { description = "launch qutebrowser", group = "applications" }),

@@ -1,0 +1,74 @@
+flatpak run com.spotify.Client
+flatpak run com.spotify.Client
+flatpak run com.spotify.Client
+clear
+ls
+clear
+ls
+vim .Xresources
+clear
+ls
+vim ~/.config/gtk-3.0/settings.ini
+clear
+gsettings set org.gnome.desktop.interface text-scaling-factor 1
+xdpyinfo | grep -B 2 resolution
+zshrc
+sudo systemctl restart lightdm
+sudo grep -r "{'Xft/DPI': <153600>}" /etc/
+sudo grep -r "{'Xft/DPI': <153600>}" /home/prakhil
+sudo grep -r "{'Xft/DPI': <153600>}" /usr/
+find ~/.[ -mmin -5
+ls
+ls /org/
+find / -d "gnome"
+find / -type d "gnome"
+find / -type d -name "gnome"
+sudo find / -type d -name "gnome"
+gsettings set org.gnome.settings-daemon.plugins.xsettings overrides "{'Xft/DPI': <256>}"
+sudo systemctl restart lightdm
+vim .Xresources
+sudo systemctl restart lightdm
+clear
+ls
+vim .Xresources
+sudo systemctl restart lightdm
+xrandr
+vim .Xresources
+sudo systemctl restart lightdm
+clear
+ls
+vim ~/.config/alacritty/alacritty.toml
+clear
+ls
+vim .Xresources
+sudo systemctl restart lightdm
+clear
+ls
+vim 
+vim ~/.config/alacritty/alacritty.toml
+clear
+ls
+xrandr
+ls
+cd downloads
+ls
+clear
+ls
+wget https://github.com/Alex313031/thorium/releases/download/M120.0.6099.235/Thorium_Browser_120.0.6099.235_x64.AppImage
+ls
+clear
+ls
+clear
+ls
+chmod 755 Thorium_Browser_120.0.6099.235_x64.AppImage
+clear
+ls
+./Thorium_Browser_120.0.6099.235_x64.AppImage
+pacman -Ss Thorium
+yay -Ss Thorium
+yay -S thorium-browser
+clear
+thorium-browser
+ac
+sudo systemctl restart lightdm
+ac

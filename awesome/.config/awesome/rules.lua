@@ -64,7 +64,7 @@ function rules.create(clientkeys, clientbuttons)
 		},
 
     -- custom rules for clients
-		{ rule = { class = "Brave-browser" }, properties = { tag = "www", maximized = true, fullscreen = true } },
+		{ rule = { class = "Thorium-browser" }, properties = { tag = "www", maximized = true, fullscreen = true } },
 		{ rule = { class = "Spotify" }, properties = { tag = "music", maximized = true, fullscreen = true } },
 		{ rule = { class = "vlc" }, properties = { fullscreen = true } },
 	}
