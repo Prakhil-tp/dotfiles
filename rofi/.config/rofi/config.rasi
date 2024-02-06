@@ -1,8 +1,7 @@
-@import "themes/dracula.rasi"  /* import theme */ 
-
 configuration {
   display-drun: "Applications";
   show-icons: true;
 }
 
+@import "themes/dracula.rasi"  /* import theme */ 
 
