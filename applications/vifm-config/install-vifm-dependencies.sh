@@ -1,6 +1,6 @@
 #!/bin/sh
 sudo pacman -S ffmpegthumbnailer imagemagick poppler djvulibre --noconfirm
-sudo pip install Pillow
+sudo pip install Pillow==9.5.0 --break-system-packages
 cd /tmp
 git clone https://github.com/marianosimone/epub-thumbnailer.git
 cd epub-thumbnailer
