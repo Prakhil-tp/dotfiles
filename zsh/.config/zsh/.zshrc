@@ -21,9 +21,15 @@ zsh_prompt_home_indicator() {
 }
 
 precmd() {
-  bg_color='\033[48;5;183m'
-  fg_color='\033[38;5;16m'
+  # dracula
+  # bg_color='\033[48;5;183m'
+  # fg_color='\033[38;5;16m'
+  
+  # catppuccine
+  bg_color='\033[48;5;211m'
+  fg_color='\033[38;5;235m'
   clear='\033[m'
+
   #vcs_bg_color='\033[48;5;120m'
   vcs_bg_color='\033[48;5;159m'
 
@@ -35,8 +41,8 @@ PROMPT='▶ '
 # ===========================================================================================================
 #                                                      CONFIGS
 # ===========================================================================================================
-HISTSIZE=10000
-SAVEHIST=10000
+HISTSIZE=12000
+SAVEHIST=12000
 HISTFILE="$XDG_CACHE_HOME/zsh/history"
 
 setopt autocd 
@@ -77,7 +83,7 @@ alias notes="pushd ~/documents/notes && clear && ls"
 alias ..="cd ../ && clear && ls"
 alias vim="nvim"
 alias vimdiff="nvim -d"
-alias cat="bat"
+alias cat="batcat"
 
 #vifm
 alias vifm="~/.config/vifm/scripts/vifmrun"
@@ -97,7 +103,7 @@ alias math="bc <<<"
 alias pacman="sudo pacman"
 
 #perl-rename
-alias rename="perl-rename"
+#alias rename="perl-rename"
 
 #vimwiki
 alias wiki="nvim -c VimwikiIndex"
@@ -109,6 +115,7 @@ alias mail="neomutt"
 alias open="xdg-open"
 alias iftop="sudo iftop"
 alias docker="sudo docker"
+alias nb="newsboat"
 
 #journalctl and systemctl
 alias j="journalctl"
@@ -144,6 +151,24 @@ function se() {
     xargs -r $EDITOR
 }
 
+function op() {
+  find $HOME/code/projects/ $HOME/code/playground \
+  ! -path '**/node_modules/*' \
+  ! -path '**/.git/*' \
+  ! -path '**/autoload/*' | \
+  fzf -e | \
+  xargs -r $EDITOR
+}
+
+function cdd() {
+  cd "$(find $HOME/code/playground $HOME/code/projects -maxdepth 1 -depth | fzf -e)"
+}
+
+function refreshLeftScreen() {
+  xrandr --output "DP1" --off
+  xrandr --output "DP1" --mode 1920x1080 --left-of "HDMI1"
+}
+
 # ===========================================================================================================
 #                                                 PLUGINS & TOOLS 
 # ===========================================================================================================
@@ -156,5 +181,9 @@ source $ZDOTDIR/vim-mode.zsh
 # ===========================================================================================================
 
 # print system information on startup
-paleofetch
+#neofetch
+#paleofetch
 
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+pfetch
