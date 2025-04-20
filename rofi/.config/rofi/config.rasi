@@ -1,7 +1,13 @@
-configuration {
-  display-drun: "Applications";
-  show-icons: true;
-}
+@import "themes/catppuccin-mocha.rasi"  /* import theme */ 
 
-@import "themes/dracula.rasi"  /* import theme */ 
+configuration {
+    show-icons: true;
+    display-ssh:    "󰣀 ssh:";
+    display-run:    "󱓞 run:";
+    display-window: "󱂬 window:";
+    display-combi:  "󰕘 combi:";
+    display-drun: "󰣖 Applications";
+    display-filebrowser: "󰉋 filebrowser:";
+    font: "JetBrainsMono Nerd Font 16";
+}
 

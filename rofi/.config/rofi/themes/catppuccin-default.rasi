@@ -1,0 +1,127 @@
+* {
+  rosewater: #f5e0dc;
+  flamingo: #f2cdcd;
+  pink: #f5c2e7;
+  mauve: #cba6f7;
+  red: #f38ba8;
+  maroon: #eba0ac;
+  peach: #fab387;
+  yellow: #f9e2af;
+  green: #a6e3a1;
+  teal: #94e2d5;
+  sky: #89dceb;
+  sapphire: #74c7ec;
+  lavender: #b4befe;
+  text: #cdd6f4;
+  subtext1: #bac2de;
+  subtext0: #a6adc8;
+  overlay0: #9399b2;
+  overlay1: #7f849c;
+  overlay2: #6c7086;
+  surface0: #585b70;
+  surface2: #45475a;
+  surface1: #313244;
+  base: #1e1e2e;
+  mantle: #181825;
+  crust: #11111b;
+  }
+
+
+window {
+    height: 700px;
+    width: 1500;
+    border: 3px;
+    border-color: @surface2;
+    background-color: @surface1;
+}
+
+listview {
+    border: 0px 0px 0px;
+    padding: 2px 0px 0px;
+    margin: 10px 0px 0px 20px;
+    columns: 3;
+    lines: 5;
+    background-color: @surface1;
+}
+
+element {
+    padding: 5px;
+    background-color: @surface1;
+    text-color: @text  ;
+}
+
+element-icon {
+    size: 25px;
+}
+
+element selected {
+    background-color:  @flamingo;
+    text-color: @mantle ;
+}
+
+mode-switcher {
+    spacing: 0;
+  }
+
+button {
+    padding: 10px;
+    background-color: @surface1;
+    text-color: @overlay0;
+    vertical-align: 0.5; 
+    horizontal-align: 0.5;
+}
+
+button selected {
+  background-color: @surface1;
+  text-color: @blue;
+}
+
+message {
+    background-color: @surface1;
+    margin: 2px;
+    padding: 2px;
+    border-radius: 5px;
+}
+
+textbox {
+    padding: 6px;
+    margin: 20px 0px 0px 20px;
+    text-color: @blue;
+    background-color: @surface1;
+}
+
+element-text, element-icon , mode-switcher {
+    background-color: inherit;
+    text-color:       inherit;
+}
+
+mainbox {
+    background-color: @surface1;
+}
+
+inputbar {
+    children: [prompt,entry];
+    background-color: @surface1;
+    border-radius: 5px;
+    padding: 2px;
+}
+
+prompt {
+    background-color: @blue;
+    padding: 6px;
+    text-color: @surface1;
+    border-radius: 3px;
+    margin: 20px 0px 0px 20px;
+}
+
+textbox-prompt-colon {
+    expand: false;
+    str: ":";
+}
+
+entry {
+    padding: 6px;
+    margin: 20px 0px 0px 10px;
+    text-color: @text;
+    background-color: @surface1;
+}

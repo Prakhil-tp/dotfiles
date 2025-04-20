@@ -1,0 +1,120 @@
+/**
+ * Catppuccin Mocha theme
+ * Color palette copied from https://catppuccin.com/palette
+ * https://github.com/hiimsergey/rofi-catppuccin
+ */
+
+* {
+    base: #1e1e2e;
+    surface0: #313244;
+    overlay0: #6c7086;
+    text: #cdd6f4;
+    mauve: #cba6f7;
+    red: #f38ba8;
+    peach: #fab387;
+    green: #a6e3a1;
+    lavender: #b4befe;
+    background-color: @base;
+}
+
+window {
+    height: 700;
+    width: 1500;
+    children: [mainbox];
+    orientation: horizontal;
+    border:0;
+    border-radius:10; 
+    border-color: @lavender;
+}
+
+
+mainbox {
+    border:  0;
+    padding: 0;
+    spacing: 0;
+    children: [inputbar, message, listview];
+    border-color:@base;
+    background-color:@base;
+}
+
+inputbar {
+    color: @text;
+    padding: 14;
+    background-color: @base;
+}
+
+message {
+    padding: 10px;
+    background-color: @base;
+}
+
+listview {
+    spacing:10;
+    padding: 8;
+    border-radius: 0 0 10 10;
+    border: 2 2 2 2;
+    border-color: @base;
+    background-color: @base;
+    dynamic: false;
+    columns:2;
+}
+
+inputbar {
+    children: [prompt,entry];
+    background-color: inherit;
+    border-radius: 5px;
+    padding: 2px;
+}
+
+prompt {
+    background-color: @peach;
+    padding: 10px;
+    border-radius: 3px;
+    margin: 25px 0px 25px 30px;
+}
+
+textbox-prompt-colon {
+    expand: false;
+    str: ":";
+}
+
+entry {
+  placeholder: "Type here";
+  cursor: text;
+  text-color: @text;
+  padding: 10px;
+  margin: 20px 0px 0px 10px;
+}
+
+element {
+  padding: 20px;
+  vertical-align:0; 
+  color: @text;
+}
+
+element-text {
+  background-color: inherit;
+  color: inherit;
+}
+
+element selected.normal {
+  background-color: @overlay0;
+  color: @base;
+}
+
+element.normal.normal {
+    background-color: @surface0;
+    text-color:       @text;
+
+}
+
+element.alternate.normal {
+    background-color: @surface0;
+    text-color:       @text;
+}
+
+element normal active {
+  background-color: @surface0;
+  color: @text;
+}
+
