@@ -72,3 +72,252 @@ thorium-browser
 ac
 sudo systemctl restart lightdm
 ac
+cd dotfiles
+ls
+git status
+git diff
+clear
+git add .
+git status
+git reset
+clear
+git status
+vim .gitignore
+clear
+git status
+ls
+cd awesome
+ls
+cd .config
+ls
+cd awesome
+clear
+ls
+cd bling
+ls
+rm -rf .git
+clear
+git status
+cd
+clear
+ls
+cd dotfiles
+clear
+ls
+git status
+git add .
+git status
+git commit -m "Add zenbook changes"
+git config --global user.email 20636485+Prakhil-tp@users.noreply.github.com
+git config --global user.name prakhil-tp
+git commit -m "Add zenbook changes"
+git status
+git push origin master
+git pull origin master
+git config pull.rebase true
+git pull origin master
+git status
+vim alacritty/.config/alacritty/alacritty.yml
+git status
+git add .
+git status
+git rebase --continue
+git status
+git rebase --continue
+pacman -S vi
+clear
+git statu
+git status
+git rebase --continue
+clear
+ls
+alacritty migrate
+ls
+cd alacritty
+ls
+cd .config
+ls
+cd alacritty
+clear
+ls
+cd catppuccin
+ls
+ls
+clear
+ls
+cd ..
+ls
+cd alacritty
+ls
+clear
+cd
+ls
+clear
+ls
+cd Downloads
+ls
+ls
+mv catppuccin-mocha.toml ~/.config/alacritty
+ls
+cd ~/.config
+ls
+cd alacritty
+ls
+clear
+ls
+vim alacritty.toml
+clear
+ls
+clear
+ls
+clear
+ls
+cd
+cd dotfiles
+clear
+ls
+git stauts
+git status
+git add .
+git commit -m "Add catppuccin for alacritty"
+git push origin master
+git remote -v
+cd
+clear
+ls
+vim ~/.config/alacritty/alacritty.toml
+clear
+ls
+ls
+clear
+ls
+cd downloads
+ls
+clear
+ls
+rm Thorium_Browser_120.0.6099.235_x64.AppImage
+ls
+mv id* 
+ls
+ls
+mv id*.* ~/.ssh/
+mkdir ~/.ssh
+mv id*.* ~/.ssh/
+ls
+mv id_ed25519 ~/.ssh
+cd ~/.ssh
+ls
+clear
+ls
+cat id_ed25519
+clear
+ls
+cat id_ed25519.pub
+clear
+ls
+cat id_ed25519
+clear
+ls
+cat id_ed25519.pub
+openssl pkey -in id_ed25519 -noout -check
+openssl pkey -in ./id_ed25519 -noout -check
+openssl ec -in id_ed25519 -check
+openssl id_ed25519.pub -in id_ed25519 -check
+openssl pkey -inform PEM -text -noout -in id_ed25519\
+
+openssl pkey -inform PEM -text -noout -in id_ed25519.pub\
+
+openssl pkey -inform PEM -text -noout -in id_ed25519\
+
+ls
+cp id_ed25519 id_ed25519.pem
+ls
+openssl pkey -inform PEM -text -noout -in id_ed25519.pem\
+
+ls
+clear
+ls
+rm id_ed25519.pem
+ls
+clear
+ls
+ssh-keygen -l -f id_ed25519.pub\
+
+ssh-keygen -l -f id_ed25519\
+
+cat ~/downloads/id_ed25519
+ls
+clear
+ls
+clar
+vimdiff id_ed25519 id_ed25519.pub
+clear
+ls
+timedatectl set-ntp true
+timedatectl status
+ssh ubuntu@129.159.18.27
+ls
+rm ./*
+ls
+clear
+ssh-keygen -t ed25519
+ls
+cat id_ed25519
+cat id_ed25519.pub
+cd ~/downloads
+ls
+cat id_ed25519.pub
+ls
+cd ~/.ssh
+ls
+rm ./*
+ls
+cp ~/downloads/* ./
+LS
+ls
+clear
+ssh ubuntu@129.159.18.27
+ssh -i ./id_ed25519 ubuntu@129.159.18.27
+ssh -i ./id_ed25519 ubuntu@152.70.77.148
+clear
+cd
+clear
+cat /etc/default/grub
+sudo vim /etc/default/grub
+grub-mkconfig -o /boot/grub/grub.cfg
+sudo grub-mkconfig -o /boot/grub/grub.cfg
+clear
+cd dotfiles
+ls
+cd lightdm
+ls
+cat lightdm-gtk-greeter.conf
+ls
+sudo cp lightdm-gtk-greeter.conf /etc/lightdm/lightdm-gtk-greeter.conf
+reboot
+zshrc
+cd ~/.config
+cd alacritty
+ls
+rmdir catppuccin
+ls
+xprop
+clear
+ls
+sudo vim /etc/lightdm/lightdm-gtk-greeter.conf
+sudo mkdir -p /usr/share/backgrounds/
+sudo cp /home/prakhil/pictures/wallpapers/0198.jpg /usr/share/backgrounds
+clear
+sudo systemctl restart lightdm
+pacman -S fzf
+clear
+ls
+cd dotfiles
+ls
+cd profile
+ls
+cat .profile
+/bin/cat .profile
+vim ~/.zshenv
+clear
+sudo systemctl restart lightdm

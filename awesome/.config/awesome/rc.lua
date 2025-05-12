@@ -53,7 +53,8 @@ naughty.config.icon_dirs = {"/usr/share/icons/dracula-icons/scalable/apps/", "/u
 naughty.config.icon_formats = {"png","svg"}
 
 -- This is used later as the default terminal and editor to run.
-local terminal = "alacritty"
+-- local terminal = "alacritty"
+local terminal = "kitty"
 local editor = "nvim" or "vi"
 local editor_cmd = terminal .. " -e " .. editor
 local modkey = "Mod4"
@@ -128,3 +129,4 @@ awful.spawn.with_shell("clipmenud")   -- clipmenu
 awful.spawn.with_shell("~/scripts/change-wallpaper.sh")
 awful.spawn.with_shell("~/.config/awesome/autorun.sh")
 
+awful.spawn.with_shell("echo $(date +%d-%m-%Y): $(/usr/bin/curl -4 ifconfig.me) >> /home/prakhil/ip-log.txt")

@@ -1,4 +1,5 @@
-import dracula.draw
+# import dracula.draw
+import catppuccin
 import keybindings
 
 
@@ -7,12 +8,13 @@ config.load_autoconfig(True)
 c.bindings.default = keybindings.key_action_map
 
 # theme
-dracula.draw.blood(c, {
-   "spacing": {
-       "vertical": 6,
-       "horizontal": 8
-   }
-})
+# dracula.draw.blood(c, {
+#    "spacing": {
+#        "vertical": 6,
+#        "horizontal": 8
+#    }
+# })
+catppuccin.setup(c, 'mocha', True)
 
 
 

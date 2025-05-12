@@ -29,7 +29,8 @@ color:
   # when specifying <theme-file-name>, lsd will look up theme file
   # XDG Base Directory if relative, e.g. ~/.config/lsd/themes/<theme-file-name>.yaml,
   # The file path if absolute
-  theme: dracula
+  #theme: dracula
+  theme: custom
 
 # == Date ==
 # This specifies the date format for the date column. The freeform format
@@ -37,7 +38,7 @@ color:
 # When "classic" is set, this is set to "date".
 # Possible values: date, relative, '+<date_format>'
 # `date_format` will be a `strftime` formatted value. e.g. `date: '+%d %b %y %X'` will give you a date like this: 17 Jun 21 20:14:55
-date: '+%d %b %Y %H:%M'
+date: "+%d %b %Y %H:%M"
 
 # == Dereference ==
 # Whether to dereference symbolic links.

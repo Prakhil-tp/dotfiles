@@ -35,10 +35,17 @@ PROMPT='▶ '
 # ===========================================================================================================
 #                                                      CONFIGS
 # ===========================================================================================================
-HISTSIZE=10000
-SAVEHIST=10000
+HISTSIZE=50000
+SAVEHIST=50000
 HISTFILE="$XDG_CACHE_HOME/zsh/history"
 
+setopt append_history
+setopt share_history
+setopt inc_append_history
+setopt hist_ignore_dups
+setopt hist_ignore_all_dups
+setopt hist_reduce_blanks
+setopt hist_save_no_dups
 setopt autocd 
 
 # basic auto/tab complete:
@@ -50,9 +57,12 @@ _comp_options+=(globdots)
 
 # automatically load bash completion functions
 autoload -Uz bashcompinit && bashcompinit
+autoload -Uz compinit && compinit
 
 #asdf config
-. /opt/asdf-vm/asdf.sh
+fpath=(${ASDF_DATA_DIR:-$HOME/.asdf}/completions $fpath)
+
+# . /opt/asdf-vm/asdf.sh
 
 # time command output formatting
 TIMEFMT=$'%J\n==================\nCPU\t%P\nuser\t%*U sec\nsystem\t%*S sec\ntotal\t%*E sec\n'
@@ -80,8 +90,7 @@ alias vimdiff="nvim -d"
 alias cat="bat"
 
 #vifm
-alias vifm="~/.config/vifm/scripts/vifmrun"
-alias v="~/.config/vifm/scripts/vifmrun"
+ alias v="vifm"
 
 #htop
 alias h="htop"
@@ -109,6 +118,7 @@ alias mail="neomutt"
 alias open="xdg-open"
 alias iftop="sudo iftop"
 alias docker="sudo docker"
+alias ytx="yt-x"
 
 #journalctl and systemctl
 alias j="journalctl"
@@ -117,7 +127,7 @@ alias s="systemctl"
 #config
 alias ac="nvim ~/.config/awesome/rc.lua"
 alias qc="nvim ~/.config/qutebrowser/config.py"
-alias nc="nvim ~/.config/nvim/init.vim"
+# alias nc="nvim ~/.config/nvim/init.vim"
 
 # ===========================================================================================================
 #                                                 CUSTOM COMMANDS
@@ -158,3 +168,34 @@ source $ZDOTDIR/vim-mode.zsh
 # print system information on startup
 paleofetch
 
+# env variables
+export ALTSERVER_ANISETTE_SERVER=http://127.0.0.1:6969
+
+# ===========================================================================================================
+#                                                  FUNCTIONS
+# ===========================================================================================================
+
+function cdd() {
+  cd "$(find /home/prakhil/ -maxdepth 2 -type d | fzf --preview 'ls -l {}' --layout=reverse)"
+}
+
+function play() {
+  # Check if a filename is provided
+  if [[ -z "$1" ]]; then
+    echo "Error: Please provide a filename. Usage: play <filename>"
+    return 1
+  fi
+
+  # Check if the file exists
+  if [[ ! -f "$1" ]]; then
+    echo "Error: File '$1' not found."
+    return 1
+  fi
+
+  # Launch VLC with the provided file and detach it
+  vlc "$1" & disown
+}
+## runs after every `cd` command.
+function chpwd() {
+  ls
+}

@@ -19,7 +19,8 @@ local bling = require("bling")
 -- Define mod keys
 local modkey = "Mod4"
 local altkey = "Mod1"
-local terminal = "alacritty"
+-- local terminal = "alacritty"
+local terminal = "kitty"
 
 
 -- define module table
@@ -30,12 +31,13 @@ local keys = {}
 -- Scratchpads
 -- ===================================================================
 local term_scratch = bling.module.scratchpad {
-    command = "alacritty --class spad",           
+    -- command = "alacritty --class spad",           
+    command = "kitty --class spad",           
     rule = { instance = "spad" },                     -- The rule that the scratchpad will be searched by
     sticky = true,                                    -- Whether the scratchpad should be sticky
     autoclose = true,                                 -- Whether it should hide itself when losing focus
     floating = true,                                  -- Whether it should be floating (MUST BE TRUE FOR ANIMATIONS)
-    geometry = {x=360, y=90, height=900, width=1200}, -- The geometry in a floating state
+    geometry = {x=340, y=200, height=1400, width=2200}, -- The geometry in a floating state
     reapply = true,                                   -- Whether all those properties should be reapplied on every new opening of the scratchpad (MUST BE TRUE FOR ANIMATIONS)
     dont_focus_before_close  = false,                 -- When set to true, the scratchpad will be closed by the toggle function regardless of whether its focused or not. When set to false, the toggle function will first bring the scratchpad into focus and only close it on a second call
 }
@@ -137,6 +139,8 @@ keys.globalkeys = gears.table.join(
   -- ====================================
   -- Applications
   -- ====================================
+  awful.key({}, "Print", function () awful.spawn("flameshot gui") end,
+    {description = "Take a screenshot using flameshot", group = "screenshot"}),
 	awful.key({ modkey }, "space", function()
 		awful.spawn("rofi -show drun")
 	end, { description = "run rofi", group = "launcher" }),
@@ -146,7 +150,7 @@ keys.globalkeys = gears.table.join(
 	awful.key({ modkey }, "b", function()
 		--awful.spawn("brave")
 	--end, { description = "launch brave", group = "applications" }),
-		awful.spawn.with_shell("thorium-browser")
+		awful.spawn.with_shell("firefox")
   end, { description = "launch thorium", group = "applications" }),
 	awful.key({ modkey }, "q", function()
 		awful.spawn("qutebrowser")
@@ -159,20 +163,21 @@ keys.globalkeys = gears.table.join(
 		awful.spawn.spawn("dmenu_run")
 	end, { description = "launch dmenu_run", group = "applications" }),
 
+	awful.key({ modkey }, "c", function()
+		awful.spawn.with_shell("surf https://chatgpt.com/")
+	end, { description = "launch chatgpt on surf", group = "applications" }),
+
 	awful.key({ modkey, "Shift" }, "b", function()
 		awful.spawn.with_shell("~/scripts/dm-bookmark.sh")
 	end, { description = "bookmark this", group = "scripts" }),
-
-	awful.key({ "Control", "Shift" }, "l", function()
-		awful.spawn.with_shell("~/scripts/dm-passmenu")
-	end, { description = "pass password manager dmenu script", group = "script" }),
-
-	awful.key({ modkey }, "Insert", function()
-    awful.spawn.with_shell("xdotool type $(grep -v '^#' ~/.local/share/script-files/snippets.txt | dmenu -i -l 20 | cut -d' ' -f1)")
-	end, { description = "get bookmarked values to any textfield", group = "applications" }),
+	--
+	-- awful.key({ "Control", "Shift" }, "l", function()
+	-- 	awful.spawn.with_shell("~/scripts/dm-passmenu")
+	-- end, { description = "pass password manager dmenu script", group = "script" }),
+	--
 
   awful.key({ modkey}, "o", function()
-    local handle = io.popen("find $HOME -type f | dmenu -i -l 20")
+    local handle = io.popen("find \"$HOME\" \\( -path \"$HOME/.git\" -o -path \"$HOME/node_modules\" -o -path \"$HOME/__pycache__\" -o -path \"$HOME/.npm\" -o -name \".cache\" \\) -prune -o -type f -print | dmenu -i -l 20")
     local result = handle:read("*a")
     handle:close() 
     filepath = result:gsub("\n[^\n]*$", "")
@@ -221,7 +226,7 @@ keys.globalkeys = gears.table.join(
 					{},
 					"s",
 					function(self)
-						awful.spawn.with_shell("flatpak run com.spotify.Client")
+						awful.spawn.with_shell("spotify")
 						awful.spawn.with_shell("~/scripts/spotify-automute.sh >> /tmp/spotify-automute.log")
 						self:stop()
 					end,
@@ -274,7 +279,23 @@ keys.globalkeys = gears.table.join(
 						awful.spawn.with_shell("~/scripts/dm-websearch/dm-websearch")
 						self:stop()
 					end,
-				}
+				},
+				{
+					{},
+					"i",
+					function(self)
+            awful.spawn.with_shell("xdotool type $(grep -v '^|' ~/.local/share/script-files/snippets.txt | dmenu -i -l 20 | cut -d' ' -f1)")
+						self:stop()
+					end,
+				},
+        {
+          {},
+          "c",
+          function(self)
+            awful.spawn.with_shell("~/scripts/dm-bookmark.sh")
+            self:stop()
+          end,
+        }
 			},
 		})
 	end, { description = "Followed by a key", group = "scripts" }),
@@ -349,8 +370,8 @@ keys.globalkeys = gears.table.join(
           {},
           "b",
           function(self)
-            if gears.filesystem.file_readable("/sys/class/power_supply/BAT1/capacity") then
-              local f = io.open("/sys/class/power_supply/BAT1/capacity")
+            if gears.filesystem.file_readable("/sys/class/power_supply/BATT/capacity") then
+              local f = io.open("/sys/class/power_supply/BATT/capacity")
                 local battery = " ".. f:read() .. "%" 
                 f:close()
                 naughty.notify{
