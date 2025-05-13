@@ -1,4 +1,5 @@
 return {
+  -- theme
   {
     "catppuccin/nvim",
     name = "catppuccin",
@@ -25,6 +26,7 @@ return {
     end,
 
   },
+  -- file navigation
   {
 
     "invim-telescope/telescope.nvim",
@@ -74,13 +76,6 @@ return {
     end
   },
   { 'nvim-treesitter/playground' },
-
-  -- git pacakges
-  { "tpope/vim-fugitive" },
-  { "lewis6991/gitsigns.nvim" },
-  -- show colors
-  { "norcalli/nvim-colorizer.lua" },
-  { "lukas-reineke/indent-blankline.nvim" },
   -- file manager
   {
     "nvim-tree/nvim-tree.lua",
@@ -93,6 +88,10 @@ return {
       require("nvim-tree").setup(opts)
     end,
   },
+
+  -- git pacakges
+  { "tpope/vim-fugitive" },
+  { "lewis6991/gitsigns.nvim" },
   {
     "vimwiki/vimwiki",
     event = "BufEnter *.md",
@@ -100,8 +99,7 @@ return {
     keys = { "<leader>ww", "<leader>wt" },
   },
   { "airblade/vim-rooter" }, -- Changes Vim working directory to project root.
-
-  -- UI
+  -- top bufferline
   {
     'akinsho/bufferline.nvim',
     version = "*",
@@ -117,6 +115,7 @@ return {
       }
     }
   },
+  -- bottom statusline
   {
     'nvim-lualine/lualine.nvim',
     dependencies = { 'nvim-tree/nvim-web-devicons' },
@@ -163,10 +162,12 @@ return {
       { "L3MON4D3/LuaSnip" },
     },
   },
+  -- comment
   {
     'numToStr/Comment.nvim',
     opts = {}
   },
+  -- smooth scrolling
   {
     "karb94/neoscroll.nvim",
     opts = {
@@ -190,10 +191,17 @@ return {
       },
     },
   },
+  -- show colors for the hash #fff
   {
     "norcalli/nvim-colorizer.lua",
     config = function()
       require("colorizer").setup()
     end,
+  },
+  -- indent lines
+  {
+    "lukas-reineke/indent-blankline.nvim",
+    main = "ibl",
+    opts = {},
   }
 }
