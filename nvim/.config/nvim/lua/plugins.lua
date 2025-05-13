@@ -92,12 +92,14 @@ return {
   -- git pacakges
   { "tpope/vim-fugitive" },
   { "lewis6991/gitsigns.nvim" },
+  -- wiki
   {
     "vimwiki/vimwiki",
     event = "BufEnter *.md",
     cmd = { "VimwikiIndex", "VimwikiFollowLink", "VimwikiGoBackLink", "VimwikiVSplitLink" },
     keys = { "<leader>ww", "<leader>wt" },
   },
+  { "git@github.com:michal-h21/vimwiki-sync.git" },
   { "airblade/vim-rooter" }, -- Changes Vim working directory to project root.
   -- top bufferline
   {

@@ -26,18 +26,18 @@ cmp.setup({
     -- Tab: Cycle to the next completion item
     ['<Tab>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
-        cmp.select_next_item()  -- Move to the next item in the list
+        cmp.select_next_item() -- Move to the next item in the list
       else
-        fallback()  -- Insert a tab character if no suggestions
+        fallback()             -- Insert a tab character if no suggestions
       end
     end, { 'i', 's' }),
 
     -- Shift + Tab: Cycle to the previous completion item
     ['<S-Tab>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
-        cmp.select_prev_item()  -- Move to the previous item in the list
+        cmp.select_prev_item() -- Move to the previous item in the list
       else
-        fallback()  -- Insert a tab character if no suggestions
+        fallback()             -- Insert a tab character if no suggestions
       end
     end, { 'i', 's' }),
 
@@ -90,6 +90,12 @@ vim.api.nvim_create_autocmd('LspAttach', {
     local bufnr = event.buf
     local opts = { buffer = bufnr }
 
+    -- Set indentation to 2 spaces for the buffer
+    vim.bo[bufnr].tabstop = 2
+    vim.bo[bufnr].shiftwidth = 2
+    vim.bo[bufnr].softtabstop = 2
+    vim.bo[bufnr].expandtab = true
+
     -- LSP keymaps
     vim.keymap.set('n', 'K', '<cmd>lua vim.lsp.buf.hover()<cr>', opts)
     vim.keymap.set('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<cr>', opts)
@@ -99,7 +105,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
     vim.keymap.set('n', 'gr', '<cmd>lua vim.lsp.buf.references()<cr>', opts)
     vim.keymap.set('n', 'gs', '<cmd>lua vim.lsp.buf.signature_help()<cr>', opts)
     vim.keymap.set('n', '<F2>', '<cmd>lua vim.lsp.buf.rename()<cr>', opts)
-    vim.keymap.set({'n', 'x'}, '<F3>', '<cmd>lua vim.lsp.buf.format({ async = true })<cr>', opts)
+    vim.keymap.set({ 'n', 'x' }, '<F3>', '<cmd>lua vim.lsp.buf.format({ async = true })<cr>', opts)
     vim.keymap.set('n', '<F4>', '<cmd>lua vim.lsp.buf.code_action()<cr>', opts)
 
     -- Enable formatting on save
@@ -110,7 +116,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
         format_on_save(bufnr)
       end,
     })
-
   end,
 })
 
@@ -135,7 +140,19 @@ require('lspconfig').ts_ls.setup({
   capabilities = require('cmp_nvim_lsp').default_capabilities(),
 })
 
-require('lspconfig').lua_ls.setup({})
+require('lspconfig').lua_ls.setup({
+  settings = {
+    Lua = {
+      format = {
+        enable = true,
+        defaultConfig = {
+          indent_style = "space",
+          indent_size = "2",
+        },
+      },
+    },
+  },
+})
 require('lspconfig').eslint.setup({
   on_attach = function(client)
     -- Disable formatting capability for eslint
@@ -143,4 +160,3 @@ require('lspconfig').eslint.setup({
     client.server_capabilities.documentRangeFormattingProvider = false
   end,
 })
-
