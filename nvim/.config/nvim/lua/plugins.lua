@@ -28,7 +28,7 @@ return {
   {
 
     "invim-telescope/telescope.nvim",
-    url = "git@github.com:nvim-telescope/telescope.nvim.git",
+    url = "https://github.com/nvim-telescope/telescope.nvim.git",
     tag = "0.1.8",
     opts = {},
     dependencies = {
