@@ -5,6 +5,8 @@
 -- * L3MON4D3/LuaSnip
 
 local cmp = require('cmp')
+local autoformat = vim.api.nvim_create_augroup("LspAutoFormatting", { clear = true })
+local format_enabled = {}
 
 cmp.setup({
   -- Completion sources
@@ -70,10 +72,23 @@ lspconfig_defaults.capabilities = vim.tbl_deep_extend(
   require('cmp_nvim_lsp').default_capabilities()
 )
 
+
+-- Format code on saving
+local function format_on_save(bufnr)
+  if format_enabled[bufnr] == nil then
+    format_enabled[bufnr] = true -- default to enabled
+  end
+
+  if format_enabled[bufnr] then
+    vim.lsp.buf.format({ async = false })
+  end
+end
+
 -- LSP keybindings for specific languages
 vim.api.nvim_create_autocmd('LspAttach', {
   callback = function(event)
-    local opts = { buffer = event.buf }
+    local bufnr = event.buf
+    local opts = { buffer = bufnr }
 
     -- LSP keymaps
     vim.keymap.set('n', 'K', '<cmd>lua vim.lsp.buf.hover()<cr>', opts)
@@ -86,8 +101,34 @@ vim.api.nvim_create_autocmd('LspAttach', {
     vim.keymap.set('n', '<F2>', '<cmd>lua vim.lsp.buf.rename()<cr>', opts)
     vim.keymap.set({'n', 'x'}, '<F3>', '<cmd>lua vim.lsp.buf.format({ async = true })<cr>', opts)
     vim.keymap.set('n', '<F4>', '<cmd>lua vim.lsp.buf.code_action()<cr>', opts)
+
+    -- Enable formatting on save
+    vim.api.nvim_create_autocmd("BufWritePre", {
+      group = autoformat,
+      buffer = bufnr,
+      callback = function()
+        format_on_save(bufnr)
+      end,
+    })
+
   end,
 })
+
+-- Command to disable formatting
+vim.api.nvim_create_user_command("DisableFormatting", function()
+  local bufnr = vim.api.nvim_get_current_buf()
+  format_enabled[bufnr] = false
+  vim.notify("Autoformatting disabled for buffer " .. bufnr)
+end, {})
+
+-- Command to enable formatting
+vim.api.nvim_create_user_command("EnableFormatting", function()
+  local bufnr = vim.api.nvim_get_current_buf()
+  format_enabled[bufnr] = true
+  vim.notify("Autoformatting enabled for buffer " .. bufnr)
+end, {})
+
+
 
 -- Language server setups
 require('lspconfig').ts_ls.setup({
@@ -95,4 +136,11 @@ require('lspconfig').ts_ls.setup({
 })
 
 require('lspconfig').lua_ls.setup({})
-require('lspconfig').eslint.setup({})
+require('lspconfig').eslint.setup({
+  on_attach = function(client)
+    -- Disable formatting capability for eslint
+    client.server_capabilities.documentFormattingProvider = false
+    client.server_capabilities.documentRangeFormattingProvider = false
+  end,
+})
+
