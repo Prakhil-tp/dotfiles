@@ -19,3 +19,12 @@ vim.g.vimwiki_key_mappings = {
   table_mappings = 0,
   links = 0,
 }
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "markdown",
+  callback = function()
+    vim.keymap.set('n', '<CR>', '<Plug>VimwikiFollowLink', { buffer = true })
+    vim.keymap.set('n', '<BS>', '<Plug>VimwikiGoBackLink', { buffer = true })
+    vim.keymap.set('n', '<C-CR>', '<Plug>VimwikiVSplitLink', { buffer = true })
+  end,
+})
