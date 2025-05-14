@@ -134,6 +134,25 @@ vim.api.nvim_create_user_command("EnableFormatting", function()
 end, {})
 
 
+-- Diagnostic settings
+vim.diagnostic.config({
+  virtual_text     = false, -- keep the buffer clean
+  underline        = true,  -- still underline the range in error
+  signs            = true,  -- show ❗ in the sign column
+  update_in_insert = false, -- don’t fire while typing
+  float            = {      -- style of the popup we’ll invoke
+    border = "rounded",
+    focusable = false,
+    source = "always",
+  },
+})
+
+vim.o.updatetime = 250 -- CursorHold fires after 250 ms of idle
+vim.api.nvim_create_autocmd("CursorHold", {
+  callback = function()
+    vim.diagnostic.open_float(nil, { scope = "cursor" })
+  end,
+})
 
 -- Language server setups
 require('lspconfig').ts_ls.setup({
