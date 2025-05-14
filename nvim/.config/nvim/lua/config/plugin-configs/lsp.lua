@@ -147,12 +147,10 @@ vim.diagnostic.config({
   },
 })
 
-vim.o.updatetime = 250 -- CursorHold fires after 250 ms of idle
-vim.api.nvim_create_autocmd("CursorHold", {
-  callback = function()
-    vim.diagnostic.open_float(nil, { scope = "cursor" })
-  end,
-})
+vim.keymap.set("n", "<leader>d", function()
+  vim.diagnostic.open_float(nil, { scope = "cursor" })
+end, { desc = "Show Diagnostics Float" })
+
 
 -- Language server setups
 require('lspconfig').ts_ls.setup({
