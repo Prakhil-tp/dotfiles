@@ -132,7 +132,7 @@ return {
         sections = {
           lualine_a = { "mode" },
           lualine_b = { "branch", "diff", "diagnostics" },
-          lualine_c = { "filename", color = { bg = "none" } },
+          lualine_c = { "filename" },
           lualine_x = { "filetype" }, -- no encoding here
           lualine_y = { "progress" },
           lualine_z = { "location" },
@@ -205,5 +205,7 @@ return {
     "lukas-reineke/indent-blankline.nvim",
     main = "ibl",
     opts = {},
-  }
+  },
+  { "ThePrimeagen/vim-be-good" }
+
 }

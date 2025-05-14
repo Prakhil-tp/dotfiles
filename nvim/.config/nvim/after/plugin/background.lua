@@ -1,12 +1,3 @@
--- function setBackgroundTransparent()
---   vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
---   vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
---   vim.api.nvim_set_hl(0, "FloatBorder", { bg = "none" })
--- end
---
--- setBackgroundTransparent()
-
-
 function setBackgroundTransparent()
   local transparent_groups = {
     "Normal",
@@ -32,7 +23,3 @@ function setBackgroundTransparent()
 end
 
 setBackgroundTransparent()
-
-vim.api.nvim_create_autocmd("ColorScheme", {
-  callback = setBackgroundTransparent,
-})
