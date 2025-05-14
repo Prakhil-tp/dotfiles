@@ -113,7 +113,7 @@ return {
         diagnostics = "nvim_lsp",
         show_close_icon = false,
         show_buffer_close_icons = true,
-        separator_style = "slant",
+        separator_style = "thick",
       }
     }
   },
@@ -132,7 +132,7 @@ return {
         sections = {
           lualine_a = { "mode" },
           lualine_b = { "branch", "diff", "diagnostics" },
-          lualine_c = { "filename" },
+          lualine_c = { "filename", color = { bg = "none" } },
           lualine_x = { "filetype" }, -- no encoding here
           lualine_y = { "progress" },
           lualine_z = { "location" },
