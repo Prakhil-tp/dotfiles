@@ -141,7 +141,7 @@ return {
     end,
   },
   -- Language server
-  { "williamboman/mason.nvim", config = true },
+  { "williamboman/mason.nvim",     config = true },
   {
     "williamboman/mason-lspconfig.nvim",
     config = true,
@@ -164,6 +164,9 @@ return {
       { "L3MON4D3/LuaSnip" },
     },
   },
+  -- snippets
+  { "saadparwaiz1/cmp_luasnip" },
+  { "rafamadriz/friendly-snippets" },
   -- comment
   {
     'numToStr/Comment.nvim',
@@ -206,6 +209,22 @@ return {
     main = "ibl",
     opts = {},
   },
-  { "ThePrimeagen/vim-be-good" }
+  { "ThePrimeagen/vim-be-good" },
+  {
+    "ThePrimeagen/harpoon",
+    config = function()
+      require("harpoon").setup({
+        save_on_toggle = false,
+        save_on_change = true,
+        enter_on_sendcmd = false,
+        tmux_autoclose_windows = false,
+        excluded_filetypes = { "harpoon" },
+        mark_branch = false,
+        tabline = false,
+        tabline_prefix = "   ",
+        tabline_suffix = "   ",
+      })
+    end
+  }
 
 }

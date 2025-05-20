@@ -3,6 +3,7 @@
 -- * hrsh7th/nvim-cmp
 -- * hrsh7th/cmp-nvim-lsp
 -- * L3MON4D3/LuaSnip
+require("luasnip.loaders.from_vscode").lazy_load()
 
 local cmp = require('cmp')
 local autoformat = vim.api.nvim_create_augroup("LspAutoFormatting", { clear = true })
@@ -11,7 +12,8 @@ local format_enabled = {}
 cmp.setup({
   -- Completion sources
   sources = {
-    { name = 'nvim_lsp' }, -- LSP source
+    { name = 'nvim_lsp' },
+    { name = 'luasnip' },
   },
 
   -- Snippet expansion (using LuaSnip)
@@ -23,7 +25,6 @@ cmp.setup({
 
   -- Key mapping for navigating the completion menu
   mapping = cmp.mapping.preset.insert({
-    -- Tab: Cycle to the next completion item
     ['<Tab>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_next_item() -- Move to the next item in the list
@@ -31,8 +32,6 @@ cmp.setup({
         fallback()             -- Insert a tab character if no suggestions
       end
     end, { 'i', 's' }),
-
-    -- Shift + Tab: Cycle to the previous completion item
     ['<S-Tab>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_prev_item() -- Move to the previous item in the list
@@ -40,9 +39,8 @@ cmp.setup({
         fallback()             -- Insert a tab character if no suggestions
       end
     end, { 'i', 's' }),
-
-    -- Enter: Confirm the selection (with select = true)
     ['<CR>'] = cmp.mapping.confirm({ select = true }),
+    ['<C-Space>'] = cmp.mapping.complete()
   }),
 
   -- Other options can be added here
