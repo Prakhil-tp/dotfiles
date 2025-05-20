@@ -114,6 +114,9 @@ alias wiki="nvim -c VimwikiIndex"
 #neomutt
 alias mail="neomutt"
 
+#newsboat
+alias nb="newsboat"
+
 # random
 alias open="xdg-open"
 alias iftop="sudo iftop"
@@ -176,7 +179,7 @@ export ALTSERVER_ANISETTE_SERVER=http://127.0.0.1:6969
 # ===========================================================================================================
 
 function cdd() {
-  cd "$(find /home/prakhil/ -maxdepth 2 -type d | fzf --preview 'ls -l {}' --layout=reverse)"
+  cd "$(find /home/prakhil/ -maxdepth 2 -type d | fzf --preview 'lsd -l --color=always {}' --layout=reverse)"
 }
 
 function play() {
@@ -192,8 +195,11 @@ function play() {
     return 1
   fi
 
-  # Launch VLC with the provided file and detach it
-  vlc "$1" & disown
+  kitty_window_id=$(xdotool getactivewindow)
+  xdotool windowminimize "$kitty_window_id"
+  mpv "$1" 
+  xdotool windowmap "$kitty_window_id"
+
 }
 ## runs after every `cd` command.
 function chpwd() {
