@@ -6,6 +6,7 @@ return {
     priority = 1000,
     opts = {
       flavour = "auto", -- latte, frappe, macchiato, mocha
+      transparent_background = true,
       background = {    -- :h background
         light = "latte",
         dark = "mocha",
@@ -18,9 +19,18 @@ return {
         telescope = true,
         notify = true,
         mini = true,
+        bufferline = true,
       },
+      custom_highlights = function(colors)
+        return {
+          StatusLine = { bg = colors.base },   -- opaque background color from the palette
+          StatusLineNC = { bg = colors.base }, -- inactive statusline too
+        }
+      end
+
     },
     config = function(_, opts)
+      vim.opt.termguicolors = true
       require("catppuccin").setup(opts)
       vim.cmd.colorscheme("catppuccin")
     end,
@@ -109,12 +119,12 @@ return {
     event = "VeryLazy",
     opts = {
       options = {
-        mode = "buffers", -- or "tabs"
+        mode = "buffers",
         diagnostics = "nvim_lsp",
         show_close_icon = false,
         show_buffer_close_icons = true,
-        separator_style = "thick",
-      }
+        separator_style = "thin",
+      },
     }
   },
   -- bottom statusline
@@ -167,34 +177,19 @@ return {
   -- snippets
   { "saadparwaiz1/cmp_luasnip" },
   { "rafamadriz/friendly-snippets" },
+
+  -- formatter
+  {
+    "nvimtools/none-ls.nvim",
+    config = function()
+      require("config.plugin-configs.none-ls")
+    end
+  },
+
   -- comment
   {
     'numToStr/Comment.nvim',
     opts = {}
-  },
-  -- smooth scrolling
-  {
-    "karb94/neoscroll.nvim",
-    opts = {
-      mappings = { -- Keys to be mapped to their corresponding default scrolling animation
-        '<C-u>', '<C-d>',
-        '<C-b>', '<C-f>',
-        '<C-y>', '<C-e>',
-        'zt', 'zz', 'zb',
-      },
-      hide_cursor = true,          -- Hide cursor while scrolling
-      stop_eof = true,             -- Stop at <EOF> when scrolling downwards
-      respect_scrolloff = false,   -- Stop scrolling when the cursor reaches the scrolloff margin of the file
-      cursor_scrolls_alone = true, -- The cursor will keep on scrolling even if the window cannot scroll further
-      duration_multiplier = 1.0,   -- Global duration multiplier
-      easing = 'linear',           -- Default easing function
-      pre_hook = nil,              -- Function to run before the scrolling animation starts
-      post_hook = nil,             -- Function to run after the scrolling animation ends
-      performance_mode = false,    -- Disable "Performance Mode" on all buffers.
-      ignored_events = {           -- Events ignored while scrolling
-        'WinScrolled', 'CursorMoved'
-      },
-    },
   },
   -- show colors for the hash #fff
   {

@@ -168,6 +168,7 @@ require('lspconfig').lua_ls.setup({
     },
   },
 })
+
 require('lspconfig').eslint.setup({
   on_attach = function(client)
     -- Disable formatting capability for eslint
@@ -175,3 +176,5 @@ require('lspconfig').eslint.setup({
     client.server_capabilities.documentRangeFormattingProvider = false
   end,
 })
+
+require('lspconfig').html.setup({})

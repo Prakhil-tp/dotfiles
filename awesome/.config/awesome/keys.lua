@@ -43,6 +43,16 @@ local term_scratch = bling.module.scratchpad {
 }
 
 -- ===================================================================
+-- Helper functions
+-- ===================================================================
+
+local function focus_screen_and_warp(dir)
+  awful.screen.focus_relative(dir)
+  local s = awful.screen.focused()
+  mouse.coords({ x = s.geometry.x + 10, y = s.geometry.y + 10 })
+end
+
+-- ===================================================================
 -- Desktop Key bindings
 -- ===================================================================
 
@@ -70,10 +80,10 @@ keys.globalkeys = gears.table.join(
     awful.client.swap.byidx(-1)
   end, { description = "swap with previous client by index", group = "client" }),
   awful.key({ modkey, "Control" }, "j", function()
-    awful.screen.focus_relative(1)
+    focus_screen_and_warp(1)
   end, { description = "focus the next screen", group = "screen" }),
   awful.key({ modkey, "Control" }, "k", function()
-    awful.screen.focus_relative(-1)
+    focus_screen_and_warp(-1)
   end, { description = "focus the previous screen", group = "screen" }),
   awful.key({ modkey }, "u", awful.client.urgent.jumpto, { description = "jump to urgent client", group = "client" }),
   awful.key({ modkey }, "Tab", function()

@@ -143,4 +143,4 @@ local options = {
   on_attach = my_on_attach,
 }
 
-return options 
+return options

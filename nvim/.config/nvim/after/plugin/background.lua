@@ -4,12 +4,14 @@ function setBackgroundTransparent()
     "NormalNC",
     "NormalFloat",
     "FloatBorder",
+    --telescope
     "TelescopeNormal",
     "TelescopeBorder",
     "TelescopePromptNormal",
     "TelescopePromptBorder",
     "TelescopeResultsNormal",
     "TelescopeResultsBorder",
+    -- nvim-tree
     "NvimTreeNormal",
     "NvimTreeNormalNC",
     "NvimTreeEndOfBuffer",
@@ -22,4 +24,4 @@ function setBackgroundTransparent()
   end
 end
 
-setBackgroundTransparent()
+-- setBackgroundTransparent()
