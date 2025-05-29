@@ -6,7 +6,7 @@
 require("luasnip.loaders.from_vscode").lazy_load()
 
 local cmp = require('cmp')
-local autoformat = vim.api.nvim_create_augroup("LspAutoFormatting", { clear = true })
+-- local autoformat = vim.api.nvim_create_augroup("LspAutoFormatting", { clear = true })
 local format_enabled = {}
 
 cmp.setup({
@@ -107,13 +107,13 @@ vim.api.nvim_create_autocmd('LspAttach', {
     vim.keymap.set('n', '<F4>', '<cmd>lua vim.lsp.buf.code_action()<cr>', opts)
 
     -- Enable formatting on save
-    vim.api.nvim_create_autocmd("BufWritePre", {
-      group = autoformat,
-      buffer = bufnr,
-      callback = function()
-        format_on_save(bufnr)
-      end,
-    })
+    -- vim.api.nvim_create_autocmd("BufWritePre", {
+    --   group = autoformat,
+    --   buffer = bufnr,
+    --   callback = function()
+    --     format_on_save(bufnr)
+    --   end,
+    -- })
   end,
 })
 
@@ -153,6 +153,10 @@ end, { desc = "Show Diagnostics Float" })
 -- Language server setups
 require('lspconfig').ts_ls.setup({
   capabilities = require('cmp_nvim_lsp').default_capabilities(),
+  on_attach = function (client)
+    client.server_capabilities.documentFormattingProvider = false
+    client.server_capabilities.documentRangeFormattingProvider = false
+  end
 })
 
 require('lspconfig').lua_ls.setup({
