@@ -80,10 +80,10 @@ keys.globalkeys = gears.table.join(
     awful.client.swap.byidx(-1)
   end, { description = "swap with previous client by index", group = "client" }),
   awful.key({ modkey, "Control" }, "j", function()
-    focus_screen_and_warp(1)
+    focus_screen_and_warp(-1)
   end, { description = "focus the next screen", group = "screen" }),
   awful.key({ modkey, "Control" }, "k", function()
-    focus_screen_and_warp(-1)
+    focus_screen_and_warp(1)
   end, { description = "focus the previous screen", group = "screen" }),
   awful.key({ modkey }, "u", awful.client.urgent.jumpto, { description = "jump to urgent client", group = "client" }),
   awful.key({ modkey }, "Tab", function()
@@ -470,7 +470,7 @@ keys.clientkeys = gears.table.join(
   awful.key({ modkey, "Shift" }, "m", function(c)
     c:swap(awful.client.getmaster())
   end, { description = "move to master", group = "client" }),
-  awful.key({ modkey }, "o", function(c)
+  awful.key({ modkey, "Control" }, "o", function(c)
     c:move_to_screen()
   end, { description = "move to screen", group = "client" }),
   awful.key({ modkey }, "t", function(c)
