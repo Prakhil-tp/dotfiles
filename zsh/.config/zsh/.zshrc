@@ -132,6 +132,12 @@ alias ac="nvim ~/.config/awesome/rc.lua"
 alias qc="nvim ~/.config/qutebrowser/config.py"
 # alias nc="nvim ~/.config/nvim/init.vim"
 
+# clock
+alias clock="tty-clock -c -t"
+
+# lazygit
+alias lg="lazygit"
+
 # ===========================================================================================================
 #                                                 CUSTOM COMMANDS
 # ===========================================================================================================
@@ -179,7 +185,7 @@ export ALTSERVER_ANISETTE_SERVER=http://127.0.0.1:6969
 # ===========================================================================================================
 
 function cdd() {
-  cd "$(find /home/prakhil/ -maxdepth 2 -type d | fzf --preview 'lsd -l --color=always {}' --layout=reverse)"
+  cd "$(find /home/prakhil/ -maxdepth 3 -type d | fzf --preview 'lsd -l --color=always {}' --layout=reverse)"
 }
 
 function play() {
