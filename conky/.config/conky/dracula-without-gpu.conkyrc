@@ -71,7 +71,7 @@ conky.config = {
 
 	--Windows
 	own_window = true,							-- create your own window to draw
-	own_window_argb_value = 250,			    -- real transparency - composite manager required 0-255
+	own_window_argb_value = 214,			    -- real transparency - composite manager required 0-255
 	own_window_argb_visual = true,				-- use ARGB - composite manager required
 	own_window_class = 'Conky',					-- manually set the WM_CLASS name for use with xprop
 	own_window_colour = '#282a36',				-- set colour if own_window_transparent no
@@ -80,12 +80,19 @@ conky.config = {
 	own_window_type = 'desktop',				-- if own_window true options are: normal/override/dock/desktop/panel
 	own_window_hints = 'undecorated,below,sticky,skip_taskbar,skip_pager',  -- if own_window true - just hints - own_window_type sets it
 
+	--color0 = '#bd93f9',
 	--Colors (Dracula)
-	color0 = '#bd93f9',
-	color1 = '#f8f8f2',
-	color2 = '#8be9fd',
-	color2 = '#8be9fd',
-	color3 = '#50fa7b',
+  --color0 = '#fab387',
+  --color1 = '#f8f8f2',
+  --color2 = '#8be9fd',
+  --color2 = '#8be9fd',
+  --color3 = '#50fa7b',
+
+  color0 = '#f38ba8',
+  color1 = '#cdd6f4', 
+  color2 = '#89dceb',
+  color3 = '#a6e3a1',
+
 };
 
 conky.text = [[
