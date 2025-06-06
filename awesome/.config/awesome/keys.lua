@@ -37,7 +37,8 @@ local term_scratch = bling.module.scratchpad {
   sticky                  = true,                                              -- Whether the scratchpad should be sticky
   autoclose               = true,                                              -- Whether it should hide itself when losing focus
   floating                = true,                                              -- Whether it should be floating (MUST BE TRUE FOR ANIMATIONS)
-  geometry                = { x = 340, y = 200, height = 1400, width = 2200 }, -- The geometry in a floating state
+  geometry                = { x = 340, y = 200, height = 1400, width = 2200 }, -- The geometry for 2k laptop
+  -- geometry                = { x = 340, y = 100, height = 700, width = 1100 }, -- The geometry for 1080p display
   reapply                 = true,                                              -- Whether all those properties should be reapplied on every new opening of the scratchpad (MUST BE TRUE FOR ANIMATIONS)
   dont_focus_before_close = false,                                             -- When set to true, the scratchpad will be closed by the toggle function regardless of whether its focused or not. When set to false, the toggle function will first bring the scratchpad into focus and only close it on a second call
 }
