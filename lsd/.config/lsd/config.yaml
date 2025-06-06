@@ -29,7 +29,8 @@ color:
   # when specifying <theme-file-name>, lsd will look up theme file
   # XDG Base Directory if relative, e.g. ~/.config/lsd/themes/<theme-file-name>.yaml,
   # The file path if absolute
-  theme: dracula
+  # theme: dracula
+  theme: custom
   # theme: catppuccin
 
 # == Date ==
