@@ -40,6 +40,6 @@ Configuration files that are used to customize your Linux or unix-like systems.
 ``` sh
 git clone https://github.com/Prakhil-tp/dotfiles.git
 cd ./dotfiles
-stow <directory-name>      #  add a purticular config. example: $ stow alacritty
+stow <directory-name>      #  add a particular config. example: $ stow alacritty
 ```
 
