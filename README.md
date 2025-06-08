@@ -6,7 +6,7 @@
 
 ![dotfiles image](./dotfiles.png)
 
-Configuration files that are used to customize your Linux or unix-like systems. 
+Configuration files  to customize Linux or unix-like systems. 
 
 ## Configs
 
