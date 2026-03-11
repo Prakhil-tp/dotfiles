@@ -2,7 +2,8 @@ import:
   - ./dracula.yml
 font:
   normal:
-    family: "Hack NF"
+    #family: "Hack NF"
+    family: "JetBrainsMono NF"
     style: Regular
   italic:
     family: "Hack NF"

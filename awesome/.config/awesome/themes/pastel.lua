@@ -9,18 +9,15 @@
 -- Initialization
 -- ===================================================================
 
-
 local xresources = require("beautiful.xresources")
 local dpi = xresources.apply_dpi
 
 -- define module table
 local theme = {}
 
-
 -- ===================================================================
 -- Theme Variables
 -- ===================================================================
-
 
 theme.name = "pastel"
 
@@ -29,10 +26,11 @@ theme.font = "SF Pro Text 9"
 theme.title_font = "SF Pro Display Medium 10"
 
 -- Background
-theme.bg_normal = "#1f2430"
+theme.bg_normal = "#181825"
 theme.bg_dark = "#000000"
 theme.bg_focus = "#151821"
-theme.bg_urgent = "#ed8274"
+-- theme.bg_urgent = "#ed8274"
+theme.bg_urgent = "#b4befe"
 theme.bg_minimize = "#444444"
 
 -- Foreground
@@ -51,7 +49,7 @@ theme.gap_single_client = true
 theme.border_width = dpi(0)
 theme.border_normal = theme.bg_normal
 --theme.border_focus = "#ff8a65"
-theme.border_focus = "#ff79c6"
+theme.border_focus = "#b4befe"
 theme.border_marked = theme.fg_urgent
 
 -- Taglist

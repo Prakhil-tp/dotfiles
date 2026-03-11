@@ -26,7 +26,11 @@
   "eslint.enable": false,
   "eslint.autoFix": false,
   "eslint.autoFixOnSave": false,
-  "prettier.trailingComma": "none",
+  "tslint.enable": true,
+  "tslint.autoFixOnSave": false,
+  "prettier.trailingComma": "all",
+  "prettier.proseWrap": "always",
+  "prettier.printWidth": 100,
   "javascript.suggestionActions.enabled": false,
   "languageserver": {
     "golang": {

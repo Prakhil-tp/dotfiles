@@ -23,3 +23,5 @@ source $HOME/.config/nvim/plug-config/markdown-preview.vim
 
 " lua files
 luafile $HOME/.config/nvim/plug-config/treesitter.lua
+luafile $HOME/.config/nvim/plug-config/colourizer.lua
+

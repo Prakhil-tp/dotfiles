@@ -1,0 +1,27 @@
+user: 183 # light purple
+group: 147 # soft blue
+permission:
+  read: 151
+  write: 229
+  exec: 217
+  exec-sticky: 183
+  no-access: 103
+  octal: 158
+  acl: 158
+  context: 117
+date:
+  hour-old: 158
+  day-old: 117
+  older: 110
+size:
+  none: 103
+  small: 151
+  medium: 229
+  large: 216
+inode:
+  valid: 219
+  invalid: 103
+links:
+  valid: 219
+  invalid: 103
+tree-edge: 146

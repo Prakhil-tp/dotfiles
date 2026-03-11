@@ -59,6 +59,7 @@ call plug#begin('~/.config/nvim/autoload/plugged')
     "============================
     "Plug 'morhetz/gruvbox'
     Plug 'dracula/vim', { 'as': 'dracula' }
+    Plug 'norcalli/nvim-colorizer.lua'
     "============================
     " Statusbar and bufferline
     "============================
@@ -70,7 +71,7 @@ call plug#begin('~/.config/nvim/autoload/plugged')
     "============================
     Plug 'godlygeek/tabular'
     "Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
-    Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
+    Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown','preview'] }
     Plug 'junegunn/goyo.vim'
     "============================
     " Wiki
@@ -86,6 +87,7 @@ call plug#begin('~/.config/nvim/autoload/plugged')
     " Debugger
     "============================
     Plug 'puremourning/vimspector'
+
 
     call plug#end()
 

@@ -6,7 +6,8 @@
 autoload -Uz vcs_info
 zstyle ':vcs_info:*' enable git svn
 zstyle ':vcs_info:*' check-for-changes true
-zstyle ':vcs_info:*' unstagedstr '\033[48;5;222m'
+# zstyle ':vcs_info:*' unstagedstr '\033[48;5;222m'
+zstyle ':vcs_info:*' unstagedstr '\033[48;2;250;179;135m'
 zstyle ':vcs_info:*' stagedstr '\033[48;5;222m'
 zstyle ':vcs_info:git*' formats "%u%c  %b "
 zstyle ':vcs_info:git:*' actionformats "\033[48;5;210m   %b | %a "
@@ -26,12 +27,18 @@ precmd() {
   # fg_color='\033[38;5;16m'
   
   # catppuccine
-  bg_color='\033[48;5;211m'
-  fg_color='\033[38;5;235m'
+  # bg_color='\033[48;5;211m'
+  # fg_color='\033[38;5;235m'
+  
+  # catppuccine
+  bg_color='\033[48;5;147m'
+  # bg_color='\033[48;5;183m'
+  fg_color='\033[38;5;16m'
   clear='\033[m'
 
-  #vcs_bg_color='\033[48;5;120m'
-  vcs_bg_color='\033[48;5;159m'
+  # vcs_bg_color='\033[48;5;120m'
+  # vcs_bg_color='\033[48;5;159m'
+  vcs_bg_color='\033[48;5;158m'
 
   vcs_info
   print -P $bg_color$fg_color$(zsh_prompt_home_indicator)'%~ '$clear$vcs_bg_color$fg_color${vcs_info_msg_0_}$clear
@@ -94,7 +101,7 @@ alias h="htop"
 
 #ls
 alias ls='lsd -alh'
-alias lt='ls --tree'
+# alias lt='ls --tree'
 
 #math
 alias math="bc <<<"
@@ -116,6 +123,7 @@ alias open="xdg-open"
 alias iftop="sudo iftop"
 alias docker="sudo docker"
 alias nb="newsboat"
+alias ytx='yt-x'
 
 #journalctl and systemctl
 alias j="journalctl"
@@ -125,6 +133,32 @@ alias s="systemctl"
 alias ac="nvim ~/.config/awesome/rc.lua"
 alias qc="nvim ~/.config/qutebrowser/config.py"
 alias nc="nvim ~/.config/nvim/init.vim"
+
+#git
+
+alias gs="git status"
+alias ga="git add" 
+alias gcm="git commit -m"
+alias gpo="git push origin"
+
+# fd-find
+alias fd="fdfind"
+
+# linx
+alias lynx="lynx -nocolor"
+
+# tabview
+alias tb="tw"
+
+# clock
+alias clock="tty-clock -c -t"
+
+# lazy git
+alias lzg="lazygit"
+alias lzd="lazydocker"
+
+# gemini
+alias gem="gemini"
 
 # ===========================================================================================================
 #                                                 CUSTOM COMMANDS
@@ -161,12 +195,22 @@ function op() {
 }
 
 function cdd() {
-  cd "$(find $HOME/code/playground $HOME/code/projects -maxdepth 1 -depth | fzf -e)"
+  # cd "$(find $HOME/code/playground $HOME/code/projects $HOME/api-collections -maxdepth 1 -depth | fzf -e)"
+   cd "$(fd -t d --exclude node_modules --exclude dist --exclude build  --exclude coverage --exclude snap . $HOME | fzf --preview="lsd -l {}" -e)"
 }
 
 function refreshLeftScreen() {
   xrandr --output "DP1" --off
-  xrandr --output "DP1" --mode 1920x1080 --left-of "HDMI1"
+  xrandr --output "DP1" --auto --right-of "HDMI1"
+}
+
+function w() {
+  if [ -z "$1" ]; then
+    echo "Usage: ? <URL>"
+    return 1
+  fi
+
+  lynx -dump "$1" | nvim -
 }
 
 # ===========================================================================================================
@@ -186,4 +230,10 @@ source $ZDOTDIR/vim-mode.zsh
 
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-pfetch
+# pfetch
+
+# . "$HOME/.local/share/../bin/env"
+
+. "$HOME/.atuin/bin/env"
+
+eval "$(atuin init zsh)"

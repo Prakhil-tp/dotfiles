@@ -29,6 +29,9 @@
 // @exclude       http*://*apexcharts.com/*
 // @exclude       http*://*openai.com/*
 // @exclude       http*://*amazon.*/*
+// @exclude       http*://chatgpt.com/*
+// @exclude       http*://chat.openai.com/*
+// @exclude       http*://*.locationsolutions.*/*
 //
 //#### @exclude       https://www.google.com/search?q=*&tbm=isch*
 // @require       https://cdn.jsdelivr.net/npm/darkreader/darkreader.min.js

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 export DISPLAY=:0 #initializing the display for CRON job support
 wallpaper_path="/home/prakhil/pictures/wallpapers"

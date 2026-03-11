@@ -17,5 +17,8 @@ run() {
   esac
 }
 
-run conky -c /home/prakhil/.config/conky/dracula.conkyrc > /dev/null 2>&1 &
-run sudo -b openvpn /home/prakhil/.config/openvpn/client.ovpn
+run conky -c /home/prakhil/.config/conky/dracula-without-gpu.conkyrc > /dev/null 2>&1 &
+run keynav
+
+xset r rate 300 50
+#run sudo -b openvpn /home/prakhil/.config/openvpn/client.ovpn

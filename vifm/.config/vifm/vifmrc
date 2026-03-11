@@ -65,7 +65,7 @@ set norunexec
 
 " Selected color scheme
 
-"colorscheme gruvbox
+" colorscheme gruvbox
 colorscheme dracula
 
 " Format for displaying time in file list. For example:

@@ -1,5 +1,7 @@
+let personal_wiki = {'path': '~/documents/office-notes', 'syntax': 'markdown', 'ext': '.md'}
+let office_wiki = {'path': '~/documents/personal-notes', 'syntax': 'markdown', 'ext': '.md'}
 
-let g:vimwiki_list = [{'path': '~/documents/notes', 'syntax': 'markdown', 'ext': '.md'}]
+let g:vimwiki_list = [personal_wiki, office_wiki]
 let g:vimwiki_ex2syntax = {'.md':'markdown', '.markdown':'markdown', '.mdown':'markdown'}
 
 " Makes markdown links as [text](text.md) instead of [text](text)

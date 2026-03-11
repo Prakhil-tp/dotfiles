@@ -5,6 +5,7 @@
 # Mute spotify when it starts advertisement
 #
 # Launch with or after spotify. This script automatically exits when spotify window is closed
+# (Ideally, launch it from Awesome config - check Awesome config)
 #
 # nohup ./spotify-automute.sh > /tmp/spotify-automute.log &
 # or
