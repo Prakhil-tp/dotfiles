@@ -19,13 +19,13 @@ catppuccin.setup(c, 'mocha', True)
 
 
 c.backend = "webengine"
-c.downloads.location.directory = "/home/prakhil/downloads"
+c.downloads.location.directory = "/home/blue/Downloads"
 c.statusbar.show = "in-mode"
 c.tabs.show = "always"
 c.url.default_page = "https://start.duckduckgo.com/"
 c.scrolling.smooth = True
 c.content.blocking.method = "both"
-c.url.start_pages = "/home/prakhil/.config/qutebrowser/tabliss/index.html"
+c.url.start_pages = "/home/blue/.config/qutebrowser/tabliss/index.html"
 c.url.default_page = c.url.start_pages
 
 # search engines
@@ -81,6 +81,9 @@ c.content.blocking.adblock.lists = [
     "https://github.com/uBlockOrigin/uAssets/raw/master/filters/filters-2020.txt",
     "https://github.com/uBlockOrigin/uAssets/raw/master/filters/filters-2021.txt",
     "https://github.com/uBlockOrigin/uAssets/raw/master/filters/filters-2022.txt",
+    "https://github.com/uBlockOrigin/uAssets/raw/master/filters/filters-2023.txt",
+    "https://github.com/uBlockOrigin/uAssets/raw/master/filters/filters-2024.txt",
+    "https://github.com/uBlockOrigin/uAssets/raw/master/filters/filters-2025.txt",
     "https://github.com/uBlockOrigin/uAssets/raw/master/filters/filters.txt",
     "https://github.com/uBlockOrigin/uAssets/raw/master/filters/lan-block.txt",
     "https://github.com/uBlockOrigin/uAssets/raw/master/filters/legacy.txt",
@@ -97,3 +100,14 @@ config.bind(",b", "config-cycle statusbar.show always never")
 config.bind(",t", "config-cycle tabs.show always switching")
 config.bind(",v", "spawn --detach mpv -- {clipboard}")
 
+# Spoof Chrome user-agent + client hints for Google (fixes sign-in)
+# Version must match actual QtWebEngine Chromium version (currently 140)
+_chrome_ua = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36'
+_google_patterns = ['*://accounts.google.com/*', '*://*.google.com/*', '*://google.com/*']
+for _pattern in _google_patterns:
+    config.set('content.headers.user_agent', _chrome_ua, _pattern)
+    config.set('content.headers.custom', {
+        'sec-ch-ua': '"Google Chrome";v="140", "Chromium";v="140", "Not-A.Brand";v="24"',
+        'sec-ch-ua-mobile': '?0',
+        'sec-ch-ua-platform': '"Linux"',
+    }, _pattern)
