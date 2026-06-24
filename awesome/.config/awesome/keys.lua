@@ -15,6 +15,7 @@ local naughty = require("naughty")
 local beautiful = require("beautiful")
 local hotkeys_popup = require("awful.hotkeys_popup")
 local bling = require("bling")
+local wibox = require("wibox")
 
 -- Define mod keys
 local modkey = "Mod4"
@@ -152,7 +153,7 @@ keys.globalkeys = gears.table.join(
   end, { description = "launch scratchpad", group = "applications" }),
 
   awful.key({ modkey }, "r", function()
-    awful.spawn.spawn("dmenu_run")
+    awful.spawn.spawn("dmenu-gruvbox_run")
   end, { description = "launch dmenu_run", group = "applications" }),
 
   awful.key({ modkey }, "c", function()
@@ -168,7 +169,7 @@ keys.globalkeys = gears.table.join(
   end, { description = "pass password manager dmenu script", group = "script" }),
   awful.key({ modkey }, "Insert", function()
     awful.spawn.with_shell(
-      "xdotool type $(grep -v '^|' ~/.local/share/script-files/snippets.txt | dmenu -i -l 20 | cut -d' ' -f1)"
+      "xdotool type $(grep -v '^|' ~/.local/share/script-files/snippets.txt | dmenu-gruvbox -i -l 20 | cut -d' ' -f1)"
     )
   end, { description = "get bookmarked values to any textfield", group = "applications" }),
   awful.key({}, "Print", function()
@@ -273,6 +274,14 @@ keys.globalkeys = gears.table.join(
         },
         {
           {},
+          "t",
+          function(self)
+            awful.spawn.with_shell("~/scripts/rofi-theme-switch.sh")
+            self:stop()
+          end,
+        },
+        {
+          {},
           "/",
           function(self)
             awful.spawn.with_shell("~/scripts/dm-websearch/dm-websearch")
@@ -284,7 +293,7 @@ keys.globalkeys = gears.table.join(
           "i",
           function(self)
             awful.spawn.with_shell(
-              "xdotool type $(grep -v '^|' ~/.local/share/script-files/snippets.txt | dmenu -i -l 20 | cut -d' ' -f1)"
+              "xdotool type $(grep -v '^|' ~/.local/share/script-files/snippets.txt | dmenu-gruvbox -i -l 20 | cut -d' ' -f1)"
             )
             self:stop()
           end,
@@ -339,53 +348,118 @@ keys.globalkeys = gears.table.join(
       mask_modkeys = true,
       autostart = true,
       stop_key = "Mod4",
-      timeout = 1,
+      timeout = 3,
       keybindings = {
         {
-          {},
-          "t",
+          {}, "t",
           function(self)
-            function alignMiddle(short, long)
-              local diff = (#long / 2) - (#short / 2)
-              for i = 1, diff + 2 do
-                short = " " .. short
-              end
-              return { short, long }
-            end
+            local time_str = os.date("%I:%M %p")
+            local date_str = os.date("%A, %b %d")
 
-            local list = alignMiddle(os.date("%I:%M %p"), os.date("%A, %b %d"))
-            naughty.notify({
-              title = list[1],
-              text = list[2],
-              margin = 10,
-              position = "top_middle",
-              bg = "#282a36",
-              fg = "#f8f8f2",
-              border_color = "#bd93f9",
+            local p = awful.popup({
+              screen = awful.screen.focused(),
+              widget = {
+                {
+                  {
+                    markup = '<span font="sans 48" weight="bold" foreground="#ffffff">'
+                          .. time_str .. '</span>',
+                    align = "center",
+                    valign = "center",
+                    widget = wibox.widget.textbox,
+                  },
+                  {
+                    markup = '<span font="sans 20" foreground="#aaaaaa">'
+                          .. date_str .. '</span>',
+                    align = "center",
+                    valign = "center",
+                    widget = wibox.widget.textbox,
+                  },
+                  layout = wibox.layout.fixed.vertical,
+                },
+                left = 50,
+                right = 50,
+                top = 30,
+                bottom = 30,
+                widget = wibox.container.margin,
+              },
+              bg = "#000000",
+              ontop = true,
+              placement = awful.placement.centered,
+              shape = function(cr, w, h)
+                gears.shape.rounded_rect(cr, w, h, 12)
+              end,
             })
+
+            gears.timer.start_new(3, function()
+              if p and p.valid then
+                p.visible = false
+                p = nil
+              end
+              return false
+            end)
+
             self:stop()
           end,
         },
         {
-          {},
-          "b",
+          {}, "b",
           function(self)
             if gears.filesystem.file_readable("/sys/class/power_supply/BAT0/capacity") then
               local f = io.open("/sys/class/power_supply/BAT0/capacity")
-              local battery = " " .. f:read() .. "%"
+              local pct = f:read()
               f:close()
-              naughty.notify({
-                text = battery,
-                margin = 10,
-                position = "top_middle",
-                bg = "#282a36",
-                fg = "#f8f8f2",
-                border_color = "#bd93f9",
+              local pct_num = tonumber(pct) or 0
+              local bat_icon = "󰁹"
+              if pct_num >= 80 then bat_icon = "󰂂"
+              elseif pct_num >= 60 then bat_icon = "󰁿"
+              elseif pct_num >= 40 then bat_icon = "󰁽"
+              elseif pct_num >= 20 then bat_icon = "󰁻"
+              else bat_icon = "󰁺" end
+              require("notifications").notify({
+                title = "Battery",
+                text  = (pct or "?") .. "%",
+                app_name = "battery",
+                icon  = bat_icon,
               })
             else
-              naughty.notify({
-                title = "Attention!",
-                text = "No Battery information available",
+              require("notifications").notify({
+                title = "Battery",
+                text  = "No battery information available",
+                urgency = "critical",
+                app_name = "battery",
+                icon  = "󰂎",
+              })
+            end
+            self:stop()
+          end,
+        },
+        {
+          { modkey }, "b",
+          function(self)
+            if gears.filesystem.file_readable("/sys/class/power_supply/BAT0/capacity") then
+              local f = io.open("/sys/class/power_supply/BAT0/capacity")
+              local pct = f:read()
+              f:close()
+              local pct_num = tonumber(pct) or 0
+              local bat_icon = "󰁹"
+              if pct_num >= 80 then bat_icon = "󰂂"
+              elseif pct_num >= 60 then bat_icon = "󰁿"
+              elseif pct_num >= 40 then bat_icon = "󰁽"
+              elseif pct_num >= 20 then bat_icon = "󰁻"
+              else bat_icon = "󰁺" end
+              require("notifications").notify({
+                title = "Battery",
+                text  = (pct or "?") .. "%",
+                app_name = "battery",
+                icon  = bat_icon,
+              })
+            else
+              require("notifications").notify({
+                title = "Battery",
+                text  = "No battery information available",
+                urgency = "critical",
+                app_name = "battery",
+                icon  = "󰂎",
               })
             end
             self:stop()

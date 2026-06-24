@@ -7,6 +7,7 @@ require("awful.autofocus")
 
 local beautiful = require("beautiful") -- theme handling
 local naughty = require("naughty")     -- notification
+
 local hotkeys_popup = require("awful.hotkeys_popup")
 require("awful.hotkeys_popup.keys")
 
@@ -60,11 +61,11 @@ local modkey = "Mod4"
 -- Define layouts
 awful.layout.layouts = {
   awful.layout.suit.tile,
-  awful.layout.suit.floating,
+  -- awful.layout.suit.floating,
   awful.layout.suit.max,
-  --awful.layout.suit.spiral,
-  --awful.layout.suit.magnifier,
-  --awful.layout.suit.fair
+  awful.layout.suit.spiral,
+  awful.layout.suit.magnifier,
+  awful.layout.suit.fair
 }
 
 -- Keyboard map indicator and switcher
@@ -74,7 +75,7 @@ awful.screen.connect_for_each_screen(function(s)
   -- Each screen has its own tag table.
   local names = { "dev", "2", "3", "4", "www", "6", "7", "8", "music" }
   local l = awful.layout.suit
-  local layouts = { l.tile, l.tile, l.tile, l.tile, l.max, l.tile, l.tile, l.tile, l.max }
+  local layouts = { l.tile, l.tile, l.tile, l.tile, l.max, l.tile, l.tile, l.tile, l.tile }
   awful.tag(names, s, layouts)
 end)
 
@@ -128,3 +129,62 @@ awful.spawn.with_shell("~/scripts/change-wallpaper.sh")
 awful.spawn.with_shell("~/.config/awesome/autorun.sh")
 awful.spawn.with_shell("~/scripts/set-screen-starup/set-screen.sh")
 os.execute("xset r rate 300 50") -- key repeat frequency
+
+-- ===================================================================
+-- Persist tag layouts across restarts
+-- ===================================================================
+local state_dir = os.getenv("XDG_CACHE_HOME") or (os.getenv("HOME") .. "/.cache")
+os.execute("mkdir -p " .. state_dir .. "/awesome")
+local state_file = state_dir .. "/awesome/tag_layouts.txt"
+
+local function save_tag_layouts()
+  local lines = {}
+  for _, s in ipairs(screen) do
+    for _, t in ipairs(s.tags) do
+      local idx = 0
+      for i, l in ipairs(awful.layout.layouts) do
+        if l == t.layout then
+          idx = i
+          break
+        end
+      end
+      lines[#lines + 1] = s.index .. "|" .. t.name .. " " .. idx
+    end
+  end
+  if #lines > 0 then
+    local f = io.open(state_file, "w")
+    if f then
+      f:write(table.concat(lines, "\n"), "\n")
+      f:close()
+    end
+  end
+end
+
+local function restore_tag_layouts()
+  local f = io.open(state_file, "r")
+  if not f then return end
+  local saved = {}
+  for line in f:lines() do
+    local space = line:find(" ")
+    if space then
+      local key = line:sub(1, space - 1)
+      local idx = tonumber(line:sub(space + 1))
+      if idx and idx > 0 and idx <= #awful.layout.layouts then
+        saved[key] = idx
+      end
+    end
+  end
+  f:close()
+  for _, s in ipairs(screen) do
+    for _, t in ipairs(s.tags) do
+      local idx = saved[s.index .. "|" .. t.name]
+      if idx then
+        t.layout = awful.layout.layouts[idx]
+      end
+    end
+  end
+end
+
+awesome.connect_signal("exit", save_tag_layouts)
+tag.connect_signal("property::layout", save_tag_layouts)
+restore_tag_layouts()
