@@ -15,6 +15,7 @@ local naughty = require("naughty")
 local beautiful = require("beautiful")
 local hotkeys_popup = require("awful.hotkeys_popup")
 local bling = require("bling")
+local wibox = require("wibox")
 
 -- Define mod keys
 local modkey = "Mod4"
@@ -22,36 +23,22 @@ local altkey = "Mod1"
 -- local terminal = "alacritty"
 local terminal = "kitty"
 
-
 -- define module table
 local keys = {}
-
 
 -- ===================================================================
 -- Scratchpads
 -- ===================================================================
-local term_scratch = bling.module.scratchpad {
-  -- command = "alacritty --class spad",
-  command                 = "kitty --class spad",
-  rule                    = { instance = "spad" },                             -- The rule that the scratchpad will be searched by
-  sticky                  = true,                                              -- Whether the scratchpad should be sticky
-  autoclose               = true,                                              -- Whether it should hide itself when losing focus
-  floating                = true,                                              -- Whether it should be floating (MUST BE TRUE FOR ANIMATIONS)
-  geometry                = { x = 340, y = 200, height = 1400, width = 2200 }, -- The geometry for 2k laptop
-  -- geometry                = { x = 340, y = 100, height = 700, width = 1100 }, -- The geometry for 1080p display
-  reapply                 = true,                                              -- Whether all those properties should be reapplied on every new opening of the scratchpad (MUST BE TRUE FOR ANIMATIONS)
-  dont_focus_before_close = false,                                             -- When set to true, the scratchpad will be closed by the toggle function regardless of whether its focused or not. When set to false, the toggle function will first bring the scratchpad into focus and only close it on a second call
-}
-
--- ===================================================================
--- Helper functions
--- ===================================================================
-
-local function focus_screen_and_warp(dir)
-  awful.screen.focus_relative(dir)
-  local s = awful.screen.focused()
-  mouse.coords({ x = s.geometry.x + 10, y = s.geometry.y + 10 })
-end
+local term_scratch = bling.module.scratchpad({
+  command = "kitty --class spad",
+  rule = { instance = "spad" },                               -- The rule that the scratchpad will be searched by
+  sticky = true,                                              -- Whether the scratchpad should be sticky
+  autoclose = true,                                           -- Whether it should hide itself when losing focus
+  floating = true,                                            -- Whether it should be floating (MUST BE TRUE FOR ANIMATIONS)
+  geometry = { x = 360, y = 90, height = 900, width = 1200 }, -- The geometry in a floating state
+  reapply = true,                                             -- Whether all those properties should be reapplied on every new opening of the scratchpad (MUST BE TRUE FOR ANIMATIONS)
+  dont_focus_before_close = false,                            -- When set to true, the scratchpad will be closed by the toggle function regardless of whether its focused or not. When set to false, the toggle function will first bring the scratchpad into focus and only close it on a second call
+})
 
 -- ===================================================================
 -- Desktop Key bindings
@@ -62,7 +49,6 @@ keys.globalkeys = gears.table.join(
   awful.key({ modkey }, "Left", awful.tag.viewprev, { description = "view previous", group = "tag" }),
   awful.key({ modkey }, "Right", awful.tag.viewnext, { description = "view next", group = "tag" }),
   awful.key({ modkey }, "Escape", awful.tag.history.restore, { description = "go back", group = "tag" }),
-
 
   -- client(window) Key bindings
 
@@ -81,10 +67,10 @@ keys.globalkeys = gears.table.join(
     awful.client.swap.byidx(-1)
   end, { description = "swap with previous client by index", group = "client" }),
   awful.key({ modkey, "Control" }, "j", function()
-    focus_screen_and_warp(-1)
+    awful.screen.focus_relative(-1)
   end, { description = "focus the next screen", group = "screen" }),
   awful.key({ modkey, "Control" }, "k", function()
-    focus_screen_and_warp(1)
+    awful.screen.focus_relative(1)
   end, { description = "focus the previous screen", group = "screen" }),
   awful.key({ modkey }, "u", awful.client.urgent.jumpto, { description = "jump to urgent client", group = "client" }),
   awful.key({ modkey }, "Tab", function()
@@ -143,13 +129,9 @@ keys.globalkeys = gears.table.join(
               {description = "lua execute prompt", group = "awesome"}),
 --]]
 
-
-
   -- ====================================
   -- Applications
   -- ====================================
-  awful.key({}, "Print", function() awful.spawn("flameshot gui") end,
-    { description = "Take a screenshot using flameshot", group = "screenshot" }),
   awful.key({ modkey }, "space", function()
     awful.spawn("rofi -show drun")
   end, { description = "run rofi", group = "launcher" }),
@@ -158,9 +140,11 @@ keys.globalkeys = gears.table.join(
   end, { description = "switch window", group = "launcher" }),
   awful.key({ modkey }, "b", function()
     --awful.spawn("brave")
+    awful.spawn("firefox")
+    -- awful.spawn.with_shell("flatpak run com.brave.Browser")
     --end, { description = "launch brave", group = "applications" }),
-    awful.spawn.with_shell("firefox")
-  end, { description = "launch thorium", group = "applications" }),
+    -- awful.spawn("brave-browser")
+  end, { description = "launch brave", group = "applications" }),
   awful.key({ modkey }, "q", function()
     awful.spawn("qutebrowser")
   end, { description = "launch qutebrowser", group = "applications" }),
@@ -173,33 +157,30 @@ keys.globalkeys = gears.table.join(
   end, { description = "launch dmenu_run", group = "applications" }),
 
   awful.key({ modkey }, "c", function()
-    awful.spawn.with_shell("surf https://chatgpt.com/")
-  end, { description = "launch chatgpt on surf", group = "applications" }),
+    awful.spawn.with_shell("surf https://chatgpt.com")
+  end, { description = "chatgpt", group = "applications" }),
 
   awful.key({ modkey }, "v", function()
     awful.spawn.spawn("kitty -e vifm")
-  end, { description = "launch chatgpt on surf", group = "applications" }),
+  end, { description = "launch vifm", group = "applications" }),
 
-  --
-  -- awful.key({ "Control", "Shift" }, "l", function()
-  -- 	awful.spawn.with_shell("~/scripts/dm-passmenu")
-  -- end, { description = "pass password manager dmenu script", group = "script" }),
-  --
+  awful.key({}, "Print", function()
+    awful.spawn.with_shell("flameshot gui")
+  end, { description = "Open flameshot GUI", group = "screenshots" }),
 
   -- awful.key({ modkey }, "o", function()
-  --   local handle = io.popen(
-  --     "find \"$HOME\" \\( -path \"$HOME/.git\" -o -path \"$HOME/node_modules\" -o -path \"$HOME/__pycache__\" -o -path \"$HOME/.npm\" -o -name \".cache\" \\) -prune -o -type f -print | dmenu -i -l 20")
+  --   local handle = io.popen("find $HOME -type f | dmenu -i -l 20")
   --   local result = handle:read("*a")
   --   handle:close()
   --   filepath = result:gsub("\n[^\n]*$", "")
   --
-  --   if (filepath ~= "") then
+  --   if filepath ~= "" then
   --     handle = io.popen("xdg-mime query filetype " .. filepath .. " | xargs -e -I {} xdg-mime query default {}")
   --     result = handle:read("*a")
   --     handle:close()
   --     application = result:gsub("\n[^\n]*$", "")
   --
-  --     if (application == "nvim.desktop") then
+  --     if application == "nvim.desktop" then
   --       awful.spawn("alacritty -e zsh -c 'source $ZDOTDIR/.minimal-zshrc && nvim " .. filepath .. "'")
   --     else
   --       awful.spawn.with_shell("xdg-open " .. filepath)
@@ -304,7 +285,8 @@ keys.globalkeys = gears.table.join(
           "i",
           function(self)
             awful.spawn.with_shell(
-              "xdotool type $(grep -v '^|' ~/.local/share/script-files/snippets.txt | dmenu -i -l 20 | cut -d' ' -f1)")
+              "xdotool type $(grep -v '^|' ~/.local/share/script-files/snippets.txt | dmenu -i -l 20 | cut -d' ' -f1)"
+            )
             self:stop()
           end,
         },
@@ -315,7 +297,7 @@ keys.globalkeys = gears.table.join(
             awful.spawn.with_shell("~/scripts/dm-bookmark.sh")
             self:stop()
           end,
-        }
+        },
       },
     })
   end, { description = "Followed by a key", group = "scripts" }),
@@ -336,7 +318,7 @@ keys.globalkeys = gears.table.join(
           function(self)
             awful.spawn.with_shell("~/scripts/change-wallpaper.sh")
             self:stop()
-          end
+          end,
         },
         {
           {},
@@ -344,9 +326,9 @@ keys.globalkeys = gears.table.join(
           function(self)
             awful.spawn.with_shell("~/scripts/remove-wallpaper.sh")
             self:stop()
-          end
-        }
-      }
+          end,
+        },
+      },
     })
   end, { description = "wallpaper scritps", group = "scripts" }),
 
@@ -358,94 +340,190 @@ keys.globalkeys = gears.table.join(
       mask_modkeys = true,
       autostart = true,
       stop_key = "Mod4",
-      timeout = 1,
+      timeout = 3,
       keybindings = {
         {
-          {},
-          "t",
+          {}, "t",
           function(self)
-            function alignMiddle(short, long)
-              local diff = (#long / 2) - (#short / 2)
-              for i = 1, diff + 2 do
-                short = " " .. short
-              end
-              return { short, long }
-            end
+            local time_str = os.date("%I:%M %p")
+            local date_str = os.date("%A, %b %d")
 
-            local list = alignMiddle(os.date("%I:%M %p"), os.date("%A, %b %d"))
-            naughty.notify {
-              title = list[1],
-              text = list[2],
-              margin = 10,
-              position = "top_middle",
-              bg = "#282a36",
-              fg = "#f8f8f2",
-              border_color = "#bd93f9"
-            }
+            local p = awful.popup({
+              screen = awful.screen.focused(),
+              widget = {
+                {
+                  {
+                    markup = '<span font="sans 48" weight="bold" foreground="#ffffff">'
+                          .. time_str .. '</span>',
+                    align = "center",
+                    valign = "center",
+                    widget = wibox.widget.textbox,
+                  },
+                  {
+                    markup = '<span font="sans 20" foreground="#aaaaaa">'
+                          .. date_str .. '</span>',
+                    align = "center",
+                    valign = "center",
+                    widget = wibox.widget.textbox,
+                  },
+                  layout = wibox.layout.fixed.vertical,
+                },
+                left = 50,
+                right = 50,
+                top = 30,
+                bottom = 30,
+                widget = wibox.container.margin,
+              },
+              bg = "#000000",
+              ontop = true,
+              placement = awful.placement.centered,
+              shape = function(cr, w, h)
+                gears.shape.rounded_rect(cr, w, h, 12)
+              end,
+            })
+
+            gears.timer.start_new(3, function()
+              if p and p.valid then
+                p.visible = false
+                p = nil
+              end
+              return false
+            end)
+
             self:stop()
-          end
+          end,
         },
         {
-          {},
-          "b",
+          {}, "b",
           function(self)
-            if gears.filesystem.file_readable("/sys/class/power_supply/BATT/capacity") then
-              local f = io.open("/sys/class/power_supply/BATT/capacity")
-              local battery = " " .. f:read() .. "%"
+            if gears.filesystem.file_readable("/sys/class/power_supply/BAT0/capacity") then
+              local f = io.open("/sys/class/power_supply/BAT0/capacity")
+              local pct = f:read()
               f:close()
-              naughty.notify {
-                text = battery,
-                margin = 10,
-                position = "top_middle",
-                bg = "#282a36",
-                fg = "#f8f8f2",
-                border_color = "#bd93f9"
-              }
+              local pct_num = tonumber(pct) or 0
+              local bat_icon = "󰁹"
+              if pct_num >= 80 then bat_icon = "󰂂"
+              elseif pct_num >= 60 then bat_icon = "󰁿"
+              elseif pct_num >= 40 then bat_icon = "󰁽"
+              elseif pct_num >= 20 then bat_icon = "󰁻"
+              else bat_icon = "󰁺" end
+              require("notifications").notify({
+                title = "Battery",
+                text  = (pct or "?") .. "%",
+                app_name = "battery",
+                icon  = bat_icon,
+              })
             else
-              naughty.notify {
-                title = "Attention!",
-                text = "No Battery information available",
-              }
+              require("notifications").notify({
+                title = "Battery",
+                text  = "No battery information available",
+                urgency = "critical",
+                app_name = "battery",
+                icon  = "󰂎",
+              })
             end
             self:stop()
-          end
-        }
-      }
+          end,
+        },
+        {
+          { modkey }, "b",
+          function(self)
+            if gears.filesystem.file_readable("/sys/class/power_supply/BAT0/capacity") then
+              local f = io.open("/sys/class/power_supply/BAT0/capacity")
+              local pct = f:read()
+              f:close()
+              local pct_num = tonumber(pct) or 0
+              local bat_icon = "󰁹"
+              if pct_num >= 80 then bat_icon = "󰂂"
+              elseif pct_num >= 60 then bat_icon = "󰁿"
+              elseif pct_num >= 40 then bat_icon = "󰁽"
+              elseif pct_num >= 20 then bat_icon = "󰁻"
+              else bat_icon = "󰁺" end
+              require("notifications").notify({
+                title = "Battery",
+                text  = (pct or "?") .. "%",
+                app_name = "battery",
+                icon  = bat_icon,
+              })
+            else
+              require("notifications").notify({
+                title = "Battery",
+                text  = "No battery information available",
+                urgency = "critical",
+                app_name = "battery",
+                icon  = "󰂎",
+              })
+            end
+            self:stop()
+          end,
+        },
+      },
     })
   end, { description = "information", group = "scripts" }),
 
   -- ===================================
   -- Music keybindings
   -- ===================================
-
   --[[
 	awful.key({ "Control" }, "Right", function()
-    awful.spawn.with_shell("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next")
+		awful.spawn.with_shell(
+			"dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next"
+		)
 	end, { description = "Next track", group = "Music" }),
 
 	awful.key({ "Control" }, "Left", function()
-    awful.spawn.with_shell("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous")
+		awful.spawn.with_shell(
+			"dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous"
+		)
 	end, { description = "Previous track", group = "Music" }),
 
 	awful.key({ "Control" }, "Down", function()
-    awful.spawn.with_shell("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause")
+		awful.spawn.with_shell(
+			"dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause"
+		)
 	end, { description = "Play/Pause track", group = "Music" })
 )
-]] --
-
 
   awful.key({ "Control" }, "Right", function()
-    awful.spawn.with_shell("playerctl next")
+    awful.spawn.with_shell(
+      "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.mpv /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next"
+    )
   end, { description = "Next track", group = "Music" }),
 
   awful.key({ "Control" }, "Left", function()
-    awful.spawn.with_shell("playerctl previous")
+    awful.spawn.with_shell(
+      "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.mpv /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous"
+    )
   end, { description = "Previous track", group = "Music" }),
 
   awful.key({ "Control" }, "Down", function()
-    awful.spawn.with_shell("playerctl play-pause")
+    awful.spawn.with_shell(
+      "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.mpv /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause"
+    )
   end, { description = "Play/Pause track", group = "Music" })
 )
+
+]] --
+
+  awful.key({ "Control" }, "Right", function()
+    awful.spawn.with_shell(
+      "playerctl next"
+    )
+  end, { description = "Next track", group = "Music" }),
+
+  awful.key({ "Control" }, "Left", function()
+    awful.spawn.with_shell(
+      "playerctl previous"
+    )
+  end, { description = "Previous track", group = "Music" }),
+
+  awful.key({ "Control" }, "Down", function()
+    awful.spawn.with_shell(
+      "playerctl play-pause"
+    )
+  end, { description = "Play/Pause track", group = "Music" })
+)
+
 
 -- ===================================================================
 -- Client Key bindings
@@ -485,8 +563,9 @@ keys.clientkeys = gears.table.join(
   awful.key({ modkey, "Shift" }, "n", function()
     local c = awful.client.restore()
     if c then
-      c:emit_signal("request::activate", "key.unminimize", { raise = true })
       c.minimized = false
+      client.focus = c
+      c:raise()
     end
   end, { description = "restore minimized", group = "client" }),
   awful.key({ modkey }, "m", function(c)
@@ -503,7 +582,6 @@ keys.clientkeys = gears.table.join(
 --end, { description = "(un)maximize horizontally", group = "client" })
 )
 
-
 -- ===================================================================
 -- Mouse menu & bindings
 -- ===================================================================
@@ -515,10 +593,10 @@ beautiful.menu_width = 180
 -- menu
 mousemenu = awful.menu({
   items = {
-    { "open alacritty",      terminal },
+    { "open kitty",          terminal },
     { "open xterm",          "xterm" },
     { "open gnome-terminal", "gnome-terminal" },
-  }
+  },
 })
 
 -- button bindings
@@ -529,7 +607,6 @@ keys.desktopbuttons = gears.table.join(
   awful.button({}, 4, awful.tag.viewnext),
   awful.button({}, 5, awful.tag.viewprev)
 )
-
 
 keys.clientbuttons = gears.table.join(
   awful.button({}, 1, function(c)

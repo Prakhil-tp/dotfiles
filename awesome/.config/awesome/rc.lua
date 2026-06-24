@@ -5,52 +5,51 @@ local gears = require("gears")
 local awful = require("awful")
 require("awful.autofocus")
 
-local beautiful = require("beautiful")                    -- theme handling
-local naughty = require("naughty")                        -- notification
+local beautiful = require("beautiful") -- theme handling
+local naughty = require("naughty")     -- notification
+
 local hotkeys_popup = require("awful.hotkeys_popup")
 require("awful.hotkeys_popup.keys")
-
 
 -- ===================================================================
 -- Error Handler
 -- ===================================================================
 
 if awesome.startup_errors then
-	naughty.notify({
-		preset = naughty.config.presets.critical,
-		title = "Oops, there were errors during startup!",
-		text = awesome.startup_errors,
-	})
+  naughty.notify({
+    preset = naughty.config.presets.critical,
+    title = "Oops, there were errors during startup!",
+    text = awesome.startup_errors,
+  })
 end
 
 -- Handle runtime errors after startup
 do
-	local in_error = false
-	awesome.connect_signal("debug::error", function(err)
-		-- Make sure we don't go into an endless error loop
-		if in_error then
-			return
-		end
-		in_error = true
+  local in_error = false
+  awesome.connect_signal("debug::error", function(err)
+    -- Make sure we don't go into an endless error loop
+    if in_error then
+      return
+    end
+    in_error = true
 
-		naughty.notify({
-			preset = naughty.config.presets.critical,
-			title = "Oops, an error happened!",
-			text = tostring(err),
-		})
-		in_error = false
-	end)
+    naughty.notify({
+      preset = naughty.config.presets.critical,
+      title = "Oops, an error happened!",
+      text = tostring(err),
+    })
+    in_error = false
+  end)
 end
 
 -- ===================================================================
 
-
 -- Themes define colours, icons, font and wallpapers.
 --beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
 --beautiful.init(gears.filesystem.get_configuration_dir().."themes/pastel.lua" )
-beautiful.init(gears.filesystem.get_configuration_dir().."themes/default/theme.lua" )
-naughty.config.icon_dirs = {"/usr/share/icons/dracula-icons/scalable/apps/", "/usr/share/icons/custom-icons/"}
-naughty.config.icon_formats = {"png","svg"}
+beautiful.init(gears.filesystem.get_configuration_dir() .. "themes/default/theme.lua")
+naughty.config.icon_dirs = { "/usr/share/icons/dracula-icons/scalable/apps/", "/usr/share/icons/custom-icons/" }
+naughty.config.icon_formats = { "png", "svg" }
 
 -- This is used later as the default terminal and editor to run.
 -- local terminal = "alacritty"
@@ -61,23 +60,23 @@ local modkey = "Mod4"
 
 -- Define layouts
 awful.layout.layouts = {
-	awful.layout.suit.tile,
-	--awful.layout.suit.floating,
+  awful.layout.suit.tile,
+  -- awful.layout.suit.floating,
   awful.layout.suit.max,
-	awful.layout.suit.spiral,
-	awful.layout.suit.magnifier,
-	awful.layout.suit.fair
+  awful.layout.suit.spiral,
+  awful.layout.suit.magnifier,
+  awful.layout.suit.fair
 }
 
 -- Keyboard map indicator and switcher
 --mykeyboardlayout = awful.widget.keyboardlayout()
 
 awful.screen.connect_for_each_screen(function(s)
-	-- Each screen has its own tag table.
-  local names = { "dev", "2", "3", "4", "www", "6", "7", "8", "music" } 
+  -- Each screen has its own tag table.
+  local names = { "dev", "2", "3", "4", "www", "6", "7", "8", "music" }
   local l = awful.layout.suit
-  local layouts = {l.tile, l.tile, l.tile, l.tile, l.max, l.tile, l.tile, l.tile, l.max}
-	awful.tag(names, s, layouts)
+    local layouts = { l.tile, l.tile, l.tile, l.tile, l.max, l.tile, l.tile, l.tile, l.max }
+  awful.tag(names, s, layouts)
 end)
 
 -- Import Keybindings
@@ -86,25 +85,25 @@ root.keys(keys.globalkeys)
 root.buttons(keys.desktopbuttons)
 
 -- Import Rules
-local createrules = require("rules").create 
-awful.rules.rules = createrules(keys.clientkeys,keys.clientbuttons)
+local createrules = require("rules").create
+awful.rules.rules = createrules(keys.clientkeys, keys.clientbuttons)
 
 -- Signal function to execute when a new client appears.
 client.connect_signal("manage", function(c)
-	-- Set the windows at the slave (put it at the end of others instead of setting it master.)
+  -- Set the windows at the slave (put it at the end of others instead of setting it master.)
 
-	if awesome.startup and not c.size_hints.user_position and not c.size_hints.program_position then
-		-- Prevent clients from being unreachable after screen count changes.
-		awful.placement.no_offscreen(c)
-	end
+  if awesome.startup and not c.size_hints.user_position and not c.size_hints.program_position then
+    -- Prevent clients from being unreachable after screen count changes.
+    awful.placement.no_offscreen(c)
+  end
 end)
 
--- window on focus 
+-- window on focus
 client.connect_signal("focus", function(c)
-	c.border_color = beautiful.border_focus
+  c.border_color = beautiful.border_focus
 end)
 client.connect_signal("unfocus", function(c)
-	c.border_color = beautiful.border_normal
+  c.border_color = beautiful.border_normal
 end)
 
 client.connect_signal("request::activate", function(c)
@@ -116,17 +115,75 @@ end)
 
 -- rounded corners
 --client.connect_signal("manage", function(c)
-  --if not c.fullscreen then
-    --c.shape = function(cr,w,h)
-        --gears.shape.rounded_rect(cr,w,h,5)
-    --end
-  --end
+--if not c.fullscreen then
+--c.shape = function(cr,w,h)
+--gears.shape.rounded_rect(cr,w,h,5)
+--end
+--end
 --end)
 
 -- Autostart
 awful.spawn.with_shell("picom")
-awful.spawn.with_shell("clipmenud")   -- clipmenu
+awful.spawn.with_shell("clipmenud") -- clipmenu
 awful.spawn.with_shell("~/scripts/change-wallpaper.sh")
 awful.spawn.with_shell("~/.config/awesome/autorun.sh")
+os.execute("xset r rate 300 50") -- key repeat frequency
 
-awful.spawn.with_shell("echo $(date +%d-%m-%Y): $(/usr/bin/curl -4 ifconfig.me) >> /home/prakhil/ip-log.txt")
+-- ===================================================================
+-- Persist tag layouts across restarts
+-- ===================================================================
+local state_dir = os.getenv("XDG_CACHE_HOME") or (os.getenv("HOME") .. "/.cache")
+os.execute("mkdir -p " .. state_dir .. "/awesome")
+local state_file = state_dir .. "/awesome/tag_layouts.txt"
+
+local function save_tag_layouts()
+  local lines = {}
+  for _, s in ipairs(screen) do
+    for _, t in ipairs(s.tags) do
+      local idx = 0
+      for i, l in ipairs(awful.layout.layouts) do
+        if l == t.layout then
+          idx = i
+          break
+        end
+      end
+      lines[#lines + 1] = s.index .. "|" .. t.name .. " " .. idx
+    end
+  end
+  if #lines > 0 then
+    local f = io.open(state_file, "w")
+    if f then
+      f:write(table.concat(lines, "\n"), "\n")
+      f:close()
+    end
+  end
+end
+
+local function restore_tag_layouts()
+  local f = io.open(state_file, "r")
+  if not f then return end
+  local saved = {}
+  for line in f:lines() do
+    local space = line:find(" ")
+    if space then
+      local key = line:sub(1, space - 1)
+      local idx = tonumber(line:sub(space + 1))
+      if idx and idx > 0 and idx <= #awful.layout.layouts then
+        saved[key] = idx
+      end
+    end
+  end
+  f:close()
+  for _, s in ipairs(screen) do
+    for _, t in ipairs(s.tags) do
+      local idx = saved[s.index .. "|" .. t.name]
+      if idx then
+        t.layout = awful.layout.layouts[idx]
+      end
+    end
+  end
+end
+
+awesome.connect_signal("exit", save_tag_layouts)
+tag.connect_signal("property::layout", save_tag_layouts)
+restore_tag_layouts()

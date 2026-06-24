@@ -19,6 +19,6 @@ run() {
 
 run conky -c /home/prakhil/.config/conky/dracula-without-gpu.conkyrc > /dev/null 2>&1 &
 run keynav
-# run sudo -b openvpn /home/prakhil/.config/openvpn/client.ovpn
-# xset r rate 200 80 # for fast key-press
-xset r rate 300 50 # for fast key-press
+
+xset r rate 300 50
+#run sudo -b openvpn /home/prakhil/.config/openvpn/client.ovpn
