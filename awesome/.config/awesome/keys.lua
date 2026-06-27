@@ -161,7 +161,7 @@ keys.globalkeys = gears.table.join(
   end, { description = "chatgpt", group = "applications" }),
 
   awful.key({ modkey }, "v", function()
-    awful.spawn.spawn("kitty -e vifm")
+    awful.spawn.with_shell("kitty -e ~/.config/vifm/scripts/vifmrun")
   end, { description = "launch vifm", group = "applications" }),
 
   awful.key({}, "Print", function()
