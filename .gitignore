@@ -5,3 +5,4 @@ autoload/*
 **/__pycache__/*
 qutebrowser/.config/qutebrowser/qsettings
 applications/*
+zsh/.config/zsh/secrets.zsh

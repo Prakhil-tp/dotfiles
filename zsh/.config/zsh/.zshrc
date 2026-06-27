@@ -1,3 +1,15 @@
+source $ZDOTDIR/current-theme.zsh
+
+# ── bat theme ──────────────────────────────────────────────────────────────────
+if [[ -f "$HOME/.config/bat/current-theme" ]]; then
+  export BAT_THEME="$(cat "$HOME/.config/bat/current-theme")"
+fi
+
+# ── nvim theme ─────────────────────────────────────────────────────────────────
+if [[ -f "$HOME/.config/nvim/current-theme" ]]; then
+  export NVIM_CURRENT_THEME="$(cat "$HOME/.config/nvim/current-theme")"
+fi
+
 
 # ===========================================================================================================
 #                                                         PROMPT
@@ -6,10 +18,10 @@
 autoload -Uz vcs_info
 zstyle ':vcs_info:*' enable git svn
 zstyle ':vcs_info:*' check-for-changes true
-zstyle ':vcs_info:*' unstagedstr '\033[48;5;222m'
-zstyle ':vcs_info:*' stagedstr '\033[48;5;222m'
+zstyle ':vcs_info:*' unstagedstr "$_THEME_VCS_UNSTAGED"
+zstyle ':vcs_info:*' stagedstr "$_THEME_VCS_STAGED"
 zstyle ':vcs_info:git*' formats "%u%c  %b "
-zstyle ':vcs_info:git:*' actionformats "\033[48;5;210m   %b | %a "
+zstyle ':vcs_info:git:*' actionformats "$_THEME_VCS_ACTION   %b | %a "
 setopt prompt_subst
 
 zsh_prompt_home_indicator() {
@@ -21,14 +33,13 @@ zsh_prompt_home_indicator() {
 }
 
 precmd() {
-  bg_color='\033[48;5;183m'
-  fg_color='\033[38;5;16m'
-  clear='\033[m'
-  #vcs_bg_color='\033[48;5;120m'
-  vcs_bg_color='\033[48;5;159m'
-
+  source "$ZDOTDIR/current-theme.zsh"
+  zstyle ':vcs_info:*' unstagedstr "$_THEME_VCS_UNSTAGED"
+  zstyle ':vcs_info:*' stagedstr "$_THEME_VCS_STAGED"
+  zstyle ':vcs_info:git:*' actionformats "$_THEME_VCS_ACTION   %b | %a "
+  local clear='\033[m'
   vcs_info
-  print -P $bg_color$fg_color$(zsh_prompt_home_indicator)'%~ '$clear$vcs_bg_color$fg_color${vcs_info_msg_0_}$clear
+  print -P $_THEME_PROMPT_BG$_THEME_PROMPT_FG$(zsh_prompt_home_indicator)'%~ '$clear$_THEME_VCS_BG$_THEME_PROMPT_FG${vcs_info_msg_0_}$clear
 }
 PROMPT='▶ '
 
@@ -60,9 +71,10 @@ autoload -Uz bashcompinit && bashcompinit
 autoload -Uz compinit && compinit
 
 #asdf config
-fpath=(${ASDF_DATA_DIR:-$HOME/.asdf}/completions $fpath)
+export PATH="${ASDF_DATA_DIR:-$HOME/.local/share/asdf}/shims:$PATH"
+fpath=(${ASDF_DATA_DIR:-$HOME/.local/share/asdf}/completions $fpath)
 
-# . /opt/asdf-vm/asdf.sh
+
 
 # time command output formatting
 TIMEFMT=$'%J\n==================\nCPU\t%P\nuser\t%*U sec\nsystem\t%*S sec\ntotal\t%*E sec\n'
@@ -90,7 +102,9 @@ alias vimdiff="nvim -d"
 alias cat="bat"
 
 #vifm
- alias v="vifm"
+alias vifm="$HOME/.config/vifm/scripts/vifmrun"
+alias v="$HOME/.config/vifm/scripts/vifmrun"
+alias vf="/usr/bin/vifm"
 
 #htop
 alias h="htop"
@@ -117,11 +131,15 @@ alias mail="neomutt"
 #newsboat
 alias nb="newsboat"
 
+alias torrent="torrra"
+
 # random
 alias open="xdg-open"
 alias iftop="sudo iftop"
 alias docker="sudo docker"
 alias ytx="yt-x"
+alias yt="youtube-tui"
+alias vpn="sudo openvpn ~/.ssh/openvpn/client.ovpn"
 
 #journalctl and systemctl
 alias j="journalctl"
@@ -167,15 +185,15 @@ function se() {
 #                                                 PLUGINS & TOOLS 
 # ===========================================================================================================
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source $ZDOTDIR/syntax-highlight.sh
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-source $XDG_CONFIG_HOME/zsh/syntax-highlight-dracula.sh
 source $XDG_DATA_HOME/fzf/fzf.zsh
 source $ZDOTDIR/vim-mode.zsh
 
 # ===========================================================================================================
 
 # print system information on startup
-paleofetch
+# paleofetch
 
 # env variables
 export ALTSERVER_ANISETTE_SERVER=http://127.0.0.1:6969
@@ -185,7 +203,7 @@ export ALTSERVER_ANISETTE_SERVER=http://127.0.0.1:6969
 # ===========================================================================================================
 
 function cdd() {
-  cd "$(find /home/prakhil/ -maxdepth 3 -type d | fzf --preview 'lsd -l --color=always {}' --layout=reverse)"
+  cd "$(find $HOME -maxdepth 3 -type d | fzf --preview 'lsd -l --color=always {}' --layout=reverse)"
 }
 
 function play() {
@@ -211,3 +229,18 @@ function play() {
 function chpwd() {
   ls
 }
+
+eval "$(atuin init zsh)"
+
+. "$HOME/.local/share/../bin/env"
+
+# bun completions
+[ -s "$BUN_INSTALL/_bun" ] && source "$BUN_INSTALL/_bun"
+alias agent=gemini
+[[ -f "$ZDOTDIR/secrets.zsh" ]] && source "$ZDOTDIR/secrets.zsh"
+
+# opencode
+export PATH="$XDG_DATA_HOME/opencode/install/bin:$PATH"
+
+# Pi
+export PATH="/home/blue/.local/share/asdf/installs/nodejs/25.9.0/bin:$PATH"
