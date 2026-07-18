@@ -28,3 +28,9 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.keymap.set('n', '<C-CR>', '<Plug>VimwikiVSplitLink', { buffer = true })
   end,
 })
+
+-- Tag search shortcuts
+-- :st <tag>        (command-line abbreviation for VimwikiSearchTags)
+-- <Leader>st       (leaves cursor at the tag prompt)
+vim.cmd('cnoreabbrev st VimwikiSearchTags')
+vim.keymap.set('n', '<Leader>st', ':VimwikiSearchTags ', { desc = 'Search vimwiki tags' })

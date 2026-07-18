@@ -53,22 +53,11 @@ cmp.setup({
 vim.opt.signcolumn = 'yes'
 
 -- Add borders to floating windows for LSP handlers
-vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(
-  vim.lsp.handlers.hover,
-  { border = 'rounded' }
-)
-vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(
-  vim.lsp.handlers.signature_help,
-  { border = 'rounded' }
-)
+vim.lsp.handlers['textDocument/hover'] = vim.lsp.buf.hover
+vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.buf.signature_help
 
--- Add capabilities for `nvim-cmp` to `lspconfig`
-local lspconfig_defaults = require('lspconfig').util.default_config
-lspconfig_defaults.capabilities = vim.tbl_deep_extend(
-  'force',
-  lspconfig_defaults.capabilities,
-  require('cmp_nvim_lsp').default_capabilities()
-)
+-- Add capabilities for `nvim-cmp` to LSP
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
 
 -- Format code on saving
@@ -150,16 +139,18 @@ vim.keymap.set("n", "<leader>d", function()
 end, { desc = "Show Diagnostics Float" })
 
 
--- Language server setups
-require('lspconfig').ts_ls.setup({
-  capabilities = require('cmp_nvim_lsp').default_capabilities(),
-  on_attach = function (client)
+-- Language server setups (nvim 0.11+ API)
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
+
+vim.lsp.config('ts_ls', {
+  capabilities = capabilities,
+  on_attach = function(client)
     client.server_capabilities.documentFormattingProvider = false
     client.server_capabilities.documentRangeFormattingProvider = false
-  end
+  end,
 })
 
-require('lspconfig').lua_ls.setup({
+vim.lsp.config('lua_ls', {
   settings = {
     Lua = {
       format = {
@@ -173,12 +164,11 @@ require('lspconfig').lua_ls.setup({
   },
 })
 
-require('lspconfig').eslint.setup({
+vim.lsp.config('eslint', {
   on_attach = function(client)
-    -- Disable formatting capability for eslint
     client.server_capabilities.documentFormattingProvider = false
     client.server_capabilities.documentRangeFormattingProvider = false
   end,
 })
 
-require('lspconfig').html.setup({})
+vim.lsp.config('html', {})

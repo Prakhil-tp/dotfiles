@@ -23,7 +23,7 @@ vim.opt.iskeyword:append('-')  -- Treat dash separated words as a word text obje
 vim.opt.mouse = 'a'            -- Enable mouse
 vim.opt.splitbelow = true      -- Horizontal splits will automatically be below
 vim.opt.splitright = true      -- Vertical splits will automatically be to the right
-vim.opt.termguicolors = true   -- Support 256 colors
+
 vim.opt.conceallevel = 0       -- So that I can see `` in markdown files
 vim.opt.tabstop = 2            -- Insert 2 spaces for a tab
 vim.opt.shiftwidth = 2         -- Change the number of space characters inserted for indentation

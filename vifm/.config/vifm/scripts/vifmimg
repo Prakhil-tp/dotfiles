@@ -1,54 +1,64 @@
 #!/bin/sh
-export PCACHE="$HOME/.cache/vifm/thumbnail.$(stat --printf '%n\0%i\0%F\0%s\0%W\0%Y' -- "$(readlink -f "$PWD/$6")" | sha256sum | awk '{print $1}')"
+
+CACHE_DIR="$HOME/.cache/vifm"
+mkdir -p "$CACHE_DIR"
+FILE="$PWD/$6"
+THUMB_KEY=$(printf '%s' "$FILE" | sha256sum | awk '{print $1}')
+PCACHE="$CACHE_DIR/thumbnail.$THUMB_KEY"
+
+[ -z "$FIFO_UEBERZUG" ] && exit 0
 
 pclear() {
 	printf '{"action": "remove", "identifier": "vifm-preview"}\n' > "$FIFO_UEBERZUG"
 }
 
 image() {
-		printf '{"action": "add", "identifier": "vifm-preview", "x": "%s", "y": "%s", "width": "%s", "height": "%s", "scaler": "contain", "path": "%s"}\n' "$2" "$3" "$4" "$5" "$6" > "$FIFO_UEBERZUG"
+	printf '{"action": "add", "identifier": "vifm-preview", "x": %s, "y": %s, "width": %s, "height": %s, "scaler": "fit_contain", "path": "%s"}\n' "$2" "$3" "$4" "$5" "$6" > "$FIFO_UEBERZUG"
 }
 
 main() {
-    case "$1" in
-        "clear")
-			pclear "$@"
+	case "$1" in
+		"clear")
+			pclear
 			;;
-        "draw")
-			FILE="$PWD/$6"
+		"draw")
 			image "$1" "$2" "$3" "$4" "$5" "$FILE"
 			;;
-        "video")
+		"video")
+			THUMB="${PCACHE}.jpg"
+			[ ! -f "$THUMB" ] && \
+				ffmpegthumbnailer -i "$FILE" -o "$THUMB" -s 256 -q 5 2>/dev/null
+			[ -f "$THUMB" ] && image "$1" "$2" "$3" "$4" "$5" "$THUMB"
+			;;
+		"epub")
 			[ ! -f "$PCACHE" ] && \
-				ffmpegthumbnailer -i "$6" -o "${PCACHE}.jpg" -s 0 -q 5
-			image "$1" "$2" "$3" "$4" "$5" "${PCACHE}.jpg"
+				epub-thumbnailer "$FILE" "$PCACHE" 1024 2>/dev/null
+			[ -f "$PCACHE" ] && image "$1" "$2" "$3" "$4" "$5" "$PCACHE"
 			;;
-        "epub")
-			[ ! -f "$PCACHE" ] && \
-				epub-thumbnailer "$6" "$PCACHE" 1024
-			image "$1" "$2" "$3" "$4" "$5" "$PCACHE"
+		"pdf")
+			THUMB="${PCACHE}.jpg"
+			[ ! -f "$THUMB" ] && \
+				pdftoppm -jpeg -f 1 -singlefile "$FILE" "$THUMB" 2>/dev/null
+			[ -f "$THUMB" ] && image "$1" "$2" "$3" "$4" "$5" "$THUMB"
 			;;
-        "pdf")
-			[ ! -f "${PCACHE}.jpg" ] && \
-				pdftoppm -jpeg -f 1 -singlefile "$6" "$PCACHE"
-			image "$1" "$2" "$3" "$4" "$5" "${PCACHE}.jpg"
+		"djvu")
+			THUMB="${PCACHE}.jpg"
+			[ ! -f "$THUMB" ] && \
+				ddjvu -format=tiff -quality=90 -page=1 "$FILE" "$THUMB" 2>/dev/null
+			[ -f "$THUMB" ] && image "$1" "$2" "$3" "$4" "$5" "$THUMB"
 			;;
-        "djvu")
-			[ ! -f "${PCACHE}.jpg" ] && \
-				ddjvu -format=tiff -quality=90 -page=1 "$6" "$PCACHE.jpg"
-			image "$1" "$2" "$3" "$4" "$5" "${PCACHE}.jpg"
+		"audio")
+			THUMB="${PCACHE}.jpg"
+			[ ! -f "$THUMB" ] && \
+				ffmpeg -hide_banner -i "$FILE" "$THUMB" -y >/dev/null 2>&1
+			[ -f "$THUMB" ] && image "$1" "$2" "$3" "$4" "$5" "$THUMB"
 			;;
-        "audio")
-			[ ! -f "${PCACHE}.jpg" ] && \
-				ffmpeg -hide_banner -i "$6" "${PCACHE}.jpg" -y >/dev/null
-			image "$1" "$2" "$3" "$4" "$5" "${PCACHE}.jpg"
+		"font")
+			THUMB="${PCACHE}.jpg"
+			[ ! -f "$THUMB" ] && \
+				fontpreview -i "$FILE" -o "$THUMB" 2>/dev/null
+			[ -f "$THUMB" ] && image "$1" "$2" "$3" "$4" "$5" "$THUMB"
 			;;
-        "font")
-			[ ! -f "${PCACHE}.jpg" ] && \
-				fontpreview -i "$6" -o "${PCACHE}.jpg"
-			image "$1" "$2" "$3" "$4" "$5" "${PCACHE}.jpg"
-			;;
-        *)
-    esac
+	esac
 }
 main "$@"

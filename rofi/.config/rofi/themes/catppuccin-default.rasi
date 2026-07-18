@@ -1,117 +1,52 @@
-* {
-  rosewater: #f5e0dc;
-  flamingo: #f2cdcd;
-  pink: #f5c2e7;
-  mauve: #cba6f7;
-  red: #f38ba8;
-  maroon: #eba0ac;
-  peach: #fab387;
-  yellow: #f9e2af;
-  green: #a6e3a1;
-  teal: #94e2d5;
-  sky: #89dceb;
-  sapphire: #74c7ec;
-  lavender: #b4befe;
-  text: #cdd6f4;
-  subtext1: #bac2de;
-  subtext0: #a6adc8;
-  overlay0: #9399b2;
-  overlay1: #7f849c;
-  overlay2: #6c7086;
-  surface0: #585b70;
-  surface2: #45475a;
-  surface1: #313244;
-  base: #1e1e2e;
-  mantle: #181825;
-  crust: #11111b;
-  }
+/**
+ * Catppuccin Frappe theme for rofi
+ */
 
+* {
+    base:            #303446;
+    surface0:        #414559;
+    overlay0:        #737994;
+    text:            #c6d0f5;
+    lavender:        #babbf1;
+    red:             #e78284;
+    peach:           #ef9f76;
+    green:           #a6d189;
+    blue:            #8caaee;
+    yellow:          #e5c890;
+    mauve:           #ca9ee6;
+    teal:            #81c8be;
+    background-color: @base;
+}
 
 window {
-    height: 700px;
-    width: 1500;
-    border: 3px;
-    border-color: @surface2;
-    background-color: @surface1;
-}
-
-listview {
-    border: 0px 0px 0px;
-    padding: 2px 0px 0px;
-    margin: 10px 0px 0px 20px;
-    columns: 3;
-    lines: 5;
-    background-color: @surface1;
-}
-
-element {
-    padding: 5px;
-    background-color: @surface1;
-    text-color: @text  ;
-}
-
-element-icon {
-    size: 25px;
-}
-
-element selected {
-    background-color:  @flamingo;
-    text-color: @mantle ;
-}
-
-mode-switcher {
-    spacing: 0;
-  }
-
-button {
-    padding: 10px;
-    background-color: @surface1;
-    text-color: @overlay0;
-    vertical-align: 0.5; 
-    horizontal-align: 0.5;
-}
-
-button selected {
-  background-color: @surface1;
-  text-color: @blue;
-}
-
-message {
-    background-color: @surface1;
-    margin: 2px;
-    padding: 2px;
-    border-radius: 5px;
-}
-
-textbox {
-    padding: 6px;
-    margin: 20px 0px 0px 20px;
-    text-color: @blue;
-    background-color: @surface1;
-}
-
-element-text, element-icon , mode-switcher {
-    background-color: inherit;
-    text-color:       inherit;
+    height: 720;
+    width: 1100;
+    children: [mainbox];
+    border-radius: 16;
+    border-color: @overlay0;
+    background-color: @base;
 }
 
 mainbox {
-    background-color: @surface1;
+    children: [inputbar, message, listview];
+    spacing: 0;
+    padding: 0;
+    background-color: @base;
 }
 
 inputbar {
-    children: [prompt,entry];
-    background-color: @surface1;
-    border-radius: 5px;
-    padding: 2px;
+    children: [prompt, entry, case-indicator];
+    background-color: @base;
+    padding: 14px 16px;
+    spacing: 10px;
+    border-radius: 16 16 0 0;
 }
 
 prompt {
-    background-color: @blue;
-    padding: 6px;
-    text-color: @surface1;
-    border-radius: 3px;
-    margin: 20px 0px 0px 20px;
+    background-color: @lavender;
+    padding: 8px 16px;
+    border-radius: 8px;
+    margin: 0;
 }
 
 textbox-prompt-colon {
@@ -120,8 +55,83 @@ textbox-prompt-colon {
 }
 
 entry {
-    padding: 6px;
-    margin: 20px 0px 0px 10px;
+    placeholder: "Search...";
     text-color: @text;
-    background-color: @surface1;
+    padding: 8px 4px;
+    cursor: text;
+}
+
+case-indicator {
+    padding: 8px 14px;
+    text-color: @overlay0;
+    background-color: @surface0;
+    border-radius: 8px;
+    margin: 0;
+}
+
+message {
+    padding: 6px 16px;
+    background-color: @base;
+    text-color: @overlay0;
+}
+
+listview {
+    spacing: 6px;
+    padding: 4px 12px 12px;
+    border-radius: 0 0 16 16;
+    background-color: @base;
+    dynamic: true;
+    columns: 1;
+    scrollbar: true;
+    scrollbar-width: 6px;
+}
+
+scrollbar {
+    handle-width: 6px;
+    handle-color: @overlay0;
+    background-color: @surface0;
+    border-radius: 3px;
+}
+
+element {
+    padding: 12px 14px;
+    border-radius: 8px;
+    background-color: @surface0;
+    text-color: @text;
+}
+
+element normal normal {
+    background-color: @surface0;
+    text-color: @text;
+}
+
+element alternate normal {
+    background-color: @surface0;
+    text-color: @text;
+}
+
+element selected normal {
+    background-color: @blue;
+    text-color: @base;
+}
+
+element selected active {
+    background-color: @blue;
+    text-color: @base;
+}
+
+element normal active {
+    background-color: @surface0;
+    text-color: @text;
+}
+
+element-icon {
+    size: 24px;
+    padding: 0 8px 0 0;
+}
+
+element-text {
+    background-color: inherit;
+    text-color: inherit;
+    vertical-align: 0.5;
 }

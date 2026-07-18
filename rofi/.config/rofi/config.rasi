@@ -1,4 +1,4 @@
-@import "themes/catppuccin-mocha.rasi"  /* import theme */ 
+@import "themes/solarized-dark.rasi"  /* import theme */ 
 
 configuration {
     show-icons: true;

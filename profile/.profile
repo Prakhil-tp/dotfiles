@@ -25,11 +25,11 @@ fi
 if [ -d "$HOME/.local/bin" ] ; then
     PATH="$HOME/.local/bin:$PATH"
 fi
-. "$HOME/.cargo/env"
+. "$CARGO_HOME/env" 2>/dev/null || true
 
 
 # path
-export PATH="$HOME/bin:/usr/local/bin:$HOME/.local/bin:$HOME/bin:$HOME/scripts/run-openvpn:$PATH"
+export PATH="$HOME/bin:/usr/local/bin:$HOME/.local/bin:$HOME/scripts:$PATH"
 
 # xdg environment variables
 export XDG_DATA_HOME="$HOME/.local/share"
@@ -46,17 +46,36 @@ export CM_DEBUG=0
 export CM_OUTPUT_CLIP=1
 export CM_MAX_CLIPS=10
 
-# dracula theme for fzf
-# export FZF_DEFAULT_OPTS="--color=fg:#f8f8f2,hl:#bd93f9 --color=fg+:#f8f8f2,hl+:#bd93f9 --color=info:#ffb86c,prompt:#50fa7b,pointer:#ff79c6 --color=marker:#ff79c6,spinner:#ffb86c,header:#6272a4 --layout=reverse --height 40%"
-
-# catppuccine theme for fzf
-export FZF_DEFAULT_OPTS="--color=bg+:#313244,bg:#1e1e2e,spinner:#f5e0dc,hl:#f38ba8 --color=fg:#cdd6f4,header:#f38ba8,info:#cba6f7,pointer:#f5e0dc --color=marker:#f5e0dc,fg+:#cdd6f4,prompt:#cba6f7,hl+:#f38ba8 --layout=reverse --height 40%"
+# fzf colors are set per-theme in $ZDOTDIR/current-theme.zsh
 
 # cleanup
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 export LESSHISTFILE="$XDG_CACHE_HOME/less/history"
+export ASDF_DIR="$XDG_DATA_HOME/asdf-lib"
 export ASDF_DATA_DIR="$XDG_DATA_HOME/asdf"
 export ASDF_CONFIG_FILE="$XDG_CONFIG_HOME/asdf/asdrc"
+export ASDF_DEFAULT_TOOL_VERSIONS_FILENAME="$XDG_CONFIG_HOME/asdf/tool-versions"
+
+# cargo/rustup
+export CARGO_HOME="$XDG_DATA_HOME/cargo"
+export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
+
+# bun
+export BUN_INSTALL="$XDG_DATA_HOME/bun"
+
+# .NET
+export DOTNET_CLI_HOME="$XDG_DATA_HOME/dotnet"
+
+# yarn
+export YARN_GLOBAL_FOLDER="$XDG_DATA_HOME/yarn"
+export YARN_CACHE_FOLDER="$XDG_CACHE_HOME/yarn"
+
+# nuget
+export NUGET_PACKAGES="$XDG_DATA_HOME/NuGet/packages"
+export NUGET_HTTP_CACHE_PATH="$XDG_CACHE_HOME/NuGet"
+
+# claude code config dir (sessions, projects, data)
+export CLAUDE_CONFIG_DIR="$XDG_DATA_HOME/claude"
 export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
 export MBSYNCRC="$XDG_CONFIG_HOME/isync/mbsyncrc"
 export TERMINFO="$XDG_DATA_HOME/terminfo"
@@ -69,3 +88,8 @@ export CUDA_CACHE_PATH="$XDG_CACHE_HOME/nv"
 export GNUPGHOME="$XDG_DATA_HOME/gnupg"
 export PASSWORD_STORE_DIR="$XDG_DATA_HOME/pass"
 export ERRFILE="$XDG_CACHE_HOME/X11/xsession-errors"
+
+. "$HOME/.local/share/../bin/env"
+
+# misc
+export VIMINFO_FILE="$XDG_STATE_HOME/vim/viminfo"

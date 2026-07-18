@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# Switch kitty color theme. Usage: kitty-theme <theme-name>
+# Available themes live in ~/.config/kitty/themes/*.conf
+
+THEMES_DIR="$HOME/.config/kitty/themes"
+CURRENT="$THEMES_DIR/current-theme.conf"
+
+if [[ -z "$1" ]]; then
+  echo "Current theme: $(readlink "$CURRENT" | sed 's/\.conf$//')"
+  echo ""
+  echo "Available themes:"
+  ls "$THEMES_DIR"/*.conf | xargs -I{} basename {} .conf | grep -v "^current-theme$"
+  exit 0
+fi
+
+THEME="$1"
+
+if [[ ! -f "$THEMES_DIR/$THEME.conf" ]]; then
+  echo "Theme '$THEME' not found. Available themes:"
+  ls "$THEMES_DIR"/*.conf | xargs -I{} basename {} .conf | grep -v "^current-theme$"
+  exit 1
+fi
+
+ln -sf "$THEME.conf" "$CURRENT"
+kill -SIGUSR1 $(pidof kitty) 2>/dev/null
+echo "Switched to $THEME"

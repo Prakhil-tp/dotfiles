@@ -29,13 +29,24 @@ local keys = {}
 -- ===================================================================
 -- Scratchpads
 -- ===================================================================
+-- Center the scratchpad on the focused screen with a generous size (fraction of screen)
+local scratch_screen = awful.screen.focused()
+local scratch_width = math.floor(scratch_screen.geometry.width * 0.7)
+local scratch_height = math.floor(scratch_screen.geometry.height * 0.8)
+local scratch_geometry = {
+  x = scratch_screen.geometry.x + math.floor((scratch_screen.geometry.width - scratch_width) / 2),
+  y = scratch_screen.geometry.y + math.floor((scratch_screen.geometry.height - scratch_height) / 2),
+  width = scratch_width,
+  height = scratch_height,
+}
+
 local term_scratch = bling.module.scratchpad({
   command = "kitty --class spad",
   rule = { instance = "spad" },                               -- The rule that the scratchpad will be searched by
   sticky = true,                                              -- Whether the scratchpad should be sticky
   autoclose = true,                                           -- Whether it should hide itself when losing focus
   floating = true,                                            -- Whether it should be floating (MUST BE TRUE FOR ANIMATIONS)
-  geometry = { x = 360, y = 90, height = 900, width = 1200 }, -- The geometry in a floating state
+  geometry = scratch_geometry,                                -- Centered floating geometry (see above)
   reapply = true,                                             -- Whether all those properties should be reapplied on every new opening of the scratchpad (MUST BE TRUE FOR ANIMATIONS)
   dont_focus_before_close = false,                            -- When set to true, the scratchpad will be closed by the toggle function regardless of whether its focused or not. When set to false, the toggle function will first bring the scratchpad into focus and only close it on a second call
 })

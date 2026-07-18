@@ -1,0 +1,178 @@
+#!/usr/bin/env bash
+# Unified theme switcher — rofi picker that applies to:
+# kitty, lsd, bat, nvim, zsh, zsh-syntax-highlighting, fzf, rofi, opencode,
+# yt-x, dmenu, firefox, awesomewm
+#
+# Usage: theme-switch [theme-name]
+#   With no argument, opens rofi picker.
+#   With a theme name, switches directly.
+
+set -euo pipefail
+
+THEME="${1:-}"
+
+# ── Discover available themes from kitty theme files (source of truth) ────────
+KITTY_THEMES_DIR="$HOME/.config/kitty/themes"
+mapfile -t ALL_THEMES < <(ls "$KITTY_THEMES_DIR"/*.conf 2>/dev/null \
+  | xargs -I{} basename {} .conf \
+  | grep -v '^current-theme$' \
+  | sort)
+
+# No dedup needed — each theme name is unique
+THEMES=("${ALL_THEMES[@]}")
+
+if [[ ${#THEMES[@]} -eq 0 ]]; then
+  notify-send "Theme switcher" "No themes found in $KITTY_THEMES_DIR" 2>/dev/null
+  echo "No themes found in $KITTY_THEMES_DIR"
+  exit 1
+fi
+
+# ── If no arg, open rofi picker ───────────────────────────────────────────────
+if [[ -z "$THEME" ]]; then
+  SELECTED=$(printf '%s\n' "${THEMES[@]}" | rofi -dmenu -p " Theme" -i)
+  [[ -z "$SELECTED" ]] && exit 0
+  THEME="$SELECTED"
+fi
+
+# ── Validate ───────────────────────────────────────────────────────────────────
+KITTY_SRC="$KITTY_THEMES_DIR/$THEME.conf"
+if [[ ! -f "$KITTY_SRC" ]]; then
+  echo "Theme '$THEME' not found. Available:"
+  printf '  %s\n' "${THEMES[@]}"
+  exit 1
+fi
+
+# ── Kitty ─────────────────────────────────────────────────────────────────────
+apply_kitty() {
+  ln -sf "${1}.conf" "$KITTY_THEMES_DIR/current-theme.conf"
+  kill -SIGUSR1 "$(pidof kitty)" 2>/dev/null || true
+}
+
+# ── lsd ───────────────────────────────────────────────────────────────────────
+apply_lsd() {
+  local src="$HOME/.config/lsd/themes/${1}.yaml"
+  [[ -f "$src" ]] && cp "$src" "$HOME/.config/lsd/colors.yaml"
+}
+
+# ── bat ───────────────────────────────────────────────────────────────────────
+apply_bat() {
+  # Map theme name to bat theme name
+  local bat_theme=""
+  case "$1" in
+    grovebox|gruvbox) bat_theme="gruvbox-dark" ;;
+    catppuccin-mocha) bat_theme="Catppuccin Mocha" ;;
+    dracula)          bat_theme="Dracula" ;;
+    *)                bat_theme="$1" ;;
+  esac
+  # Write to a file that can be sourced, and update environment
+  echo "$bat_theme" > "$HOME/.config/bat/current-theme"
+  # Rebuild bat cache with the new theme
+  BAT_THEME="$bat_theme" bat cache --clear 2>/dev/null || true
+  BAT_THEME="$bat_theme" bat cache --build 2>/dev/null || true
+}
+
+# ── Neovim ────────────────────────────────────────────────────────────────────
+apply_nvim() {
+  # Map theme name to nvim colorscheme name
+  local nvim_cs=""
+  case "$1" in
+    grovebox|gruvbox) nvim_cs="gruvbox" ;;
+    catppuccin-mocha) nvim_cs="catppuccin" ;;
+    dracula)          nvim_cs="dracula" ;;
+    *)                nvim_cs="$1" ;;
+  esac
+  echo "$nvim_cs" > "$HOME/.config/nvim/current-theme"
+  # Signal running nvim instances
+  if command -v nvr &>/dev/null; then
+    nvr --remote-send ":colorscheme ${nvim_cs}<CR>" 2>/dev/null || true
+  fi
+}
+
+# ── Zsh (prompt colors + fzf opts) ────────────────────────────────────────────
+apply_zsh() {
+  local src="$HOME/.config/zsh/themes/${1}.zsh"
+  [[ -f "$src" ]] && ln -sf "themes/${1}.zsh" "$HOME/.config/zsh/current-theme.zsh"
+}
+
+# ── Zsh Syntax Highlighting ──────────────────────────────────────────────────
+apply_zsh_syntax() {
+  local src="$HOME/.config/zsh/syntax-highlight-${1}.sh"
+  [[ -f "$src" ]] && ln -sf "syntax-highlight-${1}.sh" "$HOME/.config/zsh/syntax-highlight.sh"
+}
+
+# ── FZF (colors come from FZF_DEFAULT_OPTS in zsh theme) ─────────────────────
+apply_fzf() {
+  local zsh_theme="$HOME/.config/zsh/themes/${1}.zsh"
+  if [[ -f "$zsh_theme" ]]; then
+    source "$zsh_theme"
+  fi
+}
+
+# ── Rofi ──────────────────────────────────────────────────────────────────────
+apply_rofi() {
+  local src="$HOME/.config/rofi/themes/${1}.rasi"
+  if [[ -f "$src" ]]; then
+    local config="$HOME/.config/rofi/config.rasi"
+    if [[ -f "$config" ]]; then
+      sed -i "s|@import \"themes/.*\"|@import \"themes/${1}.rasi\"|" "$config"
+    fi
+  fi
+}
+
+# ── yt-x ──────────────────────────────────────────────────────────────────────
+apply_ytx() {
+  local src="$HOME/.config/yt-x/themes/${1}.conf"
+  [[ -f "$src" ]] && cp "$src" "$HOME/.config/yt-x/yt-x.conf"
+}
+
+# ── dmenu (X resources) ──────────────────────────────────────────────────────
+apply_dmenu() {
+  local src="$HOME/.config/dmenu/${1}.xresources"
+  if [[ -f "$src" ]]; then
+    xrdb -merge "$src" 2>/dev/null || true
+  fi
+}
+
+# ── Firefox ───────────────────────────────────────────────────────────────────
+apply_firefox() {
+  local ff_profile
+  ff_profile=$(find "$HOME/.mozilla/firefox" -maxdepth 1 -name "*.default*" -type d 2>/dev/null | head -1)
+  if [[ -n "$ff_profile" ]]; then
+    local userjs="$ff_profile/user.js"
+    if [[ -f "$userjs" ]]; then
+      if ! grep -q '"legacyUserProfileCustomizations"' "$userjs" 2>/dev/null; then
+        echo 'user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);' >> "$userjs"
+      fi
+    fi
+  fi
+}
+
+# ── AwesomeWM (if running) ───────────────────────────────────────────────────
+apply_awesome() {
+  local src="$HOME/.config/awesome/themes/${1}-colors.lua"
+  if [[ -f "$src" ]]; then
+    ln -sf "${1}-colors.lua" "$HOME/.config/awesome/themes/current-colors.lua"
+    echo 'awesome.restart()' | awesome-client 2>/dev/null || true
+  fi
+}
+
+# ── Apply everything ──────────────────────────────────────────────────────────
+apply_kitty      "$THEME"
+apply_lsd        "$THEME"
+apply_bat        "$THEME"
+apply_nvim       "$THEME"
+apply_zsh        "$THEME"
+apply_zsh_syntax "$THEME"
+apply_fzf        "$THEME"
+apply_rofi       "$THEME"
+apply_ytx        "$THEME"
+apply_dmenu      "$THEME"
+apply_firefox    "$THEME"
+apply_awesome    "$THEME"
+
+# ── Persist theme choice ─────────────────────────────────────────────────────
+mkdir -p "$HOME/.config"
+echo "$THEME" > "$HOME/.config/current-theme"
+
+notify-send "Theme" "Switched to $THEME" --icon=preferences-desktop-theme 2>/dev/null || true
+echo "Switched to $THEME"

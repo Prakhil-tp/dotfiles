@@ -140,6 +140,7 @@ alias docker="sudo docker"
 alias ytx="yt-x"
 alias yt="youtube-tui"
 alias vpn="sudo openvpn ~/.ssh/openvpn/client.ovpn"
+alias tw="tabview"
 
 #journalctl and systemctl
 alias j="journalctl"
@@ -239,8 +240,8 @@ eval "$(atuin init zsh)"
 alias agent=gemini
 [[ -f "$ZDOTDIR/secrets.zsh" ]] && source "$ZDOTDIR/secrets.zsh"
 
-# opencode
-export PATH="$XDG_DATA_HOME/opencode/install/bin:$PATH"
+# User binary paths: opencode, node (asdf), Go (`go install` → ~/go/bin)
+export PATH="$XDG_DATA_HOME/opencode/install/bin:/home/blue/.local/share/asdf/installs/nodejs/25.9.0/bin:$HOME/go/bin:$PATH"
 
-# Pi
-export PATH="/home/blue/.local/share/asdf/installs/nodejs/25.9.0/bin:$PATH"
+# opencode
+export PATH=/home/blue/.opencode/bin:$PATH

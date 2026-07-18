@@ -1,0 +1,65 @@
+" solarized dark color scheme for vifm
+" based on Ethan Schoonover's Solarized palette
+"
+" Palette (xterm-256):
+"   base03  #002b36  234  - bg
+"   base02  #073642  235  - status bg
+"   base01  #586e75  240  - comments
+"   base00  #657b83  241  - emphasized
+"   base0   #839496  244  - primary fg
+"   base1   #93a1a1  245  - secondary fg
+"   base2   #eee8d5  254  - light bg
+"   base3   #fdf6e3  230  - lightest
+"   yellow  #b58900  136
+"   orange  #cb4b16  166
+"   red     #dc322f  160
+"   magenta #d33682  125
+"   violet  #6c71c4  61
+"   blue    #268bd2  32
+"   cyan    #2aa198  37
+"   green   #859900  64
+
+highlight clear
+
+highlight Win             cterm=none     ctermfg=244    ctermbg=default
+highlight OtherWin        cterm=none     ctermfg=240    ctermbg=default
+
+highlight TopLine         cterm=reverse  ctermfg=244    ctermbg=234
+highlight TopLineSel      cterm=bold     ctermfg=37     ctermbg=234
+highlight StatusLine      cterm=reverse  ctermfg=245    ctermbg=234
+highlight Border          cterm=none     ctermfg=240    ctermbg=default
+
+highlight Selected        cterm=reverse  ctermfg=244    ctermbg=235
+highlight CurrLine        cterm=reverse  ctermfg=244    ctermbg=235
+highlight OtherLine       cterm=none     ctermfg=244    ctermbg=235
+
+highlight WildMenu        cterm=reverse  ctermfg=234    ctermbg=136
+highlight CmdLine         cterm=none     ctermfg=244    ctermbg=235
+highlight ErrorMsg        cterm=bold     ctermfg=160    ctermbg=default
+
+highlight Directory       cterm=bold     ctermfg=32     ctermbg=default
+highlight Link            cterm=bold     ctermfg=37     ctermbg=default
+highlight BrokenLink      cterm=bold     ctermfg=160    ctermbg=default
+highlight Socket          cterm=none     ctermfg=125    ctermbg=default
+highlight Device          cterm=bold     ctermfg=166    ctermbg=default
+highlight Fifo            cterm=none     ctermfg=136    ctermbg=default
+highlight Executable      cterm=bold     ctermfg=64     ctermbg=default
+
+highlight JobLine         cterm=none     ctermfg=245    ctermbg=235
+highlight SuggestBox      cterm=none     ctermfg=244    ctermbg=235
+highlight CmpMismatch     cterm=bold     ctermfg=160    ctermbg=default
+highlight LineNr          cterm=none     ctermfg=240    ctermbg=default
+highlight OddLine         cterm=none     ctermfg=244    ctermbg=234
+
+highlight TabLine         cterm=none     ctermfg=244    ctermbg=235
+highlight TabLineSel      cterm=bold     ctermfg=37     ctermbg=234
+
+highlight User1           cterm=none     ctermfg=37     ctermbg=default
+highlight User2           cterm=none     ctermfg=166    ctermbg=default
+highlight User3           cterm=none     ctermfg=136    ctermbg=default
+highlight User4           cterm=none     ctermfg=125    ctermbg=default
+highlight User5           cterm=none     ctermfg=64     ctermbg=default
+highlight User6           cterm=none     ctermfg=61     ctermbg=default
+highlight User7           cterm=none     ctermfg=32     ctermbg=default
+highlight User8           cterm=none     ctermfg=245    ctermbg=default
+highlight User9           cterm=none     ctermfg=240    ctermbg=default

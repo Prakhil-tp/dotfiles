@@ -1,0 +1,138 @@
+/**
+ * Grovebox (Gruvbox Dark) theme for rofi
+ * Layout based on catppuccin-mocha, colors from gruvbox palette
+ */
+
+* {
+    base:            #282828;
+    surface0:        #3c3836;
+    overlay0:        #665c54;
+    text:            #ebdbb2;
+    lavender:        #d3869b;
+    red:             #fb4934;
+    peach:           #fabd2f;
+    green:           #b8bb26;
+    blue:            #83a598;
+    yellow:          #d79921;
+    mauve:           #d3869b;
+    teal:            #8ec07c;
+    background-color: @base;
+}
+
+window {
+    height: 720;
+    width: 1100;
+    children: [mainbox];
+    border-radius: 16;
+    border-color: @overlay0;
+    background-color: @base;
+}
+
+mainbox {
+    children: [inputbar, message, listview];
+    spacing: 0;
+    padding: 0;
+    background-color: @base;
+}
+
+inputbar {
+    children: [prompt, entry, case-indicator];
+    background-color: @base;
+    padding: 14px 16px;
+    spacing: 10px;
+    border-radius: 16 16 0 0;
+}
+
+prompt {
+    background-color: @teal;
+    padding: 8px 16px;
+    border-radius: 8px;
+    margin: 0;
+}
+
+textbox-prompt-colon {
+    expand: false;
+    str: ":";
+}
+
+entry {
+    placeholder: "Search...";
+    text-color: @text;
+    padding: 8px 4px;
+    cursor: text;
+}
+
+case-indicator {
+    padding: 8px 14px;
+    text-color: @overlay0;
+    background-color: @surface0;
+    border-radius: 8px;
+    margin: 0;
+}
+
+message {
+    padding: 6px 16px;
+    background-color: @base;
+    text-color: @overlay0;
+}
+
+listview {
+    spacing: 6px;
+    padding: 4px 12px 12px;
+    border-radius: 0 0 16 16;
+    background-color: @base;
+    dynamic: true;
+    columns: 1;
+    scrollbar: true;
+    scrollbar-width: 6px;
+}
+
+scrollbar {
+    handle-width: 6px;
+    handle-color: @overlay0;
+    background-color: @surface0;
+    border-radius: 3px;
+}
+
+element {
+    padding: 12px 14px;
+    border-radius: 8px;
+    background-color: @surface0;
+    text-color: @text;
+}
+
+element normal normal {
+    background-color: @surface0;
+    text-color: @text;
+}
+
+element alternate normal {
+    background-color: @surface0;
+    text-color: @text;
+}
+
+element selected normal {
+    background-color: @blue;
+    text-color: @base;
+}
+
+element selected active {
+    background-color: @blue;
+    text-color: @base;
+}
+
+element normal active {
+    background-color: @surface0;
+    text-color: @text;
+}
+
+element-icon {
+    size: 24px;
+    padding: 0 8px 0 0;
+}
+
+element-text {
+    background-color: inherit;
+    text-color: inherit;
+    vertical-align: 0.5;
+}

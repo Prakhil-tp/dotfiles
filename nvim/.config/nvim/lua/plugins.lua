@@ -1,13 +1,14 @@
 return {
-  -- theme
+  -- themes
   {
     "catppuccin/nvim",
     name = "catppuccin",
     priority = 1000,
+    lazy = true,
     opts = {
-      flavour = "auto", -- latte, frappe, macchiato, mocha
+      flavour = "auto",
       transparent_background = true,
-      background = {    -- :h background
+      background = {
         light = "latte",
         dark = "mocha",
       },
@@ -23,18 +24,51 @@ return {
       },
       custom_highlights = function(colors)
         return {
-          StatusLine = { bg = colors.base },   -- opaque background color from the palette
-          StatusLineNC = { bg = colors.base }, -- inactive statusline too
+          StatusLine = { bg = colors.base },
+          StatusLineNC = { bg = colors.base },
         }
-      end
-
+      end,
     },
-    config = function(_, opts)
-      vim.opt.termguicolors = true
-      require("catppuccin").setup(opts)
-      vim.cmd.colorscheme("catppuccin")
+  },
+  {
+    "ellisonleao/gruvbox.nvim",
+    priority = 1000,
+    lazy = true,
+    opts = {
+      contrast = "hard",
+      transparent_mode = true,
+    },
+  },
+  {
+    "maxmx03/solarized.nvim",
+    priority = 1000,
+    lazy = true,
+    opts = {
+      styles = {
+        comments = { italic = true },
+      },
+    },
+  },
+  -- theme switcher (loads colorscheme based on current-theme file)
+  {
+    dir = vim.fn.stdpath("config") .. "/lua",
+    priority = 1001,
+    config = function()
+      local theme_file = vim.fn.expand("~/.config/nvim/current-theme")
+      local theme = "catppuccin"
+      local f = io.open(theme_file, "r")
+      if f then
+        theme = f:read("*l"):gsub("%s+", "")
+        f:close()
+      end
+      if theme == "gruvbox" or theme == "grovebox" then
+        vim.cmd.colorscheme("gruvbox")
+      elseif theme == "solarized-dark" then
+        vim.cmd.colorscheme("solarized")
+      else
+        vim.cmd.colorscheme("catppuccin")
+      end
     end,
-
   },
   -- file navigation
   {
@@ -82,10 +116,9 @@ return {
 
     },
     config = function(_, opts)
-      require("nvim-treesitter.configs").setup(opts)
+      require("nvim-treesitter.config").setup(opts)
     end
   },
-  { 'nvim-treesitter/playground' },
   -- file manager
   {
     "nvim-tree/nvim-tree.lua",

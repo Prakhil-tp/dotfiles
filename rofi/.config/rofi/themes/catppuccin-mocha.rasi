@@ -1,76 +1,52 @@
 /**
- * Catppuccin Mocha theme
- * Color palette copied from https://catppuccin.com/palette
- * https://github.com/hiimsergey/rofi-catppuccin
+ * Catppuccin Mocha theme for rofi
  */
 
 * {
-    base: #1e1e2e;
-    surface0: #313244;
-    overlay0: #6c7086;
-    text: #cdd6f4;
-    mauve: #cba6f7;
-    red: #f38ba8;
-    peach: #fab387;
-    green: #a6e3a1;
-    lavender: #b4befe;
+    base:            #1e1e2e;
+    surface0:        #313244;
+    overlay0:        #6c7086;
+    text:            #cdd6f4;
+    lavender:        #b4befe;
+    red:             #f38ba8;
+    peach:           #fab387;
+    green:           #a6e3a1;
+    blue:            #89b4fa;
+    yellow:          #f9e2af;
+    mauve:           #cba6f7;
+    teal:            #94e2d5;
     background-color: @base;
 }
 
 window {
-    height: 700;
-    width: 1500;
+    height: 720;
+    width: 1100;
     children: [mainbox];
-    orientation: horizontal;
-    border:0;
-    border-radius:10; 
-    border-color: @lavender;
+    border-radius: 16;
+    border-color: @overlay0;
+    background-color: @base;
 }
-
 
 mainbox {
-    border:  0;
-    padding: 0;
-    spacing: 0;
     children: [inputbar, message, listview];
-    border-color:@base;
-    background-color:@base;
+    spacing: 0;
+    padding: 0;
+    background-color: @base;
 }
 
 inputbar {
-    color: @text;
-    padding: 14;
+    children: [prompt, entry, case-indicator];
     background-color: @base;
-}
-
-message {
-    padding: 10px;
-    background-color: @base;
-}
-
-listview {
-    spacing:10;
-    padding: 8;
-    border-radius: 0 0 10 10;
-    border: 2 2 2 2;
-    border-color: @base;
-    background-color: @base;
-    dynamic: false;
-    columns:2;
-}
-
-inputbar {
-    children: [prompt,entry];
-    background-color: inherit;
-    border-radius: 5px;
-    padding: 2px;
+    padding: 14px 16px;
+    spacing: 10px;
+    border-radius: 16 16 0 0;
 }
 
 prompt {
-    background-color: @peach;
-    padding: 10px;
-    border-radius: 3px;
-    margin: 25px 0px 25px 30px;
+    background-color: @mauve;
+    padding: 8px 16px;
+    border-radius: 8px;
+    margin: 0;
 }
 
 textbox-prompt-colon {
@@ -79,42 +55,83 @@ textbox-prompt-colon {
 }
 
 entry {
-  placeholder: "Type here";
-  cursor: text;
-  text-color: @text;
-  padding: 10px;
-  margin: 20px 0px 0px 10px;
+    placeholder: "Search...";
+    text-color: @text;
+    padding: 8px 4px;
+    cursor: text;
+}
+
+case-indicator {
+    padding: 8px 14px;
+    text-color: @overlay0;
+    background-color: @surface0;
+    border-radius: 8px;
+    margin: 0;
+}
+
+message {
+    padding: 6px 16px;
+    background-color: @base;
+    text-color: @overlay0;
+}
+
+listview {
+    spacing: 6px;
+    padding: 4px 12px 12px;
+    border-radius: 0 0 16 16;
+    background-color: @base;
+    dynamic: true;
+    columns: 1;
+    scrollbar: true;
+    scrollbar-width: 6px;
+}
+
+scrollbar {
+    handle-width: 6px;
+    handle-color: @overlay0;
+    background-color: @surface0;
+    border-radius: 3px;
 }
 
 element {
-  padding: 20px;
-  vertical-align:0; 
-  color: @text;
-}
-
-element-text {
-  background-color: inherit;
-  color: inherit;
-}
-
-element selected.normal {
-  background-color: @overlay0;
-  color: @base;
-}
-
-element.normal.normal {
+    padding: 12px 14px;
+    border-radius: 8px;
     background-color: @surface0;
-    text-color:       @text;
-
+    text-color: @text;
 }
 
-element.alternate.normal {
+element normal normal {
     background-color: @surface0;
-    text-color:       @text;
+    text-color: @text;
+}
+
+element alternate normal {
+    background-color: @surface0;
+    text-color: @text;
+}
+
+element selected normal {
+    background-color: @blue;
+    text-color: @base;
+}
+
+element selected active {
+    background-color: @blue;
+    text-color: @base;
 }
 
 element normal active {
-  background-color: @surface0;
-  color: @text;
+    background-color: @surface0;
+    text-color: @text;
 }
 
+element-icon {
+    size: 24px;
+    padding: 0 8px 0 0;
+}
+
+element-text {
+    background-color: inherit;
+    text-color: inherit;
+    vertical-align: 0.5;
+}
