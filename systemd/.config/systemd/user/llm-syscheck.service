@@ -1,0 +1,6 @@
+[Unit]
+Description=LLM system health check
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/bin/llm-syscheck

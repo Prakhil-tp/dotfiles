@@ -1,0 +1,46 @@
+conky.config = {
+  background = true,
+  double_buffer = true,
+  update_interval = 300,
+
+  alignment = 'bottom_left',
+  gap_x = 20,
+  gap_y = 20,
+
+  minimum_width = 400,
+  maximum_width = 400,
+
+  border_inner_margin = 10,
+  border_outer_margin = 5,
+  border_width = 0,
+  draw_borders = false,
+  draw_shades = false,
+  draw_outline = false,
+
+  font = 'Hack NF:size=11',
+  max_text_width = 380,
+
+  own_window = true,
+  own_window_argb_value = 200,
+  own_window_argb_visual = true,
+  own_window_class = 'Conky',
+  own_window_colour = '#1e1e2e',
+  own_window_transparent = false,
+  own_window_title = 'ai_insights',
+  own_window_type = 'desktop',
+  own_window_hints = 'undecorated,below,sticky,skip_taskbar,skip_pager',
+
+  use_xft = true,
+  xftalpha = 1,
+
+  color0 = '#89b4fa',
+  color1 = '#a6e3a1',
+  color2 = '#cdd6f4',
+  color3 = '#f38ba8',
+};
+
+conky.text = [[
+${color0}${font Hack NF:bold:size=12}AI System Insights${font}${color}
+${color2}${hr}${color}
+${color1}${font Hack NF:size=10}${cat $HOME/.cache/llm-insights.txt}${font}${color}
+]];

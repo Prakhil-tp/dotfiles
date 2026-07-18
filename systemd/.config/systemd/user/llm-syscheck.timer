@@ -1,0 +1,9 @@
+[Unit]
+Description=Hourly LLM system health check
+
+[Timer]
+OnCalendar=hourly
+Persistent=true
+
+[Install]
+WantedBy=default.target

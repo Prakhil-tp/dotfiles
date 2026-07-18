@@ -17,7 +17,8 @@ run() {
   esac
 }
 
-run conky -c /home/prakhil/.config/conky/dracula-without-gpu.conkyrc > /dev/null 2>&1 &
+run conky -c "$HOME/.config/conky/dracula-without-gpu.conkyrc" > /dev/null 2>&1 &
+run conky -c "$HOME/.config/conky/ai-insights.conkyrc" > /dev/null 2>&1 &
 run keynav
 
 xset r rate 300 50
