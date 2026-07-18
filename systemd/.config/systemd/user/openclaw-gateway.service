@@ -1,0 +1,28 @@
+[Unit]
+Description=OpenClaw Gateway (v2026.5.18)
+After=network-online.target
+Wants=network-online.target
+StartLimitBurst=5
+StartLimitIntervalSec=60
+
+[Service]
+ExecStart=/home/blue/.local/share/asdf/installs/nodejs/25.9.0/bin/node /home/blue/.local/share/asdf/installs/nodejs/25.9.0/lib/node_modules/openclaw/dist/index.js gateway --port 18789
+Restart=always
+RestartSec=5
+RestartPreventExitStatus=78
+TimeoutStopSec=30
+TimeoutStartSec=30
+SuccessExitStatus=0 143
+KillMode=control-group
+Environment=HOME=/home/blue
+Environment=TMPDIR=/tmp
+Environment=PATH=/home/blue/.local/share/asdf/installs/nodejs/25.9.0/bin:/home/blue/.local/share/asdf/shims:/home/blue/.local/bin:/home/blue/.npm-global/bin:/home/blue/bin:/home/blue/.nix-profile/bin:/usr/local/bin:/usr/bin:/bin
+Environment=OPENCLAW_GATEWAY_PORT=18789
+Environment=OPENCLAW_SYSTEMD_UNIT=openclaw-gateway.service
+Environment="OPENCLAW_WINDOWS_TASK_NAME=OpenClaw Gateway"
+Environment=OPENCLAW_SERVICE_MARKER=openclaw
+Environment=OPENCLAW_SERVICE_KIND=gateway
+Environment=OPENCLAW_SERVICE_VERSION=2026.5.18
+
+[Install]
+WantedBy=default.target

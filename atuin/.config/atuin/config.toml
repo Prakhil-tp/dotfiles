@@ -1,0 +1,18 @@
+auto_sync = true
+# sync_address = "https://prakhil.is-a.dev/atuin"
+sync_frequency = "10m"
+search_mode = "prefix"
+search_mode_shell_up_keybinding = "prefix"
+search_result_direction = "reverse"
+enter_accept = false
+keymap_mode = "vim-normal"
+
+[ai]
+enabled = true
+
+[daemon]
+enabled = true
+autostart = true
+
+[theme]
+name = "catppuccin"

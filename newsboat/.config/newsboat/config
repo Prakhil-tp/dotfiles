@@ -1,0 +1,39 @@
+# Vim-style bindings
+bind-key j down
+bind-key k up
+bind-key h quit
+bind-key l open
+bind-key n pageup
+bind-key p pagedown
+bind-key g home
+bind-key G end
+bind-key d pagedown
+bind-key u pageup
+bind-key J next-feed
+bind-key K prev-feed
+bind-key T edit-urls
+bind-key b bookmark
+
+unbind-key UP
+unbind-key DOWN
+unbind-key PGUP
+unbind-key PGDOWN
+unbind-key HOME
+unbind-key END
+
+refresh-on-startup yes
+auto-reload yes
+reload-time 30
+max-items 50
+article-sort-order date-desc
+show-read-feeds yes
+show-read-articles no
+confirm-exit no
+browser "surf"
+
+color listnormal green default
+color listfocus yellow default bold
+color listnormal_unread blue default
+color listfocus_unread yellow default bold
+color info white magenta bold
+color article green default

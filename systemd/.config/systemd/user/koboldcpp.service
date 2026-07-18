@@ -1,0 +1,18 @@
+[Unit]
+Description=KoboldCPP Vulkan LLM Server
+After=network.target
+
+[Service]
+ExecStart=%h/.local/bin/koboldcpp \
+  --model %h/.local/share/models/qwen2.5-3b.gguf \
+  --usevulkan \
+  --contextsize 16384 \
+  --port 5001 \
+  --host 127.0.0.1 \
+  --skiplauncher \
+  --multiuser 5
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=default.target
