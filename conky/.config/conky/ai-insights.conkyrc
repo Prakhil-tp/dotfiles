@@ -1,16 +1,16 @@
 conky.config = {
   background = true,
   double_buffer = true,
-  update_interval = 300,
+  update_interval = 120,
 
   alignment = 'bottom_left',
   gap_x = 20,
   gap_y = 20,
 
-  minimum_width = 400,
-  maximum_width = 400,
+  minimum_width = 380,
+  maximum_width = 380,
 
-  border_inner_margin = 10,
+  border_inner_margin = 12,
   border_outer_margin = 5,
   border_width = 0,
   draw_borders = false,
@@ -18,7 +18,7 @@ conky.config = {
   draw_outline = false,
 
   font = 'Hack NF:size=11',
-  max_text_width = 380,
+  max_text_width = 360,
 
   own_window = true,
   own_window_argb_value = 200,
@@ -37,10 +37,11 @@ conky.config = {
   color1 = '#a6e3a1',
   color2 = '#cdd6f4',
   color3 = '#f38ba8',
+  color4 = '#6c7086',
 };
 
 conky.text = [[
-${color0}${font Hack NF:bold:size=12}AI System Insights${font}${color}
-${color2}${hr}${color}
+${color0}${font Hack NF:bold:size=11}System Status${font}${color}
+${color4}${hr 2}${color}
 ${color1}${font Hack NF:size=10}${cat $HOME/.cache/llm-insights.txt}${font}${color}
 ]];
