@@ -27,7 +27,8 @@ conky.config = {
   own_window_colour = '#1e1e2e',
   own_window_transparent = false,
   own_window_title = 'ai_insights',
-  own_window_type = 'desktop',
+  own_window_type = 'normal',
+  own_window_hints = 'undecorated,below,sticky,skip_taskbar,skip_pager',
   own_window_hints = 'undecorated,below,sticky,skip_taskbar,skip_pager',
 
   use_xft = true,
@@ -43,5 +44,5 @@ conky.config = {
 conky.text = [[
 ${color0}${font Hack NF:bold:size=11}System Status${font}${color}
 ${color4}${hr 2}${color}
-${color1}${font Hack NF:size=10}${cat $HOME/.cache/llm-insights.txt}${font}${color}
+${color1}${font Hack NF:size=10}${cat /home/blue/.cache/llm-insights.txt}${font}${color}
 ]];
