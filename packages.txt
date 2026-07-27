@@ -1,4 +1,5 @@
 #Pacman                        #AUR                                    #Manual
+earlyoom                     stress-ng                               anti-freeze/install.sh (stow package)
 
 lxappearance                    yt-dlp                                  asdf
 conky                           networkmanager-openvpn

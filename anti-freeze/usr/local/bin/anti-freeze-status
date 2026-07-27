@@ -1,0 +1,13 @@
+#!/bin/bash
+echo "=== earlyoom ==="
+systemctl is-enabled earlyoom 2>/dev/null && systemctl is-active earlyoom
+echo "=== zram-swap ==="
+systemctl is-enabled zram-swap 2>/dev/null && systemctl is-active zram-swap
+echo "=== swap devices ==="
+swapon --show 2>/dev/null || echo "No swap"
+echo "=== zram ==="
+zramctl 2>/dev/null || echo "No zram"
+echo "=== sysctl ==="
+for k in vm.swappiness vm.page-cluster vm.watermark_scale_factor kernel.sysrq; do
+  printf '%-28s = %s\n' "$k" "$(sysctl -n $k 2>/dev/null)"
+done

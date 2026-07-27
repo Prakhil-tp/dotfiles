@@ -1,0 +1,43 @@
+#!/bin/bash
+set -euo pipefail
+
+# anti-freeze stress test
+# Run this after setup to verify earlyoom kills the hog while keeping the system responsive.
+
+SINCE=$(date '+%Y-%m-%d %H:%M:%S')
+
+# Install stress-ng if missing
+if ! command -v stress-ng &>/dev/null; then
+  echo "[!] stress-ng not found. Install it first."
+  exit 1
+fi
+
+echo "=== Baseline ==="
+free -h | grep -E 'Mem|Swap'
+echo ""
+
+TOTAL_MB=$(free -m | awk '/Mem:/{m=$2} /Swap:/{s=$2} END{print int((m+s)*1.5)}')
+echo "Allocating ~${TOTAL_MB}MB (1.5x RAM+swap)..."
+
+setsid stress-ng --vm 1 --vm-bytes "${TOTAL_MB}M" --vm-keep --timeout 100s >/tmp/stress.log 2>&1 &
+for i in $(seq 1 75); do
+  printf '[%s] MemAvail=%sMB Swap=%s\n' "$(date '+%H:%M:%S')" \
+    "$(awk '/MemAvailable/{printf "%.0f",$2/1024}' /proc/meminfo)" \
+    "$(free -m | awk '/Swap/{printf "%d/%d",$3,$2}')"
+  if journalctl -u earlyoom --since "$SINCE" --no-pager 2>/dev/null | grep -q 'sending SIG'; then
+    echo '>>> earlyoom acted <<<'
+    break
+  fi
+  sleep 1
+done
+
+pkill -9 stress-ng 2>/dev/null || true
+sleep 2
+
+echo ""
+echo "=== earlyoom action ==="
+journalctl -u earlyoom --since "$SINCE" --no-pager | grep -iE 'low memory|sending SIG' || echo "(none — check journal manually)"
+
+echo ""
+echo "=== Recovery ==="
+free -h | grep -E 'Mem|Swap'

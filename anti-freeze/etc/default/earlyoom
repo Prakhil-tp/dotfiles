@@ -1,0 +1,1 @@
+EARLYOOM_ARGS="-r 300 -m 8 -s 8 --avoid '(^|/)(systemd|systemd-.*|Xorg|Xwayland|awesome|gnome-shell|gnome-session|plasmashell|kwin_x11|kwin|mutter|lightdm|gdm|gdm3|sddm|sshd|dbus-daemon|dbus-broker|wpa_supplicant|NetworkManager|login|init)$' --prefer '(^|/)(node|chrome|chromium|firefox|firefox-bin|electron|java|code|next-server|ts-node|jest|webpack|esbuild)$'"

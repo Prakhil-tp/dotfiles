@@ -1,0 +1,13 @@
+[Unit]
+Description=Compressed RAM swap (zram)
+After=multi-user.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStartPre=/sbin/modprobe zram
+ExecStart=/usr/local/sbin/zram-setup.sh
+ExecStop=/usr/local/sbin/zram-teardown.sh
+
+[Install]
+WantedBy=multi-user.target
