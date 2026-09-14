@@ -9,8 +9,13 @@ class Proxy(BaseHTTPRequestHandler):
     def do_GET(self):
         url = PROWLARR + self.path
         try:
-            req = urllib.request.Request(url)
-            with urllib.request.urlopen(req, timeout=60) as resp:
+            headers = {}
+            for key, value in self.headers.items():
+                if key.lower() in ("host", "content-length", "connection", "accept-encoding"):
+                    continue
+                headers[key] = value
+            req = urllib.request.Request(url, headers=headers)
+            with urllib.request.urlopen(req, timeout=120) as resp:
                 data = resp.read()
                 ct = resp.headers.get("Content-Type", "")
                 if "/api/v1/search" in self.path and "json" in ct:
