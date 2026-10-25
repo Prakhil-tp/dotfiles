@@ -6,3 +6,4 @@ autoload/*
 qutebrowser/.config/qutebrowser/qsettings
 applications/*
 zsh/.config/zsh/secrets.zsh
+.zcompdump*
