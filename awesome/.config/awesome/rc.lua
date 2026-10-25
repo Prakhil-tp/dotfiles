@@ -50,6 +50,8 @@ end
 beautiful.init(gears.filesystem.get_configuration_dir() .. "themes/default/theme.lua")
 naughty.config.icon_dirs = { "/usr/share/icons/dracula-icons/scalable/apps/", "/usr/share/icons/custom-icons/" }
 naughty.config.icon_formats = { "png", "svg" }
+-- Draw every notification with the custom popup (notifications.lua)
+require("notifications").hook_naughty()
 
 -- This is used later as the default terminal and editor to run.
 -- local terminal = "alacritty"
