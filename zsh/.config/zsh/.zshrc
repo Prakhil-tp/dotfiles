@@ -245,3 +245,12 @@ export PATH="$XDG_DATA_HOME/opencode/install/bin:/home/blue/.local/share/asdf/in
 
 # opencode
 export PATH=/home/blue/.opencode/bin:$PATH
+
+# Flutter / Android SDK (JDK 17 for Gradle; system default Java untouched)
+export JAVA_HOME=/usr/lib/jvm/java-17-openjdk
+export ANDROID_HOME="$HOME/Android/Sdk"
+export ANDROID_SDK_ROOT="$ANDROID_HOME"
+export ANDROID_USER_HOME="$XDG_CONFIG_HOME/.android"
+export ANDROID_AVD_HOME="$ANDROID_USER_HOME/avd"
+export CHROME_EXECUTABLE=/usr/bin/chromium
+export PATH="$HOME/development/flutter/bin:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$ANDROID_HOME/emulator:$PATH"
