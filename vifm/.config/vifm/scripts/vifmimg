@@ -27,7 +27,7 @@ main() {
 		"video")
 			THUMB="${PCACHE}.jpg"
 			[ ! -f "$THUMB" ] && \
-				ffmpegthumbnailer -i "$FILE" -o "$THUMB" -s 256 -q 5 2>/dev/null
+				timeout 10 ffmpegthumbnailer -i "$FILE" -o "$THUMB" -s 256 -q 5 2>/dev/null
 			[ -f "$THUMB" ] && image "$1" "$2" "$3" "$4" "$5" "$THUMB"
 			;;
 		"epub")
@@ -38,7 +38,7 @@ main() {
 		"pdf")
 			THUMB="${PCACHE}.jpg"
 			[ ! -f "$THUMB" ] && \
-				pdftoppm -jpeg -f 1 -singlefile "$FILE" "$THUMB" 2>/dev/null
+				timeout 10 pdftoppm -jpeg -f 1 -singlefile "$FILE" "$THUMB" 2>/dev/null
 			[ -f "$THUMB" ] && image "$1" "$2" "$3" "$4" "$5" "$THUMB"
 			;;
 		"djvu")
