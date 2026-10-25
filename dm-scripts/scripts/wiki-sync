@@ -1,0 +1,131 @@
+#!/usr/bin/env bash
+# wiki-sync — keep the vimwiki notes repo in sync with its git remote.
+#
+# Usage:
+#   wiki-sync           commit local changes, rebase on remote, push
+#   wiki-sync --pull    fetch remote changes only (no commit, no push)
+#
+# Safe to run concurrently: a lock serialises nvim-triggered runs against the
+# systemd timer. Failures notify via the desktop and are appended to the log.
+
+set -uo pipefail
+
+WIKI_DIR="${VIMWIKI_DIR:-$HOME/documents/notes}"
+BRANCH="${VIMWIKI_BRANCH:-master}"
+LOCK_FILE="${XDG_RUNTIME_DIR:-/tmp}/wiki-sync.lock"
+LOG_FILE="${XDG_STATE_HOME:-$HOME/.local/state}/wiki-sync.log"
+
+mkdir -p "$(dirname "$LOG_FILE")"
+
+log() { printf '%s %s\n' "$(date '+%Y-%m-%d %H:%M:%S')" "$*" >>"$LOG_FILE"; }
+
+# Notify the desktop, if a session is reachable. The systemd timer runs outside
+# a terminal, so DBUS_SESSION_BUS_ADDRESS may need reconstructing.
+notify() {
+  log "FAIL: $*"
+  if command -v notify-send >/dev/null 2>&1; then
+    : "${DBUS_SESSION_BUS_ADDRESS:=unix:path=/run/user/$(id -u)/bus}"
+    export DBUS_SESSION_BUS_ADDRESS
+    notify-send -u critical -a wiki-sync "Wiki sync failed" "$*" 2>/dev/null || true
+  fi
+}
+
+die() { notify "$*"; exit 1; }
+
+git_wiki() { git -C "$WIKI_DIR" "$@"; }
+
+# --- preconditions ----------------------------------------------------------
+
+[ -d "$WIKI_DIR" ] || die "Wiki directory not found: $WIKI_DIR"
+git_wiki rev-parse --is-inside-work-tree >/dev/null 2>&1 \
+  || die "Not a git repository: $WIKI_DIR"
+
+# Only one sync at a time. A full sync waits its turn rather than skipping:
+# dropping it would strand a just-finished editing session until the next timer
+# tick. A --pull is only opportunistic, so it gives up immediately.
+exec 9>"$LOCK_FILE"
+if [ "${1:-}" = "--pull" ]; then
+  flock -n 9 || { log "skip pull: sync already in progress"; exit 0; }
+else
+  flock -w 180 9 || { notify "Timed out waiting for another sync to finish"; exit 1; }
+fi
+
+# Never touch a repo that is mid-rebase/merge or has unresolved conflicts.
+# Automating through that state is how history gets mangled.
+if [ -d "$(git_wiki rev-parse --git-path rebase-merge)" ] \
+  || [ -d "$(git_wiki rev-parse --git-path rebase-apply)" ] \
+  || [ -f "$(git_wiki rev-parse --git-path MERGE_HEAD)" ]; then
+  die "Repo is mid-rebase/merge. Resolve it manually in $WIKI_DIR"
+fi
+
+if [ -n "$(git_wiki diff --name-only --diff-filter=U)" ]; then
+  die "Unresolved merge conflicts. Resolve them manually in $WIKI_DIR"
+fi
+
+# --- commit -----------------------------------------------------------------
+
+commit_local() {
+  # --porcelain covers modified, staged, untracked and deleted files.
+  local changes
+  changes="$(git_wiki status --porcelain)"
+  [ -n "$changes" ] || return 0
+
+  local count
+  count="$(printf '%s\n' "$changes" | wc -l)"
+
+  git_wiki add -A || { notify "git add failed"; return 1; }
+  git_wiki commit -q -m "Auto-sync $(date '+%Y-%m-%d %H:%M') ($count $( [ "$count" -eq 1 ] && echo file || echo files ))" \
+    || { notify "git commit failed"; return 1; }
+  log "committed $count file(s)"
+}
+
+# --- pull / push ------------------------------------------------------------
+
+pull_rebase() {
+  local out
+  # Fetch separately so being offline isn't mistaken for a conflict.
+  if ! out="$(git_wiki fetch -q origin "$BRANCH" 2>&1)"; then
+    if grep -qiE 'could not resolve hostname|network is unreachable|no route to host|timed out|connection refused|temporary failure' <<<"$out"; then
+      # Offline is expected and not worth a popup — the timer will retry.
+      log "pull deferred (offline): ${out%%$'\n'*}"
+      return 0
+    fi
+    die "Fetch from origin failed. Details: $LOG_FILE"$'\n'"$out"
+  fi
+  if ! out="$(git_wiki rebase --autostash "origin/$BRANCH" 2>&1)"; then
+    # Leave no half-finished rebase behind for the next run to trip over.
+    git_wiki rebase --abort >/dev/null 2>&1
+    die "Pull/rebase failed — likely a conflict between machines. Run 'git -C $WIKI_DIR pull --rebase' by hand. Details: $LOG_FILE"$'\n'"$out"
+  fi
+}
+
+push() {
+  # Nothing to push is the common case; don't hit the network for it.
+  if [ -z "$(git_wiki log "origin/$BRANCH..$BRANCH" --oneline 2>/dev/null)" ]; then
+    return 0
+  fi
+  local out
+  if ! out="$(git_wiki push origin "$BRANCH" 2>&1)"; then
+    # Offline is expected and not worth a popup — the timer will retry.
+    log "push deferred: $out"
+    return 0
+  fi
+  log "pushed to origin/$BRANCH"
+}
+
+# --- main -------------------------------------------------------------------
+
+case "${1:-}" in
+  --pull)
+    pull_rebase
+    ;;
+  "")
+    commit_local || exit 1
+    pull_rebase
+    push
+    ;;
+  *)
+    echo "usage: wiki-sync [--pull]" >&2
+    exit 2
+    ;;
+esac

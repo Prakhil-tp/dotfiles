@@ -142,7 +142,9 @@ return {
     cmd = { "VimwikiIndex", "VimwikiFollowLink", "VimwikiGoBackLink", "VimwikiVSplitLink" },
     keys = { "<leader>ww", "<leader>wt" },
   },
-  { "git@github.com:michal-h21/vimwiki-sync.git" },
+  -- vimwiki-sync removed: its jobstart callbacks were Vim-style (exit_cb) and
+  -- silently no-op'd under Neovim, so failed pulls/pushes went unnoticed.
+  -- Replaced by after/plugin/vimwiki-sync.lua + ~/scripts/wiki-sync.
   { "airblade/vim-rooter" }, -- Changes Vim working directory to project root.
   -- top bufferline
   {
