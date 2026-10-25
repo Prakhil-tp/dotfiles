@@ -122,15 +122,59 @@ device_connected() {
     fi
 }
 
+# Sends a desktop notification if notify-send is available
+notify() {
+    command -v notify-send >/dev/null && notify-send -a "Bluetooth" "$@"
+}
+
+# Checks if an audio device has a PipeWire/PulseAudio card (i.e. an audio
+# profile actually came up). Non-audio devices or systems without pactl pass.
+audio_ready() {
+    bluetoothctl info "$1" | grep -q "Audio Sink" || return 0
+    command -v pactl >/dev/null || return 0
+    pactl list cards short | grep -q "bluez_card.${1//:/_}"
+}
+
+# Stops discovery, since an active scan often makes connects fail with
+# "Device or resource busy"
+stop_scan() {
+    if bluetoothctl show | grep -q "Discovering: yes"; then
+        pkill -f "bluetoothctl scan on"
+        bluetoothctl scan off >/dev/null
+    fi
+}
+
+# Connects a device, retrying on failure. Also recovers devices that are
+# linked but have no audio profile (e.g. auto-reconnected at boot before
+# PipeWire registered its bluetooth endpoints).
+connect_device() {
+    local mac=$1 name=$2 attempt
+    stop_scan
+    for attempt in 1 2 3; do
+        if device_connected "$mac" && ! audio_ready "$mac"; then
+            bluetoothctl disconnect "$mac" >/dev/null
+            sleep 2
+        fi
+        timeout 20 bluetoothctl connect "$mac" >/dev/null
+        sleep 1
+        if device_connected "$mac" && audio_ready "$mac"; then
+            notify "Connected to $name"
+            return 0
+        fi
+        sleep 2
+    done
+    notify -u critical "Failed to connect to $name" "Make sure it is powered on and in range"
+    return 1
+}
+
 # Toggles device connection
 toggle_connection() {
-    if device_connected $1; then
-        bluetoothctl disconnect $1
-        device_menu "$device"
+    if device_connected "$1" && audio_ready "$1"; then
+        bluetoothctl disconnect "$1"
     else
-        bluetoothctl connect $1
-        device_menu "$device"
+        connect_device "$1" "$device_name"
     fi
+    device_menu "$device"
 }
 
 # Checks if a device is paired
@@ -218,12 +262,14 @@ device_menu() {
     device=$1
 
     # Get device name and mac address
-    device_name=$(echo $device | cut -d ' ' -f 3-)
-    mac=$(echo $device | cut -d ' ' -f 2)
+    device_name=$(echo "$device" | cut -d ' ' -f 3-)
+    mac=$(echo "$device" | cut -d ' ' -f 2)
 
     # Build options
-    if device_connected $mac; then
+    if device_connected $mac && audio_ready $mac; then
         connected="Connected: yes"
+    elif device_connected $mac; then
+        connected="Connected: no audio (reconnect)"
     else
         connected="Connected: no"
     fi
@@ -236,19 +282,19 @@ device_menu() {
 
     # Match chosen option to command
     case $chosen in
-        "" | $divider)
+        "" | "$divider")
             echo "No option chosen."
             ;;
-        $connected)
+        "$connected")
             toggle_connection $mac
             ;;
-        $paired)
+        "$paired")
             toggle_paired $mac
             ;;
-        $trusted)
+        "$trusted")
             toggle_trust $mac
             ;;
-        $goback)
+        "$goback")
             show_menu
             ;;
     esac
@@ -281,23 +327,23 @@ show_menu() {
 
     # Match chosen option to command
     case $chosen in
-        "" | $divider)
+        "" | "$divider")
             echo "No option chosen."
             ;;
-        $power)
+        "$power")
             toggle_power
             ;;
-        $scan)
+        "$scan")
             toggle_scan
             ;;
-        $discoverable)
+        "$discoverable")
             toggle_discoverable
             ;;
-        $pairable)
+        "$pairable")
             toggle_pairable
             ;;
         *)
-            device=$(bluetoothctl devices | grep "$chosen")
+            device=$(bluetoothctl devices | grep -F -- " $chosen" | head -n 1)
             # Open a submenu if a device is selected
             if [[ $device ]]; then device_menu "$device"; fi
             ;;
