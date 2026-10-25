@@ -25,8 +25,8 @@ theme.fg_urgent = "#ffffff"
 theme.fg_minimize = "#ffffff"
 
 theme.useless_gap = 5
-theme.border_width = dpi(1)
-theme.border_normal = "#000000"
+theme.border_width = dpi(2)
+theme.border_normal = "#00000000"  -- transparent: reserves border space but invisible
 theme.border_focus = "#b4befe"
 theme.border_marked = "#fab387"
 -- There are other variable sets

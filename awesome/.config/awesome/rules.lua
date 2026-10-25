@@ -64,6 +64,19 @@ function rules.create(clientkeys, clientbuttons)
     },
 
     -- custom rules for clients
+    -- Conky widgets: no WM border (the theme's black border shows as a square
+    -- around the rounded card), keep them unfocusable and below everything.
+    {
+      rule = { class = "Conky" },
+      properties = {
+        border_width = 0,
+        focusable = false,
+        floating = true,
+        below = true,
+        sticky = true,
+        placement = awful.placement.no_offscreen,
+      },
+    },
     { rule = { class = "firefox" }, properties = { tag = "www", maximized = true, fullscreen = true } },
     { rule = { class = "Spotify" }, properties = { tag = "music", maximized = true, fullscreen = true } },
     { rule = { class = "vlc" },     properties = { fullscreen = true } },

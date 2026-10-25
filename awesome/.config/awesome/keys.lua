@@ -26,6 +26,39 @@ local terminal = "kitty"
 -- define module table
 local keys = {}
 
+-- Battery helpers (dynamic, no hardcoded names)
+local function get_battery()
+  for name in io.popen('ls /sys/class/power_supply/ 2>/dev/null'):lines() do
+    local f = io.open('/sys/class/power_supply/' .. name .. '/capacity')
+    if f then
+      local pct = f:read('*l'):gsub('%s+', '')
+      f:close()
+      return pct, name
+    end
+  end
+end
+
+local function battery_icon(pct)
+  pct = tonumber(pct) or 0
+  if pct >= 80 then return "󰂂"
+  elseif pct >= 60 then return "󰁿"
+  elseif pct >= 40 then return "󰁽"
+  elseif pct >= 20 then return "󰁻"
+  else return "󰁺" end
+end
+
+local function show_battery()
+  local pct, name = get_battery()
+  if pct then
+    local status = "Unknown"
+    local f = io.open('/sys/class/power_supply/' .. name .. '/status')
+    if f then status = f:read('*l'):gsub('%s+', '') f:close() end
+    require("notifications").notify { title = "Battery (" .. name .. ")", text = pct .. "% - " .. status, app_name = "battery", icon = battery_icon(pct) }
+  else
+    require("notifications").notify { title = "Battery", text = "No battery information available", urgency = "critical", app_name = "battery", icon = "󰂎" }
+  end
+end
+
 -- ===================================================================
 -- Scratchpads
 -- ===================================================================
@@ -56,6 +89,9 @@ local term_scratch = bling.module.scratchpad({
 -- ===================================================================
 
 keys.globalkeys = gears.table.join(
+  awful.key({ modkey, "Shift" }, "i", function()
+    awful.spawn.with_shell(os.getenv("HOME") .. "/.local/bin/conky-ai-toggle")
+  end, { description = "toggle System Status widget", group = "launcher" }),
   awful.key({ modkey }, "s", hotkeys_popup.show_help, { description = "show help", group = "awesome" }),
   awful.key({ modkey }, "Left", awful.tag.viewprev, { description = "view previous", group = "tag" }),
   awful.key({ modkey }, "Right", awful.tag.viewnext, { description = "view next", group = "tag" }),
@@ -404,70 +440,8 @@ keys.globalkeys = gears.table.join(
             self:stop()
           end,
         },
-        {
-          {}, "b",
-          function(self)
-            if gears.filesystem.file_readable("/sys/class/power_supply/BAT0/capacity") then
-              local f = io.open("/sys/class/power_supply/BAT0/capacity")
-              local pct = f:read()
-              f:close()
-              local pct_num = tonumber(pct) or 0
-              local bat_icon = "󰁹"
-              if pct_num >= 80 then bat_icon = "󰂂"
-              elseif pct_num >= 60 then bat_icon = "󰁿"
-              elseif pct_num >= 40 then bat_icon = "󰁽"
-              elseif pct_num >= 20 then bat_icon = "󰁻"
-              else bat_icon = "󰁺" end
-              require("notifications").notify({
-                title = "Battery",
-                text  = (pct or "?") .. "%",
-                app_name = "battery",
-                icon  = bat_icon,
-              })
-            else
-              require("notifications").notify({
-                title = "Battery",
-                text  = "No battery information available",
-                urgency = "critical",
-                app_name = "battery",
-                icon  = "󰂎",
-              })
-            end
-            self:stop()
-          end,
-        },
-        {
-          { modkey }, "b",
-          function(self)
-            if gears.filesystem.file_readable("/sys/class/power_supply/BAT0/capacity") then
-              local f = io.open("/sys/class/power_supply/BAT0/capacity")
-              local pct = f:read()
-              f:close()
-              local pct_num = tonumber(pct) or 0
-              local bat_icon = "󰁹"
-              if pct_num >= 80 then bat_icon = "󰂂"
-              elseif pct_num >= 60 then bat_icon = "󰁿"
-              elseif pct_num >= 40 then bat_icon = "󰁽"
-              elseif pct_num >= 20 then bat_icon = "󰁻"
-              else bat_icon = "󰁺" end
-              require("notifications").notify({
-                title = "Battery",
-                text  = (pct or "?") .. "%",
-                app_name = "battery",
-                icon  = bat_icon,
-              })
-            else
-              require("notifications").notify({
-                title = "Battery",
-                text  = "No battery information available",
-                urgency = "critical",
-                app_name = "battery",
-                icon  = "󰂎",
-              })
-            end
-            self:stop()
-          end,
-        },
+        { {}, "b", function(self) show_battery() self:stop() end },
+        { { modkey }, "b", function(self) show_battery() self:stop() end },
       },
     })
   end, { description = "information", group = "scripts" }),

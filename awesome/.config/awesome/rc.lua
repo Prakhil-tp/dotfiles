@@ -98,7 +98,8 @@ client.connect_signal("manage", function(c)
   end
 end)
 
--- window on focus
+-- Constant border width on every window (so focus changes never shift content);
+-- only the color changes: accent when focused, transparent when not.
 client.connect_signal("focus", function(c)
   c.border_color = beautiful.border_focus
 end)
