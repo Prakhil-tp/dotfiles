@@ -3,5 +3,5 @@ Description=LLM system health check
 
 [Service]
 Type=oneshot
-TimeoutStartSec=30
+TimeoutStartSec=60
 ExecStart=%h/.local/bin/llm-syscheck

@@ -1,48 +1,54 @@
 conky.config = {
   background = true,
   double_buffer = true,
-  update_interval = 120,
+  update_interval = 30,
 
   alignment = 'bottom_left',
-  gap_x = 20,
-  gap_y = 20,
+  gap_x = 24,
+  gap_y = 24,
 
-  minimum_width = 380,
-  maximum_width = 380,
+  minimum_width = 300,
+  maximum_width = 300,
+  minimum_height = 0,
 
-  border_inner_margin = 12,
-  border_outer_margin = 5,
+  border_inner_margin = 18,
+  border_outer_margin = 0,
   border_width = 0,
   draw_borders = false,
   draw_shades = false,
   draw_outline = false,
 
-  font = 'Hack NF:size=11',
-  max_text_width = 360,
+  font = 'Hack NF:size=10',
+  text_buffer_size = 4096,
+  max_text_width = 394,
 
+  -- window is fully transparent; the rounded card is drawn by draw-bg.lua
   own_window = true,
-  own_window_argb_value = 200,
+  own_window_argb_value = 0,
   own_window_argb_visual = true,
   own_window_class = 'Conky',
-  own_window_colour = '#1e1e2e',
   own_window_transparent = false,
   own_window_title = 'ai_insights',
   own_window_type = 'desktop',
   own_window_hints = 'undecorated,below,sticky,skip_taskbar,skip_pager',
-  own_window_hints = 'undecorated,below,sticky,skip_taskbar,skip_pager',
+
+  lua_load = '/home/blue/.config/conky/draw-bg.lua',
+  lua_draw_hook_pre = 'draw_bg',
 
   use_xft = true,
   xftalpha = 1,
 
-  color0 = '#89b4fa',
-  color1 = '#a6e3a1',
-  color2 = '#cdd6f4',
-  color3 = '#f38ba8',
-  color4 = '#6c7086',
+  -- Catppuccin Mocha
+  color0 = '#89b4fa',  -- blue    (accent)
+  color1 = '#a6e3a1',  -- green   (healthy)
+  color2 = '#cdd6f4',  -- text
+  color3 = '#f38ba8',  -- red     (alert)
+  color4 = '#45475a',  -- surface (empty bar / rules)
+  color5 = '#cba6f7',  -- mauve   (section headers)
+  color6 = '#fab387',  -- peach   (warm)
 };
 
 conky.text = [[
-${color0}${font Hack NF:bold:size=11}System Status${font}${color}
-${color4}${hr 2}${color}
-${color1}${font Hack NF:size=10}${cat /home/blue/.cache/llm-insights.txt}${font}${color}
+${voffset 2}  ${color0}●${color5}${font Hack NF:bold:size=12} System Status${font}${color}
+${voffset 8}${font Hack NF:size=10}${execp /home/blue/.local/bin/syscheck-panel}${font}
 ]];
