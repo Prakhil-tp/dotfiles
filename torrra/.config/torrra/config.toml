@@ -6,9 +6,9 @@ download_in_external_client = false
 use_transmission = true
 transmission_user = ""
 transmission_pass = ""
-theme = "textual-dark"
-timeout = 60
-max_retries = 1
+theme = "textual-ansi"
+timeout = 120
+max_retries = 2
 use_cache = true
 cache_ttl = 300
 

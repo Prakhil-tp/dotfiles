@@ -19,7 +19,7 @@ catppuccin.setup(c, 'mocha', True)
 
 
 c.backend = "webengine"
-c.downloads.location.directory = "/home/blue/Downloads"
+c.downloads.location.directory = "/home/blue/downloads"
 c.statusbar.show = "in-mode"
 c.tabs.show = "always"
 c.url.default_page = "https://start.duckduckgo.com/"
