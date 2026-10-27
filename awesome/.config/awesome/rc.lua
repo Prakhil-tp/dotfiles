@@ -141,7 +141,7 @@ local state_file = state_dir .. "/awesome/tag_layouts.txt"
 
 local function save_tag_layouts()
   local lines = {}
-  for _, s in ipairs(screen) do
+  for s in screen do
     for _, t in ipairs(s.tags) do
       local idx = 0
       for i, l in ipairs(awful.layout.layouts) do
@@ -177,7 +177,7 @@ local function restore_tag_layouts()
     end
   end
   f:close()
-  for _, s in ipairs(screen) do
+  for s in screen do
     for _, t in ipairs(s.tags) do
       local idx = saved[s.index .. "|" .. t.name]
       if idx then
