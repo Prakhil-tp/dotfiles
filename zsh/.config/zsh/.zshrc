@@ -243,9 +243,6 @@ alias agent=gemini
 # User binary paths: opencode, node (asdf), Go (`go install` → ~/go/bin)
 export PATH="$XDG_DATA_HOME/opencode/install/bin:/home/blue/.local/share/asdf/installs/nodejs/25.9.0/bin:$HOME/go/bin:$PATH"
 
-# opencode
-export PATH=/home/blue/.opencode/bin:$PATH
-
 # Flutter / Android SDK (JDK 17 for Gradle; system default Java untouched)
 export JAVA_HOME=/usr/lib/jvm/java-17-openjdk
 export ANDROID_HOME="$HOME/Android/Sdk"

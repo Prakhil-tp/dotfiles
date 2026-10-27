@@ -93,3 +93,7 @@ export ERRFILE="$XDG_CACHE_HOME/X11/xsession-errors"
 
 # misc
 export VIMINFO_FILE="$XDG_STATE_HOME/vim/viminfo"
+export GRADLE_USER_HOME="$XDG_DATA_HOME/gradle"
+export PUB_CACHE="$XDG_DATA_HOME/pub-cache"
+export W3M_DIR="$XDG_STATE_HOME/w3m"
+export HERMES_HOME="$XDG_DATA_HOME/hermes"

@@ -16,3 +16,6 @@ autostart = true
 
 [theme]
 name = "catppuccin"
+
+[logs]
+dir = "/home/blue/.local/state/atuin/logs"
