@@ -18,4 +18,4 @@ autostart = true
 name = "catppuccin"
 
 [logs]
-dir = "/home/blue/.local/state/atuin/logs"
+dir = "~/.local/state/atuin/logs"

@@ -1,3 +1,5 @@
+from pathlib import Path
+
 # import dracula.draw
 import catppuccin
 import keybindings
@@ -19,13 +21,13 @@ catppuccin.setup(c, 'mocha', True)
 
 
 c.backend = "webengine"
-c.downloads.location.directory = "/home/blue/downloads"
+c.downloads.location.directory = str(Path.home() / "downloads")
 c.statusbar.show = "in-mode"
 c.tabs.show = "always"
 c.url.default_page = "https://start.duckduckgo.com/"
 c.scrolling.smooth = True
 c.content.blocking.method = "both"
-c.url.start_pages = "/home/blue/.config/qutebrowser/tabliss/index.html"
+c.url.start_pages = str(config.configdir / "tabliss" / "index.html")
 c.url.default_page = c.url.start_pages
 
 # search engines

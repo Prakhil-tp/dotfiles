@@ -241,7 +241,7 @@ alias agent=gemini
 [[ -f "$ZDOTDIR/secrets.zsh" ]] && source "$ZDOTDIR/secrets.zsh"
 
 # User binary paths: opencode, node (asdf), Go (`go install` → ~/go/bin)
-export PATH="$XDG_DATA_HOME/opencode/install/bin:/home/blue/.local/share/asdf/installs/nodejs/25.9.0/bin:$HOME/go/bin:$PATH"
+export PATH="$XDG_DATA_HOME/opencode/install/bin:${ASDF_DATA_DIR:-$XDG_DATA_HOME/asdf}/installs/nodejs/25.9.0/bin:$HOME/go/bin:$PATH"
 
 # `opencode upgrade` ignores OPENCODE_INSTALL_DIR and installs to ~/.opencode/bin;
 # move the new binary back into the XDG install dir afterwards

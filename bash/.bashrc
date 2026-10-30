@@ -1,4 +1,4 @@
-export PATH="/home/blue/.local/share/asdf/shims:$PATH"
+export PATH="${ASDF_DATA_DIR:-$HOME/.local/share/asdf}/shims:$PATH"
 #
 # ~/.bashrc
 #

@@ -4,9 +4,9 @@ set realname = "Prakhil"
 set from = "prakhil@prakhil.xyz"
 set sendmail = "msmtp -a prakhil@prakhil.xyz"
 alias me prakhil <prakhil@prakhil.xyz>
-set folder = "/home/prakhil/.local/share/mail/prakhil@prakhil.xyz"
-set header_cache = /home/prakhil/.cache/mutt-wizard/prakhil@prakhil.xyz/headers
-set message_cachedir = /home/prakhil/.cache/mutt-wizard/prakhil@prakhil.xyz/bodies
+set folder = "~/.local/share/mail/prakhil@prakhil.xyz"
+set header_cache = ~/.cache/mutt-wizard/prakhil@prakhil.xyz/headers
+set message_cachedir = ~/.cache/mutt-wizard/prakhil@prakhil.xyz/bodies
 set mbox_type = Maildir
 set hostname = "prakhil.xyz"
 source /usr/local/share/mutt-wizard/switch.muttrc

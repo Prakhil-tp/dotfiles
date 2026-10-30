@@ -3,7 +3,7 @@ Description=Prowlarr API proxy (patches responses for torrra compat)
 After=network-online.target prowlarr.service
 
 [Service]
-ExecStart=/usr/bin/python3 /home/blue/scripts/prowlarr-proxy.py
+ExecStart=/usr/bin/python3 %h/scripts/prowlarr-proxy.py
 Restart=on-failure
 RestartSec=5
 

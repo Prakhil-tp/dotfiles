@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-source "/home/prakhil/scripts/dm-websearch/_dm-helper.sh"
-source "/home/prakhil/scripts/dm-websearch/config"
+source "$HOME/scripts/dm-websearch/_dm-helper.sh"
+source "$HOME/scripts/dm-websearch/config"
 
 
 main() {

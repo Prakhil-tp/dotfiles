@@ -6,11 +6,11 @@ StartLimitIntervalSec=0
 
 [Service]
 Type=simple
-ExecStart=/home/blue/.local/share/hermes/hermes-agent/venv/bin/python -m hermes_cli.main gateway run --replace
-WorkingDirectory=/home/blue/.local/share/hermes/hermes-agent
-Environment="PATH=/home/blue/.local/share/hermes/hermes-agent/venv/bin:/home/blue/.local/share/hermes/hermes-agent/node_modules/.bin:/home/blue/.local/share/asdf/shims:/home/blue/.local/bin:/home/blue/.cargo/bin:/home/blue/go/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-Environment="VIRTUAL_ENV=/home/blue/.local/share/hermes/hermes-agent/venv"
-Environment="HERMES_HOME=/home/blue/.local/share/hermes"
+ExecStart=%h/.local/share/hermes/hermes-agent/venv/bin/python -m hermes_cli.main gateway run --replace
+WorkingDirectory=%h/.local/share/hermes/hermes-agent
+Environment="PATH=%h/.local/share/hermes/hermes-agent/venv/bin:%h/.local/share/hermes/hermes-agent/node_modules/.bin:%h/.local/share/asdf/shims:%h/.local/bin:%h/.local/share/cargo/bin:%h/go/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+Environment="VIRTUAL_ENV=%h/.local/share/hermes/hermes-agent/venv"
+Environment="HERMES_HOME=%h/.local/share/hermes"
 Restart=always
 RestartSec=5
 RestartMaxDelaySec=300

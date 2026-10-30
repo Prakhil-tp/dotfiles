@@ -449,7 +449,7 @@ myStartupHook = do
 
 main :: IO()
 main = do
-    --xmproc <- spawnPipe "xmobar /home/prakhil/.config/xmobar/xmobarrc"
+    --xmproc <- spawnPipe "xmobar ~/.config/xmobar/xmobarrc"
 
     -- xmonad settings
     xmonad $ ewmh def {

@@ -32,7 +32,7 @@ conky.config = {
   own_window_type = 'desktop',
   own_window_hints = 'undecorated,below,sticky,skip_taskbar,skip_pager',
 
-  lua_load = '/home/blue/.config/conky/draw-bg.lua',
+  lua_load = os.getenv('HOME') .. '/.config/conky/draw-bg.lua',
   lua_draw_hook_pre = 'draw_bg',
 
   use_xft = true,
@@ -50,5 +50,5 @@ conky.config = {
 
 conky.text = [[
 ${voffset 2}  ${color0}●${color5}${font Hack NF:bold:size=12} System Status${font}${color}
-${voffset 8}${font Hack NF:size=10}${execp /home/blue/.local/bin/syscheck-panel}${font}
+${voffset 8}${font Hack NF:size=10}${execp ~/.local/bin/syscheck-panel}${font}
 ]];
