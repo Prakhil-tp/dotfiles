@@ -1,17 +1,37 @@
-#Pacman                        #AUR                                    #Manual
-earlyoom                     stress-ng                               anti-freeze/install.sh (stow package)
+Package lists for the bootstrap installer
+=========================================
 
-lxappearance                    yt-dlp                                  asdf
-conky                           networkmanager-openvpn
-xdotool
-htop
-neomutt
-youtube-dl
-dnsutils
-clipmenu
-flameshot
-zathura
-zathura-cb
-zathura-pdf-mupdf
-zathura-djvu
-zathura-ps
+The authoritative lists live in:
+
+  bootstrap/packages.pacman   official repo packages (217 entries)
+  bootstrap/packages.aur      AUR packages (26 entries, yay excluded)
+  bootstrap/services.system   system services to enable (21)
+  bootstrap/services.user     user services/timers to enable (12)
+
+Regenerate the lists from the current system with:
+
+  pacman -Qqe > bootstrap/packages.pacman
+  pacman -Qqem > bootstrap/packages.aur
+
+Review both files before running bootstrap/install.sh. The installer filters
+packages that are unavailable in the enabled repositories and warns instead
+of aborting.
+
+Manual / installer-managed steps
+--------------------------------
+
+- yay                 bootstrapped by bootstrap/install.sh from the AUR
+- anti-freeze         built/installed by anti-freeze/install.sh
+- dual-function-keys  built from https://gitlab.com/interception/linux/plugins/dual-function-keys.git
+- asdf runtimes       installed by bootstrap/install.sh (see bootstrap/install.sh)
+- opencode npm deps   npm install --no-package-lock in ~/.config/opencode
+- unimatrix           copied from system/usr/local/bin/unimatrix
+
+Not replicated automatically
+----------------------------
+
+- /etc/fstab, GRUB config, /etc/mkinitcpio.conf
+- SSH keys, GPG keys, browser profiles
+- Wallpapers, mail, personal media
+- Hostname, machine-specific hardware tuning
+- Secrets: use ~/.config/zsh/secrets.zsh (template: secrets.zsh.example)

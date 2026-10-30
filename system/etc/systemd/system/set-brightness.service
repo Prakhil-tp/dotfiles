@@ -1,0 +1,11 @@
+[Unit]
+Description=Set default screen brightness
+After=multi-user.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/brightnessctl set 50%
+
+[Install]
+WantedBy=multi-user.target
+

@@ -8,6 +8,35 @@
 
 Configuration files  to customize Linux or unix-like systems. 
 
+## Bootstrap (fresh Arch install)
+
+The `bootstrap/install.sh` script recreates the full Arch Linux setup:
+
+```sh
+git clone https://github.com/Prakhil-tp/dotfiles.git ~/dotfiles
+cd ~/dotfiles
+./bootstrap/install.sh --help
+./bootstrap/install.sh --yes
+```
+
+It installs official repo packages from `bootstrap/packages.pacman`, AUR packages from `bootstrap/packages.aur`, copies `system/` into `/etc` and `/usr/local`, stows the home configuration, enables services, and installs optional runtimes.
+
+Useful flags:
+
+```text
+--dry-run        print commands without running them
+--skip-packages  skip official packages and the system upgrade
+--skip-upgrade   skip only the full system upgrade
+--skip-aur       skip AUR packages and yay bootstrap
+--skip-system    skip /etc and /usr/local configuration
+--skip-stow      skip stow-managed home configuration
+--skip-services  skip enabling systemd services
+--skip-apps      skip optional application builds
+--skip-runtimes  skip asdf/npm runtimes
+```
+
+Before running, review `bootstrap/packages.*`, `bootstrap/services.*`, and `system/`. The installer does **not** copy hardware- or machine-specific data such as `/etc/fstab`, GRUB configuration, `mkinitcpio.conf`, SSH keys, browser profiles, wallpapers, or the hostname. Secrets belong in `~/.config/zsh/secrets.zsh`, seeded from `zsh/.config/zsh/secrets.zsh.example`.
+
 ## Configs
 
 - [Alacritty](https://github.com/Prakhil-tp/dotfiles/tree/master/alacritty/.config/alacritty)
@@ -58,12 +87,24 @@ Configuration files  to customize Linux or unix-like systems.
 
 ## How to use
 
-1. Clone the repository to home directory
-2. Let the `stow` to do the job. (stow will create corresponding config symlinks in appropriate directories.)
+### Full bootstrap
 
-``` sh
+```sh
+git clone https://github.com/Prakhil-tp/dotfiles.git ~/dotfiles
+cd ~/dotfiles
+./bootstrap/install.sh --yes
+```
+
+### Manual stow
+
+1. Clone the repository to your home directory.
+2. Use `stow` to create symlinks for individual configs.
+
+```sh
 git clone https://github.com/Prakhil-tp/dotfiles.git
 cd ./dotfiles
-stow <directory-name>      #  add a particular config. example: $ stow alacritty
+stow <directory-name>      # add a particular config, e.g. stow alacritty
 ```
+
+Review `HANDOFF.md` for the current bootstrap status, known issues, and test instructions.
 

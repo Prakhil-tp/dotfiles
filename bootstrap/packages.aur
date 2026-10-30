@@ -1,0 +1,29 @@
+# AUR packages (explicit) from pacman -Qemq on the source machine.
+# yay is bootstrapped separately by install.sh and is intentionally omitted here.
+# Regenerate with: pacman -Qemq | sort
+anydesk-bin
+asdf-vm
+cloudflare-warp-bin
+flaresolverr
+gnu-netcat
+jackett-bin
+keynav
+lightdm-webkit2-theme-glorious
+lightdm-webkit-theme-aether
+minecraft-launcher
+mongodb-bin
+postman-bin
+prowlarr
+python-pywal16
+radarr-bin
+simplenote-electron-bin
+sonarr
+spotify
+surf
+tabview-git
+thorium-browser-bin
+torrra-bin
+tty-clock
+ventoy-bin
+youtube-tui
+yt-x

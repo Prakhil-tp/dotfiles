@@ -1,0 +1,13 @@
+# User services and timers enabled on the source machine.
+battery-monitor.timer
+gcr-ssh-agent.socket
+gnome-keyring-daemon.socket
+koboldcpp.service
+llm-syscheck.timer
+p11-kit-server.socket
+pipewire-pulse.socket
+pipewire.socket
+prowlarr-proxy.service
+wiki-sync.timer
+wireplumber.service
+xdg-user-dirs.service

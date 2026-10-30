@@ -1,0 +1,2 @@
+SUBSYSTEM=="power_supply", KERNEL=="ACAD", ATTR{online}=="1", RUN+="/usr/local/bin/battery-ac-notify 1"
+SUBSYSTEM=="power_supply", KERNEL=="ACAD", ATTR{online}=="0", RUN+="/usr/local/bin/battery-ac-notify 0"

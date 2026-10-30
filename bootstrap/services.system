@@ -1,0 +1,22 @@
+# System services enabled on the source machine.
+bluetooth.service
+docker.service
+docker.socket
+earlyoom.service
+flaresolverr.service
+jellyfin.service
+lightdm.service
+NetworkManager.service
+NetworkManager-dispatcher.service
+prowlarr.service
+radarr.service
+set-brightness.service
+sonarr.service
+systemd-oomd.service
+systemd-oomd.socket
+systemd-timesyncd.service
+transmission.service
+udevmon.service
+unbound.service
+warp-svc.service
+zram-swap.service
