@@ -1,0 +1,84 @@
+#!/bin/bash
+set -uo pipefail
+#
+# Hourly job (systemd timer): gathers system stats, sends them to the local LLM,
+# and caches a ONE-sentence health summary for the conky "System Status" panel.
+# The panel (syscheck-panel) reads this cache. Kept separate because the LLM
+# call is slow and shouldn't gate the live dashboard refresh.
+
+# ---- Config (override via env) --------------------------------------------
+# Endpoint defaults to loopback: system stats sent to the LLM, keep it local.
+: "${LLM_URL:=http://127.0.0.1:5001/api/v1/generate}"
+: "${LLM_TIP_OUT:=$HOME/.cache/llm-tip.txt}"
+: "${COUNTS_OUT:=$HOME/.cache/syscheck-counts}"   # slow counts for syscheck-panel
+: "${LLM_DEBUG:=}"                 # set to a file path to log raw request/response
+: "${LLM_MAX_LENGTH:=140}"
+: "${LLM_TEMP:=0.3}"
+
+log(){ [ -n "$LLM_DEBUG" ] && printf '%s\n' "$*" >>"$LLM_DEBUG"; }
+
+# ---- gather system stats -----------------------------------------------------
+pct(){ df --output=pcent "$1" 2>/dev/null | tail -1 | tr -dc '0-9'; }
+ROOT=$(pct /); HOME_=$(pct /home)
+
+FAILED=$(systemctl --failed --no-legend 2>/dev/null | grep -c .)
+UPDATES=$(pacman -Qu 2>/dev/null | grep -c .)
+
+NERR=$(journalctl -p 3 -o cat --since "2 hours ago" --no-pager 2>/dev/null \
+  | grep -vE 'Hands-Free Voice gateway|ext_io_disconnected' | grep -c .)
+
+read -r L1 _ _ _ < /proc/loadavg
+NCPU=$(nproc)
+read -r UPTIME_S _ < /proc/uptime; UPTIME_S=${UPTIME_S%.*}
+UPTIME_H=$((UPTIME_S / 3600))
+UPTIME_M=$(( (UPTIME_S % 3600) / 60 ))
+
+read -r SWAP_TOT SWAP_FREE < <(awk '/SwapTotal/{t=$2} /SwapFree/{f=$2} END{print t+0,f+0}' /proc/meminfo)
+SWAP_PCT=0
+(( SWAP_TOT > 0 )) && SWAP_PCT=$(( (SWAP_TOT - SWAP_FREE) * 100 / SWAP_TOT ))
+
+WIFI_QUAL=0
+if command -v iwconfig &>/dev/null; then
+  read -r WIFI_NUM WIFI_DEN < <(iwconfig 2>/dev/null | awk '/Link Quality/{split($2,a,"="); split(a[2],b,"/"); print b[1], b[2]}')
+  if [ -n "$WIFI_DEN" ] && [ "$WIFI_DEN" -gt 0 ] 2>/dev/null; then
+    WIFI_QUAL=$(( WIFI_NUM * 100 / WIFI_DEN ))
+  fi
+fi
+
+DNS_OK=0
+systemctl -q is-active unbound 2>/dev/null && ss -tuln 'sport = :53' 2>/dev/null | grep -q :53 && DNS_OK=1
+
+# ---- build prompt for LLM ----------------------------------------------------
+SVC="$([ "$FAILED" -gt 0 ] && echo 'FAILED' || echo 'OK')"
+DNS_S="$([ "$DNS_OK" -eq 1 ] && echo 'OK' || echo 'DOWN')"
+FLATUPD=$(flatpak remote-ls --updates 2>/dev/null | wc -l)
+
+# Cache the slow counts so syscheck-panel (runs every 30s, blocks conky) can
+# read them instead of shelling out to pacman -Qu / flatpak on every redraw.
+printf '%s %s\n' "$UPDATES" "$FLATUPD" > "$COUNTS_OUT"
+
+LFLAG=$([ "$(awk -v l="$L1" -v n="$NCPU" 'BEGIN{print (l/n>0.7)}')" = 1 ] && echo 'HIGH' || echo 'ok')
+SWAP_FLAG=$([ "$SWAP_PCT" -ge 80 ] && echo 'CRITICAL' || echo 'ok')
+UPD_FLAG=$([ "$UPDATES" -gt 50 ] && echo 'many' || echo 'few')
+
+STATS=$(printf 'disk: / %s%%(ok) /home %s%%(ok) | load: %.2f/%d(%s) | swap: %s%%(%s) | wifi: %s%%(ok) | up: %dh %dm | svc: %s | updates: %d(%s) | dns: %s | journal-errs: %d(ok)' \
+  "$ROOT" "$HOME_" "$L1" "$NCPU" "$LFLAG" "$SWAP_PCT" "$SWAP_FLAG" "$WIFI_QUAL" \
+  "$UPTIME_H" "$UPTIME_M" "$SVC" "$UPDATES" "$UPD_FLAG" "$DNS_S" "$NERR")
+
+PROMPT=$(printf 'From these stats, what ONE action should I take?\n%s\n\nReply with only the action, no explanation: e.g. "run pacman -Syu", "check what is swapping so heavily", "service X needs restart". If all is fine say "nothing to do".' "$STATS")
+PAYLOAD=$(jq -n -r --arg p "$PROMPT" --argjson m "$LLM_MAX_LENGTH" --argjson t "$LLM_TEMP" \
+  '{prompt:$p, max_context_length:2048, max_length:$m, temperature:$t, rep_pen:1.1}')
+log "REQUEST: $PAYLOAD"
+
+RESULT=$(curl -s --max-time 25 "$LLM_URL" -H "Content-Type: application/json" -d "$PAYLOAD" 2>/dev/null)
+log "RESPONSE: $RESULT"
+
+CAND=$(printf '%s' "$RESULT" | jq -r '.results[0].text // empty' 2>/dev/null \
+  | head -1 | tr -d '${}' | cut -c1-80)
+
+if [ -n "$CAND" ]; then
+  printf '%s\n' "$CAND" > "$LLM_TIP_OUT"
+else
+  printf 'disk %s%% / %s%% ~ | swap %s%% | %s updates | %dh %dm up\n' \
+    "$ROOT" "$HOME_" "$SWAP_PCT" "$UPDATES" "$UPTIME_H" "$UPTIME_M" > "$LLM_TIP_OUT"
+fi

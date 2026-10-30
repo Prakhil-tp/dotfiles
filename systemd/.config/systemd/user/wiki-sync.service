@@ -1,0 +1,10 @@
+[Unit]
+Description=Sync vimwiki notes with git remote
+# Pointless to run while offline; the timer will come back around.
+After=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=%h/scripts/wiki-sync
+# Keep a stuck network call from pinning the lock the editor also needs.
+TimeoutStartSec=120

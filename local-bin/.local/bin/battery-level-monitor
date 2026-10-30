@@ -1,0 +1,38 @@
+#!/bin/bash
+# Run by systemd user timer — notifies on low battery and full charge
+
+BATTERY_PATH="/sys/class/power_supply/BATT"
+AC_PATH="/sys/class/power_supply/ACAD"
+STATE_FILE="${XDG_RUNTIME_DIR:-/tmp}/battery-level-state"
+
+CAPACITY=$(cat "${BATTERY_PATH}/capacity" 2>/dev/null)
+AC_ONLINE=$(cat "${AC_PATH}/online" 2>/dev/null)
+
+[[ -z "$CAPACITY" ]] && exit 0
+
+PREV_LOW_NOTIFIED=0
+PREV_FULL_NOTIFIED=0
+[[ -f "$STATE_FILE" ]] && source "$STATE_FILE"
+
+# Battery critically low (≤ 10%, unplugged)
+if [[ "$CAPACITY" -le 10 && "$AC_ONLINE" == "0" && "$PREV_LOW_NOTIFIED" -ne 2 ]]; then
+    notify-send -u critical -i "battery-empty" "Battery Critical!" "Battery at ${CAPACITY}% — plug in NOW"
+    PREV_LOW_NOTIFIED=2
+# Battery low (≤ 20%, unplugged, not yet warned)
+elif [[ "$CAPACITY" -le 20 && "$AC_ONLINE" == "0" && "$PREV_LOW_NOTIFIED" -eq 0 ]]; then
+    notify-send -u critical -i "battery-low" "Battery Low" "Battery at ${CAPACITY}% — plug in your charger"
+    PREV_LOW_NOTIFIED=1
+elif [[ "$CAPACITY" -gt 20 || "$AC_ONLINE" == "1" ]]; then
+    PREV_LOW_NOTIFIED=0
+fi
+
+# Battery full (≥ 95%, plugged in)
+if [[ "$CAPACITY" -ge 95 && "$AC_ONLINE" == "1" && "$PREV_FULL_NOTIFIED" -eq 0 ]]; then
+    notify-send -u normal -i "battery-full" "Battery Full" "Battery at ${CAPACITY}% — you can unplug"
+    PREV_FULL_NOTIFIED=1
+elif [[ "$CAPACITY" -lt 95 || "$AC_ONLINE" == "0" ]]; then
+    PREV_FULL_NOTIFIED=0
+fi
+
+printf 'PREV_LOW_NOTIFIED=%d\nPREV_FULL_NOTIFIED=%d\n' \
+    "$PREV_LOW_NOTIFIED" "$PREV_FULL_NOTIFIED" > "$STATE_FILE"

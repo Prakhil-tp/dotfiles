@@ -1,0 +1,11 @@
+! Grovebox (Gruvbox Dark) X resources for dmenu
+! Primary accent: neutral_yellow #d79921
+dmenu.background: #282828
+dmenu.foreground: #ebdbb2
+dmenu.selbackground: #d79921
+dmenu.selforeground: #282828
+dmenu.outbackground: #282828
+dmenu.outforeground: #928374
+dmenu.highlightbackground: #282828
+dmenu.highlightforeground: #fabd2f
+dmenu.font: JetBrainsMono Nerd Font:size=12

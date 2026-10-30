@@ -1,0 +1,29 @@
+#!/bin/bash
+# Called by udev when ACAD adapter state changes
+# Arg $1: "1" = connected, "0" = disconnected
+
+USERNAME="${NOTIFY_USER:-$(getent passwd | awk -F: '$3 >= 1000 && $3 < 65534 { print $1; exit }')}"
+USER_ID="$(id -u "$USERNAME" 2>/dev/null || true)"
+AC_STATUS="$1"
+
+[[ -n "$USER_ID" ]] || exit 0
+
+BATTERY_PATH="/sys/class/power_supply/BATT"
+CAPACITY=$(cat "${BATTERY_PATH}/capacity" 2>/dev/null || echo "?")
+
+if [[ "$AC_STATUS" == "1" ]]; then
+    TITLE="Charger Connected"
+    MSG="AC adapter plugged in — ${CAPACITY}% battery"
+    ICON="battery-good"
+    URGENCY="normal"
+else
+    TITLE="Charger Disconnected"
+    MSG="Running on battery — ${CAPACITY}% remaining"
+    ICON="battery-caution"
+    URGENCY="normal"
+fi
+
+sudo -u "$USERNAME" \
+    DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/${USER_ID}/bus" \
+    XDG_RUNTIME_DIR="/run/user/${USER_ID}" \
+    /usr/bin/notify-send -u "$URGENCY" -i "$ICON" "$TITLE" "$MSG"

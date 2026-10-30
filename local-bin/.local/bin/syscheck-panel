@@ -1,0 +1,142 @@
+#!/bin/bash
+set -uo pipefail
+#
+# Renders the "System Status" dashboard body for conky (ai-insights.conkyrc).
+# Fast + deterministic - conky runs this every ~30s via ${execp}. The slow,
+# LLM-generated alias tip is produced hourly by llm-syscheck and read from cache.
+# CPU temp / memory are intentionally omitted (shown in another conky).
+
+TIPCACHE="${XDG_CACHE_HOME:-$HOME/.cache}/llm-tip.txt"
+
+# ---- conky color markup (palette defined in ai-insights.conkyrc) ----------
+R='${color3}'   # red    - hot / alert
+G='${color1}'   # green  - healthy
+TX='${color2}'  # text
+GY='${color4}'  # surface - empty bar / rules / muted
+B='${color0}'   # blue   - accent
+M='${color5}'   # mauve  - section headers
+P='${color6}'   # peach  - warm
+X='${color}'    # reset
+
+# health color: green < 70% of warn, peach up to warn, red at/over warn
+hcol(){ local v=$1 w=$2
+  if   (( v >= w ));         then printf '%s' "$R"
+  elif (( v*100 >= w*70 ));  then printf '%s' "$P"
+  else                            printf '%s' "$G"; fi; }
+
+# a 10-cell unicode bar, filled portion colored by health, empty in surface
+bar(){ local v=$1 max=$2 warn=$3 cells=10 i f c out
+  f=$(( (v*cells + max/2) / max )); (( f>cells )) && f=cells; (( f<0 )) && f=0
+  c=$(hcol "$v" "$warn"); out="$c"
+  for ((i=0;i<f;i++));      do out+='▉'; done
+  out+="$GY"
+  for ((i=f;i<cells;i++));  do out+='░'; done
+  out+="$X"; printf '%s' "$out"; }
+
+# Columns are placed at fixed PIXEL offsets with conky's ${goto}, so they align
+# in any font (proportional or monospace) no matter how wide each label renders.
+#   BARCOL = where bars start   VALCOL = where every value lines up
+BARCOL=88
+VALCOL=182
+
+# simple label + value row (value carries its own color markup)
+kv(){ printf '  %s%s%s${goto %s}%s\n' "$TX" "$1" "$X" "$VALCOL" "$2"; }
+
+# bar row: label, then bar (at BARCOL) and value+unit/⚠ (at VALCOL, aligned with kv)
+row(){ local label=$1 v=${2:-0} warn=$3 unit=$4 c mark=''
+  [ -z "$v" ] && v=0
+  c=$(hcol "$v" "$warn")
+  [ "$unit" = '%' ] && (( v >= warn )) && mark=" ${R}⚠${X}"
+  printf '  %s%s%s${goto %s}%s${goto %s}%s%s%s%s%s\n' \
+    "$TX" "$label" "$X" "$BARCOL" "$(bar "$v" 100 "$warn")" "$VALCOL" "$c" "$v" "$unit" "$X" "$mark"; }
+
+# ---- gather live stats -----------------------------------------------------
+pct(){ df --output=pcent "$1" 2>/dev/null | tail -1 | tr -dc '0-9'; }
+ROOT=$(pct /); HOME_=$(pct /home)
+
+FAILED=$(( $(systemctl --failed --no-legend 2>/dev/null | grep -c .) \
+         + $(systemctl --user --failed --no-legend 2>/dev/null | grep -c .) ))
+
+# Slow counts (pacman -Qu, flatpak) are refreshed hourly by llm-syscheck and
+# cached here - reading a file keeps the 30s redraw off the network/db.
+COUNTS="${XDG_CACHE_HOME:-$HOME/.cache}/syscheck-counts"
+UPDATES='…'; FLATUPD=0
+[ -f "$COUNTS" ] && read -r UPDATES FLATUPD < "$COUNTS"
+: "${FLATUPD:=0}"
+
+ERRS=$(journalctl -p 3 -o cat --since "2 hours ago" --no-pager 2>/dev/null \
+  | grep -vE 'Hands-Free Voice gateway|ext_io_disconnected')
+NERR=$(printf '%s' "$ERRS" | grep -c .)
+
+# ---- extended stats (load, proc, uptime) -----------------------------------
+read -r L1 L5 L15 _ < /proc/loadavg
+NCPU=$(nproc)
+read -r UPTIME_S _ < /proc/uptime; UPTIME_S=${UPTIME_S%.*}
+UPTIME_H=$((UPTIME_S / 3600))
+UPTIME_M=$(( (UPTIME_S % 3600) / 60 ))
+PROC_TOT=$(ps --no-headers -eo pid 2>/dev/null | wc -l)
+ZOMBIE=$(ps --no-headers -eo s 2>/dev/null | grep -c '^Z')
+
+# ---- health stats (swap, wifi, dns) ----------------------------------------
+read -r SWAP_TOT SWAP_FREE < <(awk '/SwapTotal/{t=$2} /SwapFree/{f=$2} END{print t+0,f+0}' /proc/meminfo)
+SWAP_PCT=0
+(( SWAP_TOT > 0 )) && SWAP_PCT=$(( (SWAP_TOT - SWAP_FREE) * 100 / SWAP_TOT ))
+
+WIFI_QUAL=0
+if command -v iwconfig &>/dev/null; then
+  read -r WIFI_NUM WIFI_DEN < <(iwconfig 2>/dev/null | awk '/Link Quality/{split($2,a,"="); split(a[2],b,"/"); print b[1], b[2]}')
+  if [ -n "$WIFI_DEN" ] && [ "$WIFI_DEN" -gt 0 ] 2>/dev/null; then
+    WIFI_QUAL=$(( WIFI_NUM * 100 / WIFI_DEN ))
+  fi
+fi
+
+DNS_OK=0
+if systemctl -q is-active unbound 2>/dev/null; then
+  ss -tuln 'sport = :53' 2>/dev/null | grep -q :53 && DNS_OK=1
+fi
+
+TIP=$(cat "$TIPCACHE" 2>/dev/null | head -1)
+[ -z "$TIP" ] && TIP="gathering usage insights…"
+
+# ---- emit dashboard --------------------------------------------------------
+# Every data row goes through kv()/row(), so the second column lines up.
+
+printf ' %sSTORAGE%s %s${hr 1}%s\n' "$M" "$X" "$GY" "$X"
+row '/'    "$ROOT"  90 '%'
+row '~'    "$HOME_" 90 '%'
+printf '\n'
+
+printf ' %sSYSTEM%s %s${hr 1}%s\n' "$M" "$X" "$GY" "$X"
+if (( FAILED > 0 )); then kv 'service' "${R}✖ ${FAILED} failed${X}"
+else                      kv 'service' "${G}✔ OK${X}"; fi
+UPD="${B}󰚰${X} ${TX}${UPDATES}${X}"
+(( FLATUPD > 0 )) && UPD="$UPD  ${GY}·${X}  ${TX}${FLATUPD} flatpak${X}"
+kv 'updates' "$UPD"
+if (( NERR > 0 )); then kv 'errors' "${R}✖ ${NERR} in 2h${X}"
+else                    kv 'errors' "${G}✔ none (2h)${X}"; fi
+printf '\n'
+
+printf ' %sLOAD%s %s${hr 1}%s\n' "$M" "$X" "$GY" "$X"
+LPC=$(awk -v l="$L1" -v n="$NCPU" 'BEGIN{p=int(l*100/n); if(p>100)p=100; print p}')
+kv 'load'   "$(hcol "$LPC" 100)${L1}${X} ${P}${L5}${X} ${GY}${L15}${X}"
+ZC=$( ((ZOMBIE>0)) && echo "$R" || echo "$G")
+kv 'procs'  "${TX}${PROC_TOT}${X}  ${GY}·${X}  ${ZC}${ZOMBIE} zombie${X}"
+kv 'uptime' "${TX}${UPTIME_H}h ${UPTIME_M}m${X}"
+printf '\n'
+
+printf ' %sHEALTH%s %s${hr 1}%s\n' "$M" "$X" "$GY" "$X"
+row 'swap' "$SWAP_PCT" 80 '%'
+if (( WIFI_QUAL > 0 )); then
+  if (( WIFI_QUAL >= 65 )); then WC=$G; WT='good'
+  elif (( WIFI_QUAL >= 40 )); then WC=$P; WT='fair'
+  else WC=$R; WT='poor'
+  fi
+  kv 'wifi' "${WC}${WIFI_QUAL}%${X}  ${GY}${WT}${X}"
+else
+  kv 'wifi' "${GY}N/A${X}"
+fi
+if (( DNS_OK )); then kv 'dns' "${G}local${X}"
+else                 kv 'dns' "${R}down${X}"; fi
+printf '\n'
+
+printf '  %s󰅐 %s%s%s${alignr}%s%s%s\n' "$G" "$TX" "$TIP" "$X" "$GY" "$(date +%H:%M)" "$X"

@@ -1,0 +1,12 @@
+[Unit]
+Description=Periodic vimwiki notes sync
+
+[Timer]
+# Catches work stranded by a failed push (offline, VPN, suspend).
+OnBootSec=2min
+OnUnitActiveSec=15min
+# Fire after waking or after a missed window, rather than waiting a full period.
+Persistent=true
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,9 @@
+[Unit]
+Description=Battery level monitor timer
+
+[Timer]
+OnBootSec=60s
+OnUnitActiveSec=60s
+
+[Install]
+WantedBy=timers.target

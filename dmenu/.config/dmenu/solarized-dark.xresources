@@ -1,0 +1,11 @@
+! Solarized Dark X resources for dmenu
+! Primary accent: yellow #b58900
+dmenu.background: #002b36
+dmenu.foreground: #839496
+dmenu.selbackground: #b58900
+dmenu.selforeground: #002b36
+dmenu.outbackground: #002b36
+dmenu.outforeground: #586e75
+dmenu.highlightbackground: #002b36
+dmenu.highlightforeground: #cb4b16
+dmenu.font: JetBrainsMono Nerd Font:size=12

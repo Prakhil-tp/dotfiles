@@ -1,0 +1,11 @@
+#!/bin/bash
+# Close / reopen the "System Status" conky widget.
+# Bind to a key in awesome (see below) to toggle it on demand.
+CFG="$HOME/.config/conky/ai-insights.conkyrc"
+
+if pgrep -f 'conky.*ai-insights' >/dev/null 2>&1; then
+  pkill -f 'conky.*ai-insights'
+else
+  conky -c "$CFG" -d >/dev/null 2>&1 &
+  disown 2>/dev/null || true
+fi

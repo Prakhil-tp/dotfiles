@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+unset PYTHONPATH
+unset PYTHONHOME
+export HERMES_HOME="${HERMES_HOME:-$HOME/.local/share/hermes}"
+exec "$HERMES_HOME/hermes-agent/venv/bin/hermes" "$@"

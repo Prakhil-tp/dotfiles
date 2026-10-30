@@ -1,0 +1,11 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "opencode/deepseek-v4-flash-free",
+  "plugin": [
+    "./plugins/claude-mem.js",
+    "opencode-notify"
+  ],
+  "skills": {
+    "paths": ["~/.config/opencode/skills"]
+  }
+}
