@@ -35,7 +35,20 @@ Useful flags:
 --skip-runtimes  skip asdf/npm runtimes
 ```
 
-Before running, review `bootstrap/packages.*`, `bootstrap/services.*`, and `system/`. The installer does **not** copy hardware- or machine-specific data such as `/etc/fstab`, GRUB configuration, `mkinitcpio.conf`, SSH keys, browser profiles, wallpapers, or the hostname. Secrets belong in `~/.config/zsh/secrets.zsh`, seeded from `zsh/.config/zsh/secrets.zsh.example`.
+Before running, review `bootstrap/packages.*`, `bootstrap/services.*`, and `system/`. The installer does **not** copy hardware- or machine-specific data such as `/etc/fstab`, GRUB configuration, `mkinitcpio.conf`, SSH keys, browser profiles, wallpapers, or the hostname.
+
+## Secrets
+
+API keys are kept in [`pass`](https://www.passwordstore.org/), never in the repo. Before running the installer, make sure your password store is set up and contains:
+
+```sh
+pass insert api/jackett     # torrra Jackett indexer
+pass insert api/prowlarr    # torrra Prowlarr indexer
+pass insert api/wallhaven   # dm-scripts/scripts/wallhaven.sh
+```
+
+- **Torrra:** `torrra/.config/torrra/config.toml` is gitignored. The installer renders `~/.config/torrra/config.toml` (mode 600) from `config.toml.example` using the `api/jackett` and `api/prowlarr` entries. If pass is unavailable it warns and skips this step.
+- **Shell secrets:** `~/.config/zsh/secrets.zsh` is gitignored and seeded from `zsh/.config/zsh/secrets.zsh.example`. It exports `WALLHAVEN_API_KEY` from `pass show api/wallhaven`; add any other keys (e.g. `OPENROUTER_API_KEY`) there.
 
 ## Configs
 
@@ -106,5 +119,12 @@ cd ./dotfiles
 stow <directory-name>      # add a particular config, e.g. stow alacritty
 ```
 
-Review `HANDOFF.md` for the current bootstrap status, known issues, and test instructions.
+When stowing `torrra` manually, create the real config from the example yourself:
+
+```sh
+sed -e "s|@JACKETT_API_KEY@|$(pass show api/jackett)|" \
+    -e "s|@PROWLARR_API_KEY@|$(pass show api/prowlarr)|" \
+    torrra/.config/torrra/config.toml.example > ~/.config/torrra/config.toml
+chmod 600 ~/.config/torrra/config.toml
+```
 
