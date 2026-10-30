@@ -13,13 +13,43 @@ map p print
 
 set adjust-open "best-fit"
 
-# color scheme
-set default-bg                  "#073642" # base02
-set highlight-color             "#657b83" # base00  # hightlight match when search keyword(vim's /)
-set highlight-active-color      "#268bd2" # blue
+# color scheme (solarized dark, matches kitty/nvim/rofi)
+set notification-error-bg       "#002b36" # base03
+set notification-error-fg       "#dc322f" # red
+set notification-warning-bg     "#002b36" # base03
+set notification-warning-fg     "#b58900" # yellow
+set notification-bg             "#002b36" # base03
+set notification-fg             "#859900" # green
 
-# Recolor book content's color
-# set recolor                     true
-set recolor-lightcolor          "#073642" # base02
-set recolor-darkcolor           "#93a1a1" # base1
+set completion-bg               "#073642" # base02
+set completion-fg               "#839496" # base0
+set completion-group-bg         "#002b36" # base03
+set completion-group-fg         "#586e75" # base01
+set completion-highlight-bg     "#268bd2" # blue
+set completion-highlight-fg     "#002b36" # base03
+
+set index-bg                    "#073642" # base02
+set index-fg                    "#839496" # base0
+set index-active-bg             "#268bd2" # blue
+set index-active-fg             "#002b36" # base03
+
+set inputbar-bg                 "#002b36" # base03
+set inputbar-fg                 "#839496" # base0
+
+set statusbar-bg                "#073642" # base02
+set statusbar-fg                "#839496" # base0
+
+set highlight-color             "#b58900" # yellow  # highlight match when search keyword(vim's /)
+set highlight-active-color      "#cb4b16" # orange
+
+set default-bg                  "#002b36" # base03
+set default-fg                  "#839496" # base0
+set render-loading              true
+set render-loading-bg           "#002b36" # base03
+set render-loading-fg           "#839496" # base0
+
+# Recolor book content's color (dark mode, toggle with `i`)
+set recolor                     true
+set recolor-lightcolor          "#002b36" # base03
+set recolor-darkcolor           "#839496" # base0
 set recolor-keephue             true      # keep original color
