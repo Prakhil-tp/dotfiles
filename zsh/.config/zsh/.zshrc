@@ -243,6 +243,16 @@ alias agent=gemini
 # User binary paths: opencode, node (asdf), Go (`go install` → ~/go/bin)
 export PATH="$XDG_DATA_HOME/opencode/install/bin:/home/blue/.local/share/asdf/installs/nodejs/25.9.0/bin:$HOME/go/bin:$PATH"
 
+# `opencode upgrade` ignores OPENCODE_INSTALL_DIR and installs to ~/.opencode/bin;
+# move the new binary back into the XDG install dir afterwards
+opencode() {
+  command opencode "$@" || return
+  if [[ $1 == upgrade && -x $HOME/.opencode/bin/opencode ]]; then
+    mv -f "$HOME/.opencode/bin/opencode" "$XDG_DATA_HOME/opencode/install/bin/opencode" &&
+      rmdir "$HOME/.opencode/bin" "$HOME/.opencode" 2>/dev/null
+  fi
+}
+
 # Flutter / Android SDK (JDK 17 for Gradle; system default Java untouched)
 export JAVA_HOME=/usr/lib/jvm/java-17-openjdk
 export ANDROID_HOME="$HOME/Android/Sdk"
