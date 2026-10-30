@@ -13,7 +13,7 @@ REVISION=0.2.5
 #####################################
 # Enter your API key
 # you can get it here: https://wallhaven.cc/settings/account
-APIKEY="FLvDnTNoIEfrrp7lS2IFFEcwIpw9Wrzg"
+APIKEY="${WALLHAVEN_API_KEY:-}"
 #####################################
 ### End needed for NSFW/Favorites ###
 #####################################
@@ -22,7 +22,7 @@ APIKEY="FLvDnTNoIEfrrp7lS2IFFEcwIpw9Wrzg"
 ###     Configuration Options     ###
 #####################################
 # Where should the Wallpapers be stored?
-LOCATION=/home/prakhil/Pictures/backgrounds
+LOCATION="$HOME/pictures/wallpapers"
 # How many Wallpapers should be downloaded, should be multiples of the
 # value in the THUMBS Variable
 WPNUMBER=48

@@ -6,4 +6,9 @@ autoload/*
 qutebrowser/.config/qutebrowser/qsettings
 applications/*
 zsh/.config/zsh/secrets.zsh
+zsh/.config/zsh/history
+zsh/.config/zsh/zcompdump*
+vifm/.config/vifm/vifminfo
 .zcompdump*
+torrra/.config/torrra/config.toml
+HANDOFF.md

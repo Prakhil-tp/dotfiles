@@ -1,7 +1,7 @@
 indexer = "prowlarr"
 
 [general]
-download_path = "/home/blue/downloads"
+download_path = "~/downloads"
 download_in_external_client = false
 use_transmission = true
 transmission_user = ""
@@ -17,8 +17,8 @@ default = "prowlarr"
 
 [indexers.jackett]
 url = "http://127.0.0.1:9117"
-api_key = "0evbyikr3wbohpmtkzoflskvojghksve"
+api_key = "@JACKETT_API_KEY@"
 
 [indexers.prowlarr]
 url = "http://127.0.0.1:9697"
-api_key = "6744f5dcf1e349d6b309e57368be40b0"
+api_key = "@PROWLARR_API_KEY@"
