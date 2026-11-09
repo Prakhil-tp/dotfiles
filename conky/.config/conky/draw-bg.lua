@@ -1,7 +1,6 @@
 -- Rounded semi-transparent card behind the "System Status" conky.
 -- Drawn before the text (lua_draw_hook_pre = 'draw_bg'), so text sits on top.
 require 'cairo'
-pcall(require, 'cairo_xlib')   -- conky >=1.19 splits xlib surface into this module
 
 local function rounded_rect(cr, x, y, w, h, r)
     local deg = math.pi / 180
@@ -18,8 +17,9 @@ function conky_draw_bg()
     local w, h = conky_window.width, conky_window.height
     if w == 0 or h == 0 then return end
 
-    local cs = cairo_xlib_surface_create(conky_window.display,
-        conky_window.drawable, conky_window.visual, w, h)
+    -- conky >=1.25: conky owns the surface; get it fresh each frame, never destroy it
+    local cs = conky_surface()
+    if not cs then return end
     local cr = cairo_create(cs)
 
     -- Clear the whole window to fully transparent first. Without this, the
@@ -37,5 +37,4 @@ function conky_draw_bg()
     cairo_fill(cr)
 
     cairo_destroy(cr)
-    cairo_surface_destroy(cs)
 end

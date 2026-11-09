@@ -24,10 +24,8 @@ conky.config = {
 
   -- window is fully transparent; the rounded card is drawn by draw-bg.lua
   own_window = true,
-  own_window_argb_value = 0,
-  own_window_argb_visual = true,
+  own_window_color = '#00000000',
   own_window_class = 'Conky',
-  own_window_transparent = false,
   own_window_title = 'ai_insights',
   own_window_type = 'desktop',
   own_window_hints = 'undecorated,below,sticky,skip_taskbar,skip_pager',
@@ -36,7 +34,7 @@ conky.config = {
   lua_draw_hook_pre = 'draw_bg',
 
   use_xft = true,
-  xftalpha = 1,
+  text_alpha = 1,
 
   -- Catppuccin Mocha
   color0 = '#89b4fa',  -- blue    (accent)

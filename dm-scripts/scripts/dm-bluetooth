@@ -26,10 +26,9 @@ function connectDevice {
 
 function errorHandler {
     notify-send "Error handling. Please wait 5 seconds"
-    pulseaudio --kill
+    systemctl --user restart wireplumber pipewire pipewire-pulse
     sleep 5
-    pulseaudio --start
-    notify-send "Pulseaudio restarting. Please wait 8 seconds"
+    notify-send "PipeWire restarting. Please wait 8 seconds"
     sleep 8 
     connectDevice
 }
@@ -68,7 +67,7 @@ function main {
     ;;
     SCAN)
       scanChoice=$(echo -e "on\noff\n" | rofi -dmenu -i -p "Bluetooth SCAN")
-      $(bluetoothctl -- scan $scanChoice)
+      bluetoothctl scan $scanChoice
     ;;
   esac
 }

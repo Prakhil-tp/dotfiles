@@ -1,0 +1,13 @@
+[Unit]
+Description=Periodic dotfiles commit and push
+
+[Timer]
+# Catches work stranded by a failed push (offline, VPN, suspend, locked keyring).
+OnBootSec=3min
+OnUnitActiveSec=10min
+# Fire after waking or after a missed window, rather than waiting a full period.
+Persistent=true
+RandomizedDelaySec=30
+
+[Install]
+WantedBy=timers.target

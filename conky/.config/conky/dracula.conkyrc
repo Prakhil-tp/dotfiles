@@ -67,15 +67,12 @@ conky.config = {
 	uppercase = false,							-- uppercase or not
 	use_spacer = 'none',						-- adds spaces around certain objects to align - default none
 	use_xft = true,								-- xft font - anti-aliased font
-	xftalpha = 1,								-- alpha of the xft font - between 0-1
+	text_alpha = 1,								-- alpha of the xft font - between 0-1
 
 	--Windows
 	own_window = true,							-- create your own window to draw
-	own_window_argb_value = 250,			    -- real transparency - composite manager required 0-255
-	own_window_argb_visual = true,				-- use ARGB - composite manager required
 	own_window_class = 'Conky',					-- manually set the WM_CLASS name for use with xprop
-	own_window_colour = '#282a36',				-- set colour if own_window_transparent no
-	own_window_transparent = false,				-- if own_window_argb_visual is true sets background opacity 0%
+	own_window_color = '#FA282a36',			-- #AARRGGBB: alpha first (background opacity)
 	own_window_title = 'awesome_conky',			-- set the name manually
 	own_window_type = 'desktop',				-- if own_window true options are: normal/override/dock/desktop/panel
 	own_window_hints = 'undecorated,below,sticky,skip_taskbar,skip_pager',  -- if own_window true - just hints - own_window_type sets it

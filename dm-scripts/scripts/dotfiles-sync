@@ -1,0 +1,186 @@
+#!/usr/bin/env bash
+# dotfiles-sync — keep the dotfiles repo committed and pushed to its remote.
+#
+# Usage:
+#   dotfiles-sync           commit local changes, rebase on remote, push
+#   dotfiles-sync --pull    fetch + rebase only (no commit, no push)
+#   dotfiles-sync --status  show pending changes, change nothing
+#
+# Safe to run concurrently: a lock serialises manual runs against the timer.
+# Failures notify on the desktop (throttled) and are appended to the log.
+
+set -uo pipefail
+
+DOTFILES_DIR="${DOTFILES_DIR:-$HOME/dotfiles}"
+BRANCH="${DOTFILES_BRANCH:-master}"
+LOCK_FILE="${XDG_RUNTIME_DIR:-/tmp}/dotfiles-sync.lock"
+LOG_FILE="${XDG_STATE_HOME:-$HOME/.local/state}/dotfiles-sync.log"
+STAMP_FILE="${XDG_STATE_HOME:-$HOME/.local/state}/dotfiles-sync.notified"
+MAX_FILE_BYTES=$((5 * 1024 * 1024))
+
+mkdir -p "$(dirname "$LOG_FILE")"
+
+log() { printf '%s %s\n' "$(date '+%Y-%m-%d %H:%M:%S')" "$*" >>"$LOG_FILE"; }
+
+# The timer runs outside a login shell, where the keyring socket is not
+# exported. Point git at it so pushes can authenticate without a passphrase.
+if [ -z "${SSH_AUTH_SOCK:-}" ]; then
+  for sock in "${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/gcr/ssh" \
+              "${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/ssh-agent.socket"; do
+    if [ -S "$sock" ]; then export SSH_AUTH_SOCK="$sock"; break; fi
+  done
+fi
+# Never hang on a credential prompt; the timer will retry.
+export GIT_TERMINAL_PROMPT=0
+export GIT_SSH_COMMAND="${GIT_SSH_COMMAND:-ssh -o BatchMode=yes}"
+
+# Notify the desktop, at most once every 30 minutes, so a persistent failure
+# (locked keyring, offline VPN) does not turn into a popup every timer tick.
+notify() {
+  log "FAIL: $*"
+  command -v notify-send >/dev/null 2>&1 || return 0
+  if [ -f "$STAMP_FILE" ] && [ $(( $(date +%s) - $(stat -c %Y "$STAMP_FILE") )) -lt 1800 ]; then
+    return 0
+  fi
+  : "${DBUS_SESSION_BUS_ADDRESS:=unix:path=/run/user/$(id -u)/bus}"
+  export DBUS_SESSION_BUS_ADDRESS
+  notify-send -u critical -a dotfiles-sync "Dotfiles sync failed" "$*" 2>/dev/null || true
+  touch "$STAMP_FILE"
+}
+
+die() { notify "$*"; exit 1; }
+
+git_dot() { git -C "$DOTFILES_DIR" "$@"; }
+
+# --- preconditions ----------------------------------------------------------
+
+[ -d "$DOTFILES_DIR" ] || die "Dotfiles directory not found: $DOTFILES_DIR"
+git_dot rev-parse --is-inside-work-tree >/dev/null 2>&1 \
+  || die "Not a git repository: $DOTFILES_DIR"
+
+if [ "${1:-}" = "--status" ]; then
+  git_dot status --short
+  exit 0
+fi
+
+# Only one sync at a time. A full sync waits its turn rather than skipping:
+# dropping it would strand a just-finished edit session until the next tick.
+# A --pull is only opportunistic, so it gives up immediately.
+exec 9>"$LOCK_FILE"
+if [ "${1:-}" = "--pull" ]; then
+  flock -n 9 || { log "skip pull: sync already in progress"; exit 0; }
+else
+  flock -w 180 9 || { notify "Timed out waiting for another sync to finish"; exit 1; }
+fi
+
+# Never touch a repo that is mid-rebase/merge or has unresolved conflicts.
+if [ -d "$(git_dot rev-parse --git-path rebase-merge)" ] \
+  || [ -d "$(git_dot rev-parse --git-path rebase-apply)" ] \
+  || [ -f "$(git_dot rev-parse --git-path MERGE_HEAD)" ]; then
+  die "Repo is mid-rebase/merge. Resolve it manually in $DOTFILES_DIR"
+fi
+
+if [ -n "$(git_dot diff --name-only --diff-filter=U)" ]; then
+  die "Unresolved merge conflicts. Resolve them manually in $DOTFILES_DIR"
+fi
+
+# --- commit -----------------------------------------------------------------
+
+# Anything matching this must never be auto-committed: dotfiles repos are
+# usually public, and a leaked key is not undoable.
+SENSITIVE_RE='(^|/)(secrets(\.zsh)?|\.env[^/]*|\.netrc|\.git-credentials|id_(rsa|ed25519|ecdsa)|[^/]*\.(pem|key|p12|pfx|kdbx|ovpn))$'
+
+# Staged files are checked before the commit lands. On refusal the index is
+# reset so a half-staged tree is not left behind; working files are untouched.
+check_staged() {
+  local path size
+  local -a staged
+  mapfile -d '' -t staged < <(git_dot diff --cached --name-only -z --diff-filter=ACM)
+  for path in "${staged[@]}"; do
+    if [[ "$path" =~ $SENSITIVE_RE ]]; then
+      git_dot reset -q
+      die "Refusing to commit '$path' (looks like a secret). Add it to .gitignore or commit it by hand."
+    fi
+    size=$(stat -c %s "$DOTFILES_DIR/$path" 2>/dev/null || echo 0)
+    if [ "$size" -gt "$MAX_FILE_BYTES" ]; then
+      git_dot reset -q
+      die "Refusing to commit '$path' ($(( size / 1024 / 1024 )) MiB > 5 MiB). Commit it by hand if intended."
+    fi
+  done
+}
+
+commit_local() {
+  # --porcelain covers modified, staged, untracked and deleted files.
+  local changes
+  changes="$(git_dot status --porcelain)"
+  [ -n "$changes" ] || return 0
+
+  local count
+  count="$(printf '%s\n' "$changes" | wc -l)"
+
+  git_dot add -A || { notify "git add failed"; return 1; }
+  check_staged || return 1
+  git_dot commit -q -m "Auto-sync $(date '+%Y-%m-%d %H:%M') ($count $( [ "$count" -eq 1 ] && echo file || echo files ))" \
+    || { notify "git commit failed"; return 1; }
+  log "committed $count file(s)"
+}
+
+# --- pull / push ------------------------------------------------------------
+
+pull_rebase() {
+  local out
+  # Fetch separately so being offline is not mistaken for a conflict.
+  if ! out="$(git_dot fetch -q origin "$BRANCH" 2>&1)"; then
+    if grep -qiE 'could not resolve hostname|network is unreachable|no route to host|timed out|connection refused|temporary failure' <<<"$out"; then
+      log "pull deferred (offline): ${out%%$'\n'*}"
+      return 0
+    fi
+    die "Fetch from origin failed. Details: $LOG_FILE"$'\n'"$out"
+  fi
+  if ! git_dot rev-parse --verify -q "origin/$BRANCH" >/dev/null; then
+    log "no origin/$BRANCH yet; nothing to rebase onto"
+    return 0
+  fi
+  if ! out="$(git_dot rebase --autostash "origin/$BRANCH" 2>&1)"; then
+    # Leave no half-finished rebase behind for the next run to trip over.
+    git_dot rebase --abort >/dev/null 2>&1
+    die "Pull/rebase failed — likely a conflict between machines. Run 'git -C $DOTFILES_DIR pull --rebase' by hand. Details: $LOG_FILE"$'\n'"$out"
+  fi
+}
+
+push() {
+  # Nothing to push is the common case; don't hit the network for it.
+  if git_dot rev-parse --verify -q "origin/$BRANCH" >/dev/null \
+    && [ -z "$(git_dot log "origin/$BRANCH..$BRANCH" --oneline 2>/dev/null)" ]; then
+    return 0
+  fi
+  local out
+  if ! out="$(git_dot push -q origin "$BRANCH" 2>&1)"; then
+    if grep -qiE 'could not resolve hostname|network is unreachable|no route to host|timed out|connection refused|temporary failure' <<<"$out"; then
+      # Offline is expected and not worth a popup — the timer will retry.
+      log "push deferred (offline): ${out%%$'\n'*}"
+      return 0
+    fi
+    # Auth failures are not transient in the same way: a locked keyring or a
+    # broken key silently stops every future push, so surface it.
+    die "Push to origin failed. Details: $LOG_FILE"$'\n'"$out"
+  fi
+  log "pushed to origin/$BRANCH"
+}
+
+# --- main -------------------------------------------------------------------
+
+case "${1:-}" in
+  --pull)
+    pull_rebase
+    ;;
+  "")
+    commit_local || exit 1
+    pull_rebase
+    push
+    ;;
+  *)
+    echo "usage: dotfiles-sync [--pull|--status]" >&2
+    exit 2
+    ;;
+esac

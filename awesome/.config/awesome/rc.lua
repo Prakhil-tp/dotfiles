@@ -55,7 +55,7 @@ require("notifications").hook_naughty()
 
 -- This is used later as the default terminal and editor to run.
 -- local terminal = "alacritty"
-local terminal = "kitty"
+local terminal = "kitty -1"  -- single-instance: new windows reuse one process (~3ms vs ~250ms)
 local editor = "nvim" or "vi"
 local editor_cmd = terminal .. " -e " .. editor
 local modkey = "Mod4"

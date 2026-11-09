@@ -1,0 +1,10 @@
+[Unit]
+Description=Commit and push dotfiles to git remote
+# Pointless to run while offline; the timer will come back around.
+After=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=%h/scripts/dotfiles-sync
+# Keep a stuck network call from pinning the lock a manual run also needs.
+TimeoutStartSec=120

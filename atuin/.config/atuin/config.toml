@@ -8,14 +8,14 @@ enter_accept = false
 keymap_mode = "vim-normal"
 
 [ai]
-enabled = true
+enabled = false
 
 [daemon]
 enabled = true
 autostart = true
 
 [theme]
-name = "catppuccin"
+name = "catppuccin-mocha-mauve"
 
 [logs]
 dir = "~/.local/state/atuin/logs"
