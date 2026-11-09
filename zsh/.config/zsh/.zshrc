@@ -240,18 +240,8 @@ eval "$(atuin init zsh)"
 alias agent=gemini
 [[ -f "$ZDOTDIR/secrets.zsh" ]] && source "$ZDOTDIR/secrets.zsh"
 
-# User binary paths: opencode, node (asdf), Go (`go install` → ~/go/bin)
-export PATH="$XDG_DATA_HOME/opencode/install/bin:${ASDF_DATA_DIR:-$XDG_DATA_HOME/asdf}/installs/nodejs/25.9.0/bin:$HOME/go/bin:$PATH"
-
-# `opencode upgrade` ignores OPENCODE_INSTALL_DIR and installs to ~/.opencode/bin;
-# move the new binary back into the XDG install dir afterwards
-opencode() {
-  command opencode "$@" || return
-  if [[ $1 == upgrade && -x $HOME/.opencode/bin/opencode ]]; then
-    mv -f "$HOME/.opencode/bin/opencode" "$XDG_DATA_HOME/opencode/install/bin/opencode" &&
-      rmdir "$HOME/.opencode/bin" "$HOME/.opencode" 2>/dev/null
-  fi
-}
+# User binary paths: opencode (default curl-install dir, so in-app /update works), node (asdf), Go (`go install` → ~/go/bin)
+export PATH="$HOME/.opencode/bin:${ASDF_DATA_DIR:-$XDG_DATA_HOME/asdf}/installs/nodejs/25.9.0/bin:$HOME/go/bin:$PATH"
 
 # Flutter / Android SDK (JDK 17 for Gradle; system default Java untouched)
 export JAVA_HOME=/usr/lib/jvm/java-17-openjdk
