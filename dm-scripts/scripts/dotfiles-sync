@@ -110,15 +110,17 @@ check_staged() {
 }
 
 commit_local() {
-  # --porcelain covers modified, staged, untracked and deleted files.
-  local changes
-  changes="$(git_dot status --porcelain)"
-  [ -n "$changes" ] || return 0
+  git_dot add -A || { notify "git add failed"; return 1; }
+
+  # A dirty submodule (e.g. awesome/bling) shows up in `status` but stages
+  # nothing; without this guard the commit below would fail on every tick.
+  if git_dot diff --cached --quiet; then
+    return 0
+  fi
 
   local count
-  count="$(printf '%s\n' "$changes" | wc -l)"
+  count="$(git_dot diff --cached --name-only | wc -l)"
 
-  git_dot add -A || { notify "git add failed"; return 1; }
   check_staged || return 1
   git_dot commit -q -m "Auto-sync $(date '+%Y-%m-%d %H:%M') ($count $( [ "$count" -eq 1 ] && echo file || echo files ))" \
     || { notify "git commit failed"; return 1; }
