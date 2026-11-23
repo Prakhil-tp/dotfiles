@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import json, urllib.request, urllib.error
-from http.server import HTTPServer, BaseHTTPRequestHandler
+from http.server import ThreadingHTTPServer, BaseHTTPRequestHandler
 import re
 
 PROWLARR = "http://127.0.0.1:9696"
@@ -39,4 +39,4 @@ class Proxy(BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(json.dumps({"error": str(e)}).encode())
 
-HTTPServer(("127.0.0.1", 9697), Proxy).serve_forever()
+ThreadingHTTPServer(("127.0.0.1", 9697), Proxy).serve_forever()
